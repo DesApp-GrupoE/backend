@@ -10,6 +10,7 @@ modo de entrega.
 <h2>Configuración del entorno</h2>    
   
 <h3>Requisitos</h3>      
+  
 * Java 11
 * Path `/var/log/desapp` con permisos de usuario para que se pueda loguear la app   
   
