@@ -5,7 +5,7 @@ jdk:
 jobs:
   include:
     - stage: Test
-      script: ./mvnw clean test
+      script: mvn install
 
 notifications:
   email: presafederico@gmail.com
