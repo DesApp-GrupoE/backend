@@ -8,4 +8,6 @@ jobs:
       script: mvn install
 
 notifications:
-  email: presafederico@gmail.com
+  email: 
+   - presafederico@gmail.com
+   - arielramirez20395@gmail.com
