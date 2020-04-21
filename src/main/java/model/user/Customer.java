@@ -1,14 +1,16 @@
 package model.user;
 
-public class Customer {
-
-    private UserRol role;
+public class Customer extends User {
 
     public Customer() {
-        this.role = UserRol.CUSTOMER;
+        super("", "", "", "", Role.CUSTOMER);
     }
 
-    public UserRol getRole() {
+    public Customer(String user, String test, String s, String secret_password) {
+        super(user, test, s, secret_password, Role.CUSTOMER);
+    }
+
+    public Role getRole() {
         return this.role;
     }
 }

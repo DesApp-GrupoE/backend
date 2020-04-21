@@ -1,6 +1,6 @@
 package model.user;
 
-public enum UserRol {
+public enum Role {
 
     CUSTOMER;
 
