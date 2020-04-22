@@ -1,5 +1,10 @@
 package model.user;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "customers")
 public class Customer extends User {
 
     public Customer() {
