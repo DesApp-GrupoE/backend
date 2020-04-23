@@ -9,13 +9,13 @@ public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;
-    @Column
+    @Column(nullable = false)
     protected String name;
-    @Column
+    @Column(nullable = false)
     protected String surname;
-    @Column
+    @Column(nullable = false)
     protected String email;
-    @Column
+    @Column(nullable = false)
     protected String password;
     @Enumerated(EnumType.STRING)
     protected Role role;
