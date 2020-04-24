@@ -1,0 +1,13 @@
+language: java
+jdk:
+  - openjdk11
+
+jobs:
+  include:
+    - stage: Test
+      script: mvn install
+
+notifications:
+  email: 
+   - presafederico@gmail.com
+   - arielramirez20395@gmail.com
