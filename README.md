@@ -11,8 +11,20 @@ modo de entrega.
   
 <h3>Requisitos</h3>      
   
+* Maven
 * Java 11
-* Path `/var/log/desapp` con permisos de usuario para que se pueda loguear la app   
+* Path `/var/log/desapp` con permisos de usuario para que se pueda loguear la app
+* Mysql   
+  
+ 
+<h4>Creación de usuario en MySql</h4>  
+  
+Para poder persistir los datos de la aplicación deberemos crear el siguiente usuario y darle permisos.    
+```sql
+CREATE USER 'desapp'@'localhost' IDENTIFIED BY 'desapp';
+GRANT ALL PRIVILEGES ON * . * TO 'desapp'@'localhost';
+FLUSH PRIVILEGES;
+```   
   
 <h3>Instalación</h3>  
   
@@ -33,19 +45,18 @@ Esto levantará la aplicación en el puerto `8080`.
   
 <h3>Ejemplos en Postman</h3>  
   
+* Creación de Customer
 ```bash
-GET /api/test HTTP/1.1
+POST /api/auth/sign-up HTTP/1.1
 Host: localhost:8080
-```         
-  
-```bash
-POST /api/test HTTP/1.1
-Host: localhost:8080
-Content-Type: application/json
 
 {
-	"id" : 1,
+	"name": "Ariel",
+	"surname": "Ramirez",
 	"email": "test@test.test",
 	"password": "secret"
 }
-```  
+```         
+  
+La aplicación esta preparada para que devuelva un error personalizado en caso de se envíe un json incompleto o 
+que falten campos obligatorios en el modelo
