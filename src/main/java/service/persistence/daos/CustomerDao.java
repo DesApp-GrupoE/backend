@@ -1,16 +1,18 @@
 package service.persistence.daos;
 
 import model.user.Customer;
+import org.springframework.stereotype.Service;
 import service.persistence.Dao;
 import service.persistence.exception.DataErrorException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
+import javax.persistence.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+@Service
 public class CustomerDao implements Dao<Customer> {
 
     private EntityManager entityManager;
@@ -46,8 +48,34 @@ public class CustomerDao implements Dao<Customer> {
     }
 
     public Boolean existCustomerWithEmail(String email) {
-        return null;
+        String hql = "FROM Customer WHERE email = :email";
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("email", email);
+        return existsByQuery(hql, params, Customer.class);
     }
+
+    public <T> boolean existsByQuery(String queryString, HashMap<String, Object> params, Class<T> clazz) {
+        T cast = getSingleResponseByQueryWithParams(queryString, params, clazz);
+        return cast != null;
+    }
+
+    private <T> T getSingleResponseByQueryWithParams(String queryString, HashMap<String, Object> params, Class<T> clazz) {
+        Query query = createQueryWithParams(queryString, params);
+        try {
+            return clazz.cast(query.getSingleResult());
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    private Query createQueryWithParams(String queryString, HashMap<String, Object> params) {
+        Query query = this.entityManager.createQuery(queryString);
+        for(Map.Entry<String, Object> entrySet : params.entrySet()) {
+            query.setParameter(entrySet.getKey(), entrySet.getValue());
+        }
+        return query;
+    }
+
 
     private void executeInsideTransaction(Consumer<EntityManager> action) throws DataErrorException {
         EntityTransaction tx = entityManager.getTransaction();

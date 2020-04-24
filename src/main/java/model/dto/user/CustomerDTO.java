@@ -1,5 +1,7 @@
 package model.dto.user;
 
+import model.user.Customer;
+
 import javax.validation.constraints.NotBlank;
 
 public class CustomerDTO {
@@ -16,6 +18,13 @@ public class CustomerDTO {
 
     public CustomerDTO() {
         // Constructor vacio para Jackson
+    }
+
+    public CustomerDTO(Customer customer) {
+        this.id = customer.getId();
+        this.name = customer.getName();
+        this.surname = customer.getSurname();
+        this.email = customer.getEmail();
     }
 
     public Long getId() {

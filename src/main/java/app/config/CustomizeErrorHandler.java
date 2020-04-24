@@ -1,5 +1,6 @@
 package app.config;
 
+import model.dto.ApiError;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,9 +32,8 @@ public class CustomizeErrorHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
-        Map<String, String> errors = new HashMap<>();
-        errors.put("error", "Json Inconsistent");
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        ApiError apiError = new ApiError("Json Inconsistent");
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
     }
 
 }

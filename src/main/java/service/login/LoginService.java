@@ -1,10 +1,12 @@
 package service.login;
 
 import model.user.Customer;
+import org.springframework.stereotype.Service;
 import service.persistence.daos.CustomerDao;
 import service.persistence.exception.DataErrorException;
 import service.persistence.exception.UniqueClassException;
 
+@Service
 public class LoginService {
 
     private CustomerDao customerDao;
