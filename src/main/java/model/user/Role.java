@@ -2,6 +2,6 @@ package model.user;
 
 public enum Role {
 
-    CUSTOMER;
+    CUSTOMER, MERCHANT
 
 }
