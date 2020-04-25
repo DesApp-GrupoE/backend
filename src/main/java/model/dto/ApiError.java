@@ -4,6 +4,10 @@ public class ApiError {
 
     private String error;
 
+    public ApiError() {
+        // Para el mapping de Jackson
+    }
+
     public ApiError(String error) {
         this.error = error;
     }
