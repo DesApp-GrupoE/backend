@@ -59,4 +59,10 @@ Host: localhost:8080
 ```         
   
 La aplicación esta preparada para que devuelva un error personalizado en caso de se envíe un json incompleto o 
-que falten campos obligatorios en el modelo
+que falten campos obligatorios en el modelo  
+  
+---  
+
+* [Trello](https://trello.com/b/P3cJGcJx/comprando-en-casa) 
+* [Travis CI](https://travis-ci.com/github/DesApp-GrupoE/backend)
+* [Codacy](https://app.codacy.com/gh/DesApp-GrupoE)  
