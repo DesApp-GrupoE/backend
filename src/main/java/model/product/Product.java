@@ -1,9 +1,12 @@
 package model.product;
 
 import model.dto.product.ProductDTO;
+import model.user.Merchant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,15 +30,18 @@ public class Product {
     protected int stock;
     @Column(nullable = false)
     protected String img;
+    @Enumerated(EnumType.STRING)
+    protected Merchant merchant;
 
 
 
-    public Product(String name, String brand, float price, int stock, String img) {
+    public Product(String name, String brand, float price, int stock, String img, Merchant merchant) {
         this.name = name;
         this.brand = brand;
         this.price = price;
         this.stock = stock;
         this.img = img;
+        this.merchant = merchant;
     }
  
     public Product(ProductDTO productDTO) {
@@ -92,6 +98,14 @@ public class Product {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public Merchant gMerchant() {
+        return merchant;
+    }
+
+    public void setMerchant(Merchant merchant) {
+        this.merchant = merchant;
     }
 
 
