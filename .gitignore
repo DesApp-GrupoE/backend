@@ -6,3 +6,7 @@ target/
 ### JAVA
 *.class
 *.iml
+*.prefs
+*.project
+*.classpath
+*.settings
