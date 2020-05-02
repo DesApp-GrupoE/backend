@@ -4,8 +4,8 @@
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
              version="2.0">
     <persistence-unit name="ComprandoEnCasa">
-        <class>model.user.User</class>
-        <class>model.user.Customer</class>
+        <class>desapp.grupo.e.model.user.User</class>
+        <class>desapp.grupo.e.model.user.Customer</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>

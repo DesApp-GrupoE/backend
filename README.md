@@ -13,7 +13,7 @@ modo de entrega.
   
 * Maven
 * Java 11
-* Path `/var/log/desapp` con permisos de usuario para que se pueda loguear la app
+* Path `/var/log/desapp` con permisos de usuario para que se pueda loguear la desapp.grupo.e.app
 * Mysql   
   
  
@@ -65,4 +65,4 @@ que falten campos obligatorios en el modelo
 
 * [Trello](https://trello.com/b/P3cJGcJx/comprando-en-casa) 
 * [Travis CI](https://travis-ci.com/github/DesApp-GrupoE/backend)
-* [Codacy](https://app.codacy.com/gh/DesApp-GrupoE)  
+* [Codacy](https://desapp.grupo.e.app.codacy.com/gh/DesApp-GrupoE)  
