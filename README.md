@@ -42,6 +42,9 @@ mvn spring-boot:run
 Esto levantará la aplicación en el puerto `8080`.
     
 ---  
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c34b463b63b940c58212cf65b7662f48)](https://app.codacy.com/gh/DesApp-GrupoE/backend?utm_source=github.com&utm_medium=referral&utm_content=DesApp-GrupoE/backend&utm_campaign=Badge_Grade_Dashboard)
+
   
 <h3>Ejemplos en Postman</h3>  
   
