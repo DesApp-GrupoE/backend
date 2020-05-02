@@ -21,7 +21,6 @@ import desapp.grupo.e.service.persistence.exception.DataErrorException;
 import desapp.grupo.e.service.persistence.exception.UniqueClassException;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,13 +28,12 @@ import static org.mockito.Mockito.when;
 public class LoginControllerTest {
 
     private LoginService loginService;
-    private LoginController loginController;
     private MockMvc mockMvc;
 
     @BeforeEach
-    public void setup() {
+    public void setUp() {
         loginService = mock(LoginService.class);
-        loginController = new LoginController(loginService);
+        LoginController loginController = new LoginController(loginService);
         mockMvc = MockMvcBuilders.standaloneSetup(loginController)
                     .setControllerAdvice(new CustomizeErrorHandler())
                     .build();
