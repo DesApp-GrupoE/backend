@@ -8,9 +8,9 @@
         <version>2.2.6.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    
-    <groupId>des-desapp.grupo.e.app-grupo-e</groupId>
-    <artifactId>des-desapp.grupo.e.app-grupo-e</artifactId>
+
+    <groupId>des-app-grupo-e</groupId>
+    <artifactId>des-app-grupo-e</artifactId>
     <version>1.0.0</version>
 
     <properties>
