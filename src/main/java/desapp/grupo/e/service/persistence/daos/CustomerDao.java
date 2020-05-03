@@ -1,6 +1,8 @@
 package desapp.grupo.e.service.persistence.daos;
 
+import desapp.grupo.e.model.product.CategoryAlert;
 import desapp.grupo.e.model.user.Customer;
+import desapp.grupo.e.service.persistence.exception.DataErrorException;
 import org.springframework.stereotype.Service;
 import desapp.grupo.e.service.persistence.AbstractDao;
 
@@ -21,4 +23,10 @@ public class CustomerDao extends AbstractDao<Customer> {
         return existsByQuery(hql, params, Customer.class);
     }
 
+    @Override
+    public void deleteAll() throws DataErrorException {
+        String hql = "delete from " + CategoryAlert.class.getName();
+        executeQueryInsideTransaction(hql, new HashMap<>());
+        super.deleteAll();
+    }
 }

@@ -8,6 +8,7 @@
         <class>desapp.grupo.e.model.test.DummyData</class>
         <class>desapp.grupo.e.model.user.User</class>
         <class>desapp.grupo.e.model.user.Customer</class>
+        <class>desapp.grupo.e.model.product.CategoryAlert</class>
 
         <properties>
             <!-- Configuring JDBC properties -->

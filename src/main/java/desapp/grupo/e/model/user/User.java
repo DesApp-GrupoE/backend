@@ -7,7 +7,7 @@ import javax.persistence.*;
 public abstract class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="user_id_seq")
     protected Long id;
     @Column(nullable = false)
     protected String name;
