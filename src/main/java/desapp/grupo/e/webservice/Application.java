@@ -1,4 +1,4 @@
-package desapp.grupo.e.app;
+package desapp.grupo.e.webservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

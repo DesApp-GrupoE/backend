@@ -2,9 +2,9 @@ package desapp.grupo.e.service.login;
 
 import desapp.grupo.e.model.user.Customer;
 import org.springframework.stereotype.Service;
-import desapp.grupo.e.service.persistence.daos.CustomerDao;
-import desapp.grupo.e.service.persistence.exception.DataErrorException;
-import desapp.grupo.e.service.persistence.exception.UniqueClassException;
+import desapp.grupo.e.persistence.daos.CustomerDao;
+import desapp.grupo.e.persistence.exception.DataErrorException;
+import desapp.grupo.e.persistence.exception.UniqueClassException;
 
 @Service
 public class LoginService {

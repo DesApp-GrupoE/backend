@@ -1,4 +1,4 @@
-package desapp.grupo.e.service.persistence.daos.test;
+package desapp.grupo.e.persistence.daos.test;
 
 import desapp.grupo.e.model.builder.test.DummyDataBuilder;
 import desapp.grupo.e.model.test.DummyData;
@@ -6,8 +6,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import desapp.grupo.e.service.persistence.JPAHibernateTest;
-import desapp.grupo.e.service.persistence.exception.DataErrorException;
+import desapp.grupo.e.persistence.JPAHibernateTest;
+import desapp.grupo.e.persistence.exception.DataErrorException;
 
 import java.util.List;
 import java.util.Optional;

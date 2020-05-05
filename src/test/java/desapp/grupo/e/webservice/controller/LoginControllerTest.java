@@ -1,6 +1,6 @@
-package desapp.grupo.e.app.controller;
+package desapp.grupo.e.webservice.controller;
 
-import desapp.grupo.e.app.config.CustomizeErrorHandler;
+import desapp.grupo.e.webservice.config.CustomizeErrorHandler;
 import desapp.grupo.e.model.dto.ApiError;
 import desapp.grupo.e.model.dto.user.CustomerDTO;
 import desapp.grupo.e.model.user.Customer;
@@ -17,8 +17,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import desapp.grupo.e.service.jackson.JsonUtils;
 import desapp.grupo.e.service.login.LoginService;
-import desapp.grupo.e.service.persistence.exception.DataErrorException;
-import desapp.grupo.e.service.persistence.exception.UniqueClassException;
+import desapp.grupo.e.persistence.exception.DataErrorException;
+import desapp.grupo.e.persistence.exception.UniqueClassException;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;

@@ -1,6 +1,6 @@
-package desapp.grupo.e.service.persistence;
+package desapp.grupo.e.persistence;
 
-import desapp.grupo.e.service.persistence.exception.DataErrorException;
+import desapp.grupo.e.persistence.exception.DataErrorException;
 
 import java.util.List;
 import java.util.Optional;

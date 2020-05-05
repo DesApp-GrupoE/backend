@@ -5,9 +5,9 @@ import desapp.grupo.e.model.user.Customer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
-import desapp.grupo.e.service.persistence.daos.CustomerDao;
-import desapp.grupo.e.service.persistence.exception.DataErrorException;
-import desapp.grupo.e.service.persistence.exception.UniqueClassException;
+import desapp.grupo.e.persistence.daos.CustomerDao;
+import desapp.grupo.e.persistence.exception.DataErrorException;
+import desapp.grupo.e.persistence.exception.UniqueClassException;
 
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;

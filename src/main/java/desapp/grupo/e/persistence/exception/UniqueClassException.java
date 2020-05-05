@@ -1,4 +1,4 @@
-package desapp.grupo.e.service.persistence.exception;
+package desapp.grupo.e.persistence.exception;
 
 public class UniqueClassException extends Exception {
 

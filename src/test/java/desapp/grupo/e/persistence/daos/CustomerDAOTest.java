@@ -1,4 +1,4 @@
-package desapp.grupo.e.service.persistence.daos;
+package desapp.grupo.e.persistence.daos;
 
 import desapp.grupo.e.model.builder.CustomerBuilder;
 import desapp.grupo.e.model.product.CategoryAlert;
@@ -8,8 +8,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import desapp.grupo.e.service.persistence.JPAHibernateTest;
-import desapp.grupo.e.service.persistence.exception.DataErrorException;
+import desapp.grupo.e.persistence.JPAHibernateTest;
+import desapp.grupo.e.persistence.exception.DataErrorException;
 
 import java.util.Optional;
 

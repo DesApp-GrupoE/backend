@@ -1,4 +1,4 @@
-package desapp.grupo.e.service.persistence;
+package desapp.grupo.e.persistence;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

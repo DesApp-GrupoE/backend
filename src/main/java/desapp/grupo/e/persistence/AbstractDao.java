@@ -1,7 +1,7 @@
-package desapp.grupo.e.service.persistence;
+package desapp.grupo.e.persistence;
 
 import desapp.grupo.e.service.log.Log;
-import desapp.grupo.e.service.persistence.exception.DataErrorException;
+import desapp.grupo.e.persistence.exception.DataErrorException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;

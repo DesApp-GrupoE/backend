@@ -1,9 +1,9 @@
-package desapp.grupo.e.app.beans;
+package desapp.grupo.e.webservice.beans;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import desapp.grupo.e.service.login.LoginService;
-import desapp.grupo.e.service.persistence.daos.CustomerDao;
+import desapp.grupo.e.persistence.daos.CustomerDao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

@@ -1,7 +1,7 @@
-package desapp.grupo.e.service.persistence.daos.test;
+package desapp.grupo.e.persistence.daos.test;
 
 import desapp.grupo.e.model.test.DummyData;
-import desapp.grupo.e.service.persistence.AbstractDao;
+import desapp.grupo.e.persistence.AbstractDao;
 
 import javax.persistence.EntityManager;
 

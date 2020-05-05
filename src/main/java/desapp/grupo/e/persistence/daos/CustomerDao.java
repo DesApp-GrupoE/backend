@@ -1,10 +1,10 @@
-package desapp.grupo.e.service.persistence.daos;
+package desapp.grupo.e.persistence.daos;
 
 import desapp.grupo.e.model.product.CategoryAlert;
 import desapp.grupo.e.model.user.Customer;
-import desapp.grupo.e.service.persistence.exception.DataErrorException;
+import desapp.grupo.e.persistence.exception.DataErrorException;
 import org.springframework.stereotype.Service;
-import desapp.grupo.e.service.persistence.AbstractDao;
+import desapp.grupo.e.persistence.AbstractDao;
 
 import javax.persistence.EntityManager;
 import java.util.HashMap;

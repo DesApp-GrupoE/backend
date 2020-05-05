@@ -1,4 +1,4 @@
-package desapp.grupo.e.app.controller;
+package desapp.grupo.e.webservice.controller;
 
 import desapp.grupo.e.model.dto.ApiError;
 import desapp.grupo.e.model.dto.user.CustomerDTO;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import desapp.grupo.e.service.login.LoginService;
-import desapp.grupo.e.service.persistence.exception.DataErrorException;
-import desapp.grupo.e.service.persistence.exception.UniqueClassException;
+import desapp.grupo.e.persistence.exception.DataErrorException;
+import desapp.grupo.e.persistence.exception.UniqueClassException;
 
 import javax.validation.Valid;
 
