@@ -1,26 +1,26 @@
 package desapp.grupo.e.service.login;
 
-import desapp.grupo.e.model.user.Customer;
+import desapp.grupo.e.model.user.User;
 import org.springframework.stereotype.Service;
-import desapp.grupo.e.persistence.daos.CustomerDao;
+import desapp.grupo.e.persistence.daos.UserDao;
 import desapp.grupo.e.persistence.exception.DataErrorException;
 import desapp.grupo.e.persistence.exception.UniqueClassException;
 
 @Service
 public class LoginService {
 
-    private CustomerDao customerDao;
+    private UserDao userDao;
 
-    public LoginService(CustomerDao customerDao) {
-        this.customerDao = customerDao;
+    public LoginService(UserDao userDao) {
+        this.userDao = userDao;
     }
 
-    public Customer signUp(Customer customer) throws DataErrorException, UniqueClassException {
-        Boolean exist = this.customerDao.existCustomerWithEmail(customer.getEmail());
+    public User signUp(User customer) throws DataErrorException, UniqueClassException {
+        Boolean exist = this.userDao.existUserWithEmail(customer.getEmail());
         if(exist) {
             throw new UniqueClassException("Email was already registered");
         }
-        this.customerDao.save(customer);
+        this.userDao.save(customer);
         return customer;
     }
 }

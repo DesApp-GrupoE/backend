@@ -1,8 +1,8 @@
 package desapp.grupo.e.model.builder;
 
-import desapp.grupo.e.model.user.Customer;
+import desapp.grupo.e.model.user.User;
 
-public class CustomerBuilder {
+public class UserBuilder {
 
     private String name;
     private String surname;
@@ -10,42 +10,42 @@ public class CustomerBuilder {
     private String password;
 
 
-    public static CustomerBuilder aCustomer() {
-        return new CustomerBuilder();
+    public static UserBuilder aUser() {
+        return new UserBuilder();
     }
 
-    public CustomerBuilder anyCustomer() {
-        this.name = "Customer";
+    public UserBuilder anyUser() {
+        this.name = "User";
         this.surname = "Test";
         this.email = "test@test.test";
         this.password = "secret_password";
         return this;
     }
 
-    public CustomerBuilder withName(String name) {
+    public UserBuilder withName(String name) {
         this.name = name;
         return this;
     }
 
-    public CustomerBuilder withSurname(String surname) {
+    public UserBuilder withSurname(String surname) {
         this.surname = surname;
         return this;
     }
 
-    public CustomerBuilder withEmail(String email) {
+    public UserBuilder withEmail(String email) {
         this.email = email;
         return this;
     }
 
-    public CustomerBuilder withPassword(String password) {
+    public UserBuilder withPassword(String password) {
         this.password = password;
         return this;
     }
 
-    public Customer build() {
-        Customer customer = new Customer(name, surname, email, password);
+    public User build() {
+        User user = new User(name, surname, email, password);
         resetBuilder();
-        return customer;
+        return user;
     }
 
     public void resetBuilder() {

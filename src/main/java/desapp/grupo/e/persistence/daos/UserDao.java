@@ -1,7 +1,7 @@
 package desapp.grupo.e.persistence.daos;
 
 import desapp.grupo.e.model.product.CategoryAlert;
-import desapp.grupo.e.model.user.Customer;
+import desapp.grupo.e.model.user.User;
 import desapp.grupo.e.persistence.exception.DataErrorException;
 import org.springframework.stereotype.Service;
 import desapp.grupo.e.persistence.AbstractDao;
@@ -10,17 +10,17 @@ import javax.persistence.EntityManager;
 import java.util.HashMap;
 
 @Service
-public class CustomerDao extends AbstractDao<Customer> {
+public class UserDao extends AbstractDao<User> {
 
-    public CustomerDao(EntityManager entityManager) {
-        super(entityManager, Customer.class);
+    public UserDao(EntityManager entityManager) {
+        super(entityManager, User.class);
     }
 
-    public Boolean existCustomerWithEmail(String email) {
-        String hql = "FROM Customer WHERE email = :email";
+    public Boolean existUserWithEmail(String email) {
+        String hql = "FROM User WHERE email = :email";
         HashMap<String, Object> params = new HashMap<>();
         params.put("email", email);
-        return existsByQuery(hql, params, Customer.class);
+        return existsByQuery(hql, params, User.class);
     }
 
     @Override

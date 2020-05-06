@@ -3,7 +3,7 @@ package desapp.grupo.e.webservice.beans;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import desapp.grupo.e.service.login.LoginService;
-import desapp.grupo.e.persistence.daos.CustomerDao;
+import desapp.grupo.e.persistence.daos.UserDao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -23,8 +23,8 @@ public class ConfigBean {
     }
 
     @Bean
-    public CustomerDao customerDao() {
-        return new CustomerDao(entityManager());
+    public UserDao customerDao() {
+        return new UserDao(entityManager());
     }
 
     @Bean

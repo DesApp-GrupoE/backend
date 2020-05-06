@@ -1,10 +1,10 @@
 package desapp.grupo.e.model.dto.user;
 
-import desapp.grupo.e.model.user.Customer;
+import desapp.grupo.e.model.user.User;
 
 import javax.validation.constraints.NotBlank;
 
-public class CustomerDTO {
+public class UserDTO {
 
     private Long id;
     @NotBlank(message = "Name is mandatory")
@@ -16,15 +16,15 @@ public class CustomerDTO {
     @NotBlank(message = "Password is mandatory")
     private String password;
 
-    public CustomerDTO() {
+    public UserDTO() {
         // Constructor vacio para Jackson
     }
 
-    public CustomerDTO(Customer customer) {
-        this.id = customer.getId();
-        this.name = customer.getName();
-        this.surname = customer.getSurname();
-        this.email = customer.getEmail();
+    public UserDTO(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.surname = user.getSurname();
+        this.email = user.getEmail();
     }
 
     public Long getId() {

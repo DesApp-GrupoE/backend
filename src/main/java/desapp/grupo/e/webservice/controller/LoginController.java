@@ -1,8 +1,8 @@
 package desapp.grupo.e.webservice.controller;
 
 import desapp.grupo.e.model.dto.ApiError;
-import desapp.grupo.e.model.dto.user.CustomerDTO;
-import desapp.grupo.e.model.user.Customer;
+import desapp.grupo.e.model.dto.user.UserDTO;
+import desapp.grupo.e.model.user.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,10 +26,10 @@ public class LoginController {
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<Object> signUp(@Valid @RequestBody CustomerDTO customerDTO) {
-        Customer newCustomer;
+    public ResponseEntity<Object> signUp(@Valid @RequestBody UserDTO userDTO) {
+        User newUser;
         try {
-            newCustomer = this.loginService.signUp(new Customer(customerDTO));
+            newUser = this.loginService.signUp(new User(userDTO));
         } catch (DataErrorException e) {
             ApiError apiError = new ApiError("Unexpected error. Please, try again.");
             return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -37,7 +37,7 @@ public class LoginController {
             ApiError apiError = new ApiError(e.getMessage());
             return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
         }
-        return ResponseEntity.ok(new CustomerDTO(newCustomer));
+        return ResponseEntity.ok(new UserDTO(newUser));
     }
 
 }

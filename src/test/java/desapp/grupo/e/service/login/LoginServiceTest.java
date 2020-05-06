@@ -1,11 +1,11 @@
 package desapp.grupo.e.service.login;
 
-import desapp.grupo.e.model.builder.CustomerBuilder;
-import desapp.grupo.e.model.user.Customer;
+import desapp.grupo.e.model.builder.UserBuilder;
+import desapp.grupo.e.model.user.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
-import desapp.grupo.e.persistence.daos.CustomerDao;
+import desapp.grupo.e.persistence.daos.UserDao;
 import desapp.grupo.e.persistence.exception.DataErrorException;
 import desapp.grupo.e.persistence.exception.UniqueClassException;
 
@@ -17,31 +17,31 @@ public class LoginServiceTest {
 
     @Test
     public void signUpCreateNewCustomer() throws UniqueClassException, DataErrorException {
-        CustomerDao customerDao = mock(CustomerDao.class);
-        LoginService loginService = new LoginService(customerDao);
+        UserDao userDao = mock(UserDao.class);
+        LoginService loginService = new LoginService(userDao);
         Long expectedId = 1L;
 
-        Customer customer = new CustomerBuilder().anyCustomer().build();
-        when(customerDao.existCustomerWithEmail(customer.getEmail())).thenReturn(false);
+        User user = new UserBuilder().anyUser().build();
+        when(userDao.existUserWithEmail(user.getEmail())).thenReturn(false);
 
         doAnswer(invocation -> {
-            ReflectionTestUtils.setField((Customer) invocation.getArgument(0), "id", expectedId);
+            ReflectionTestUtils.setField((User) invocation.getArgument(0), "id", expectedId);
             return null;
-        }).when(customerDao).save(customer);
+        }).when(userDao).save(user);
 
-        loginService.signUp(customer);
+        loginService.signUp(user);
 
-        Assertions.assertEquals(customer.getId(), expectedId);
+        Assertions.assertEquals(user.getId(), expectedId);
     }
 
     @Test
     public void signUpCreateNewCustomerWithEmailExistentThrowUniqueClassException() {
-        CustomerDao customerDao = mock(CustomerDao.class);
-        LoginService loginService = new LoginService(customerDao);
-        Customer customer = new CustomerBuilder().anyCustomer().build();
+        UserDao userDao = mock(UserDao.class);
+        LoginService loginService = new LoginService(userDao);
+        User user = new UserBuilder().anyUser().build();
 
-        when(customerDao.existCustomerWithEmail(customer.getEmail())).thenReturn(true);
+        when(userDao.existUserWithEmail(user.getEmail())).thenReturn(true);
 
-        Assertions.assertThrows(UniqueClassException.class, () -> loginService.signUp(customer));
+        Assertions.assertThrows(UniqueClassException.class, () -> loginService.signUp(user));
     }
 }

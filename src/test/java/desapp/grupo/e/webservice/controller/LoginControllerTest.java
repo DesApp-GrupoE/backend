@@ -1,9 +1,9 @@
 package desapp.grupo.e.webservice.controller;
 
+import desapp.grupo.e.model.user.User;
 import desapp.grupo.e.webservice.config.CustomizeErrorHandler;
 import desapp.grupo.e.model.dto.ApiError;
-import desapp.grupo.e.model.dto.user.CustomerDTO;
-import desapp.grupo.e.model.user.Customer;
+import desapp.grupo.e.model.dto.user.UserDTO;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +41,7 @@ public class LoginControllerTest {
 
     @Test
     public void whenPostRequestToSignUpAndTheyAreMissingFields_thenReturnBadRequesResponseWithFieldsMissing() throws Exception {
-        CustomerDTO customerRequestDTO = new CustomerDTO();
+        UserDTO customerRequestDTO = new UserDTO();
         customerRequestDTO.setName("Test");
         customerRequestDTO.setSurname("Test");
 
@@ -58,23 +58,23 @@ public class LoginControllerTest {
 
     @Test
     public void whenPostRequestToSignUpAndIsValidUser_thenReturnACustomerWithSameDataAndId() throws Exception {
-        CustomerDTO customerRequestDTO = new CustomerDTO();
-        customerRequestDTO.setName("Test");
-        customerRequestDTO.setSurname("Test");
-        customerRequestDTO.setEmail("test@test.test");
-        customerRequestDTO.setPassword("Secret");
+        UserDTO userDTO = new UserDTO();
+        userDTO.setName("Test");
+        userDTO.setSurname("Test");
+        userDTO.setEmail("test@test.test");
+        userDTO.setPassword("Secret");
 
-        Customer customer = new Customer();
-        customer.setId(1L);
-        customer.setName("Test");
-        customer.setSurname("Test");
-        customer.setEmail("test@test.test");
-        customer.setPassword("Secret");
+        User user = new User();
+        user.setId(1L);
+        user.setName("Test");
+        user.setSurname("Test");
+        user.setEmail("test@test.test");
+        user.setPassword("Secret");
 
-        when(loginService.signUp(any(Customer.class))).thenReturn(customer);
+        when(loginService.signUp(any(User.class))).thenReturn(user);
 
         MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/auth/sign-up")
-                .content(JsonUtils.toJson(customerRequestDTO))
+                .content(JsonUtils.toJson(userDTO))
                 .characterEncoding("utf-8")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -82,26 +82,26 @@ public class LoginControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse();
 
-        CustomerDTO newCustomer = (CustomerDTO) JsonUtils.fromJson(CustomerDTO.class, response.getContentAsString());
-        Assertions.assertEquals(newCustomer.getId(), 1L);
-        Assertions.assertEquals(newCustomer.getName(), customerRequestDTO.getName());
-        Assertions.assertEquals(newCustomer.getSurname(), customerRequestDTO.getSurname());
-        Assertions.assertEquals(newCustomer.getEmail(), customerRequestDTO.getEmail());
-        Assertions.assertNull(newCustomer.getPassword()); //Password not return
+        UserDTO newUser = (UserDTO) JsonUtils.fromJson(UserDTO.class, response.getContentAsString());
+        Assertions.assertEquals(newUser.getId(), 1L);
+        Assertions.assertEquals(newUser.getName(), userDTO.getName());
+        Assertions.assertEquals(newUser.getSurname(), userDTO.getSurname());
+        Assertions.assertEquals(newUser.getEmail(), userDTO.getEmail());
+        Assertions.assertNull(newUser.getPassword()); //Password not return
     }
 
     @Test
     public void whenPostRequestToSignUpAndIsEmailUserIsAlreadyInUse_thenReturnAResponseWithStatus409AndAnApiError() throws Exception {
-        CustomerDTO customerRequestDTO = new CustomerDTO();
-        customerRequestDTO.setName("Test");
-        customerRequestDTO.setSurname("Test");
-        customerRequestDTO.setEmail("test@test.test");
-        customerRequestDTO.setPassword("Secret");
+        UserDTO userRequestDTO = new UserDTO();
+        userRequestDTO.setName("Test");
+        userRequestDTO.setSurname("Test");
+        userRequestDTO.setEmail("test@test.test");
+        userRequestDTO.setPassword("Secret");
 
-        when(loginService.signUp(any(Customer.class))).thenThrow(new UniqueClassException("Email was already registered"));
+        when(loginService.signUp(any(User.class))).thenThrow(new UniqueClassException("Email was already registered"));
 
         MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/auth/sign-up")
-                .content(JsonUtils.toJson(customerRequestDTO))
+                .content(JsonUtils.toJson(userRequestDTO))
                 .characterEncoding("utf-8")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -115,16 +115,16 @@ public class LoginControllerTest {
 
     @Test
     public void whenPostRequestToSignWithCorrectRequestButOccursAnExceptionFromDatabase_thenReturnAResponseWithStatus500AndAnApiError() throws Exception {
-        CustomerDTO customerRequestDTO = new CustomerDTO();
-        customerRequestDTO.setName("Test");
-        customerRequestDTO.setSurname("Test");
-        customerRequestDTO.setEmail("test@test.test");
-        customerRequestDTO.setPassword("Secret");
+        UserDTO userRequestDTO = new UserDTO();
+        userRequestDTO.setName("Test");
+        userRequestDTO.setSurname("Test");
+        userRequestDTO.setEmail("test@test.test");
+        userRequestDTO.setPassword("Secret");
 
-        when(loginService.signUp(any(Customer.class))).thenThrow(new DataErrorException("Custom message: Error in database"));
+        when(loginService.signUp(any(User.class))).thenThrow(new DataErrorException("Custom message: Error in database"));
 
         MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/auth/sign-up")
-                .content(JsonUtils.toJson(customerRequestDTO))
+                .content(JsonUtils.toJson(userRequestDTO))
                 .characterEncoding("utf-8")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON))

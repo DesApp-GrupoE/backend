@@ -9,8 +9,8 @@ public class CategoryAlert {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator="alert_category_id_seq")
     private Long id;
-    @Column(name = "id_customer")
-    private Long idCustomer;
+    @Column(name = "id_user")
+    private Long idUser;
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Category category;
@@ -34,12 +34,12 @@ public class CategoryAlert {
         this.id = id;
     }
 
-    public Long getIdCustomer() {
-        return idCustomer;
+    public Long getIdUser() {
+        return idUser;
     }
 
-    public void setIdCustomer(Long idCustomer) {
-        this.idCustomer = idCustomer;
+    public void setIdUser(Long idCustomer) {
+        this.idUser = idCustomer;
     }
 
     public Category getCategory() {
