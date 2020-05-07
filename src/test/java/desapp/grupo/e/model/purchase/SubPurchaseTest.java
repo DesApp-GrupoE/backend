@@ -58,4 +58,16 @@ public class SubPurchaseTest {
 
         Assertions.assertTrue(subPurchase.getProducts().isEmpty());
     }
+
+    @Test
+    public void WhenGetTotalAmountThenShouldReturnTheSumOfAllProducts() throws BusinessException {
+        SubPurchase subPurchase = new SubPurchase();
+        Product product1 = ProductBuilder.aProduct().withIdCommerce(1L).withPrice(150.0).build();
+        Product product2 = ProductBuilder.aProduct().withIdCommerce(1L).withPrice(200.0).build();
+
+        subPurchase.addProduct(product1);
+        subPurchase.addProduct(product2);
+
+        Assertions.assertEquals(350.0, subPurchase.getTotalAmount());
+    }
 }

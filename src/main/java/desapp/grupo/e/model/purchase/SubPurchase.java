@@ -51,4 +51,8 @@ public class SubPurchase {
     public void removeProduct(Product product) {
         this.products.remove(product);
     }
+
+    public Double getTotalAmount() {
+        return this.products.stream().mapToDouble(Product::getPrice).sum();
+    }
 }

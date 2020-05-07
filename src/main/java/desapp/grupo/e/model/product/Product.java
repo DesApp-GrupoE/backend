@@ -17,7 +17,7 @@ public class Product {
     @Column(nullable = false)
     protected String brand;
     @Column(nullable = false)
-    protected Float price;
+    protected Double price;
     @Column(nullable = false)
     protected Integer stock;
     @Column(nullable = false)
@@ -29,7 +29,7 @@ public class Product {
         // Para el mapping de Hibernate
     }
 
-    public Product(String name, String brand, Float price, Integer stock, String img, Long idCommerce) {
+    public Product(String name, String brand, Double price, Integer stock, String img, Long idCommerce) {
         this.name = name;
         this.brand = brand;
         this.price = price;
@@ -70,11 +70,11 @@ public class Product {
         this.brand = brand;
     }
 
-    public float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

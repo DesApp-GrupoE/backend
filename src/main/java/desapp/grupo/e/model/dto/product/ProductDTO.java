@@ -15,7 +15,7 @@ public class ProductDTO {
     private String brand;
 
     @NotBlank(message = "Price is mandatory")
-    private float price;
+    private Double price;
 
     @NotBlank(message = "Email is mandatory")
     private String email;
@@ -64,11 +64,11 @@ public class ProductDTO {
         this.brand = brand;
     }
 
-    public float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

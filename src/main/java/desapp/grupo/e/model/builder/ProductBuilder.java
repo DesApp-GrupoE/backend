@@ -7,7 +7,7 @@ public class ProductBuilder {
     private Long idCommerce;
     private String name;
     private String brand;
-    private Float price;
+    private Double price;
     private Integer stock;
     private String img;
 
@@ -30,7 +30,7 @@ public class ProductBuilder {
         return this;
     }
 
-    public ProductBuilder withPrice(Float price) {
+    public ProductBuilder withPrice(Double price) {
         this.price = price;
         return this;
     }
@@ -49,7 +49,7 @@ public class ProductBuilder {
         this.idCommerce = 1L;
         this.name = "test";
         this.brand = "Test";
-        this.price = 10.0f;
+        this.price = 10.0;
         this.stock = 10;
         this.img = "urlImage.jpg";
         return this;
