@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "user")
 public class User {
 
     @Id
@@ -24,6 +25,8 @@ public class User {
     @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user", referencedColumnName = "id")
     private List<CategoryAlert> categoryAlerts;
+    @Transient
+    private Commerce commerce;
 
     public User() {
         // Para el mapping de hibernate
@@ -101,5 +104,13 @@ public class User {
 
     public void removeCategoryAlert(CategoryAlert categoryAlert) {
         this.categoryAlerts.remove(categoryAlert);
+    }
+
+    public Commerce getCommerce() {
+        return commerce;
+    }
+
+    public void setCommerce(Commerce commerce) {
+        this.commerce = commerce;
     }
 }

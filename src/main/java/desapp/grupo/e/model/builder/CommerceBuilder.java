@@ -1,19 +1,19 @@
 package desapp.grupo.e.model.builder;
 
-import desapp.grupo.e.model.user.Merchant;
+import desapp.grupo.e.model.user.Commerce;
 
-public class MerchantBuilder {
+public class CommerceBuilder {
 
     private String name;
     private String surname;
     private String password;
     private String email;
 
-    public static MerchantBuilder aMerchant() {
-        return new MerchantBuilder();
+    public static CommerceBuilder aCommerce() {
+        return new CommerceBuilder();
     }
 
-    public MerchantBuilder anyMerchant() {
+    public CommerceBuilder anyCommerce() {
         this.name = "Test";
         this.surname = "Test";
         this.email = "test@test.test";
@@ -21,10 +21,10 @@ public class MerchantBuilder {
         return this;
     }
 
-    public Merchant build() {
-        Merchant merchant = new Merchant(this.name, this.surname, this.email, this.password);
+    public Commerce build() {
+        Commerce commerce = new Commerce(this.name, this.surname, this.email, this.password);
         resetBuilder();
-        return merchant;
+        return commerce;
     }
 
     private void resetBuilder() {

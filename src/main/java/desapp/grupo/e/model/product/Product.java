@@ -1,7 +1,7 @@
 package desapp.grupo.e.model.product;
 
 import desapp.grupo.e.model.dto.product.ProductDTO;
-import desapp.grupo.e.model.user.Merchant;
+import desapp.grupo.e.model.user.Commerce;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,17 +31,17 @@ public class Product {
     @Column(nullable = false)
     protected String img;
     @Enumerated(EnumType.STRING)
-    protected Merchant merchant;
+    protected Commerce commerce;
 
 
 
-    public Product(String name, String brand, float price, int stock, String img, Merchant merchant) {
+    public Product(String name, String brand, float price, int stock, String img, Commerce commerce) {
         this.name = name;
         this.brand = brand;
         this.price = price;
         this.stock = stock;
         this.img = img;
-        this.merchant = merchant;
+        this.commerce = commerce;
     }
  
     public Product(ProductDTO productDTO) {
@@ -100,12 +100,12 @@ public class Product {
         this.img = img;
     }
 
-    public Merchant gMerchant() {
-        return merchant;
+    public Commerce gMerchant() {
+        return commerce;
     }
 
-    public void setMerchant(Merchant merchant) {
-        this.merchant = merchant;
+    public void setCommerce(Commerce commerce) {
+        this.commerce = commerce;
     }
 
 
