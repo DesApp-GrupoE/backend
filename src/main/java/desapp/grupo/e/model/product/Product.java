@@ -1,16 +1,8 @@
 package desapp.grupo.e.model.product;
 
 import desapp.grupo.e.model.dto.product.ProductDTO;
-import desapp.grupo.e.model.user.Commerce;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "product")
@@ -25,23 +17,25 @@ public class Product {
     @Column(nullable = false)
     protected String brand;
     @Column(nullable = false)
-    protected float price;
+    protected Float price;
     @Column(nullable = false)
-    protected int stock;
+    protected Integer stock;
     @Column(nullable = false)
     protected String img;
-    @Enumerated(EnumType.STRING)
-    protected Commerce commerce;
+    @Transient
+    private Long idCommerce;
 
+    public Product() {
+        // Para el mapping de Hibernate
+    }
 
-
-    public Product(String name, String brand, float price, int stock, String img, Commerce commerce) {
+    public Product(String name, String brand, Float price, Integer stock, String img, Long idCommerce) {
         this.name = name;
         this.brand = brand;
         this.price = price;
         this.stock = stock;
         this.img = img;
-        this.commerce = commerce;
+        this.idCommerce = idCommerce;
     }
  
     public Product(ProductDTO productDTO) {
@@ -100,15 +94,12 @@ public class Product {
         this.img = img;
     }
 
-    public Commerce gMerchant() {
-        return commerce;
+
+    public void setIdCommerce(Long idCommerce) {
+        this.idCommerce = idCommerce;
     }
 
-    public void setCommerce(Commerce commerce) {
-        this.commerce = commerce;
+    public Long getIdCommerce() {
+        return idCommerce;
     }
-
-
-
-
 }
