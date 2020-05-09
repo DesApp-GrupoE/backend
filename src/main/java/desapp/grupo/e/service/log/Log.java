@@ -3,6 +3,7 @@ package desapp.grupo.e.service.log;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -51,6 +52,7 @@ public class Log {
     }
 
     private static void initLog() {
+        initFileAppender();
         if(logger == null) {
             logger = Logger.getLogger(getClassName());
         }
@@ -68,4 +70,20 @@ public class Log {
         return Log.class.getName();
     }
 
+
+    private static void initFileAppender() {
+        try {
+            File homeLoggingDir = new File(System.getProperty("user.home")+"/log/desapp/");
+            if (!homeLoggingDir.exists() ) {
+                boolean isCreated = homeLoggingDir.mkdirs();
+                if(isCreated) {
+                    logger.debug("Creating missing logging directory: " + homeLoggingDir);
+                } else {
+                    logger.debug("Can't create a logging directory");
+                }
+            }
+        } catch(Exception e) {
+            Log.exception(e);
+        }
+    }
 }
