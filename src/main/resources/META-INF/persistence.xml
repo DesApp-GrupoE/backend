@@ -15,12 +15,12 @@
             <property name="hibernate.format_sql" value="false"/>
             <property name="hibernate.use_sql_comments" value="false"/>
 
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
             <property name="hibernate.hbm2ddl.auto" value="update"/>
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/comprando_en_casa?createDatabaseIfNotExist=true"/>
-            <property name="javax.persistence.jdbc.user" value="desapp"/>
-            <property name="javax.persistence.jdbc.password" value="desapp"/>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://ec2-18-235-20-228.compute-1.amazonaws.com:5432/comprando_en_casa?createDatabaseIfNotExist=true"/>
+            <property name="javax.persistence.jdbc.user" value="oqfixnmqvpvwlb"/>
+            <property name="javax.persistence.jdbc.password" value="08769d80278cbc08d31b2deebbddfc40909842c46754e0a1627eb4ad6defa497"/>
             <property name="hibernate.connection.pool_size" value="5"/>
 
         </properties>
