@@ -54,8 +54,7 @@ public class Purchase {
 
     public void addProduct(Product product) {
         SubPurchase subPurchaseObtained = getSubPurchaseByIdCommerce(product)
-                .orElseGet(this::createAndReturnNewSubPurchase);
-
+                .orElseGet(() -> this.createAndReturnNewSubPurchase(product.getIdCommerce()));
         try {
             subPurchaseObtained.addProduct(product);
         } catch (BusinessException e) {
@@ -65,8 +64,8 @@ public class Purchase {
         }
     }
 
-    private SubPurchase createAndReturnNewSubPurchase() {
-        SubPurchase subPurchase = new SubPurchase();
+    private SubPurchase createAndReturnNewSubPurchase(Long idCommerce) {
+        SubPurchase subPurchase = new SubPurchase(idCommerce);
         this.subPurchases.add(subPurchase);
         return subPurchase;
     }

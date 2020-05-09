@@ -12,8 +12,9 @@ public class SubPurchase {
     private Long idCommerce;
     private List<Product> products;
 
-    public SubPurchase() {
+    public SubPurchase(long idCommerce) {
         this.products = new ArrayList<>();
+        this.idCommerce = idCommerce;
     }
 
     public Long getId() {
@@ -41,7 +42,7 @@ public class SubPurchase {
     }
 
     public void addProduct(Product product) throws BusinessException {
-        if(this.idCommerce != null && !this.idCommerce.equals(product.getIdCommerce())) {
+        if(!this.idCommerce.equals(product.getIdCommerce())) {
             throw new BusinessException("Can't add a product of a different commerce in a subpurchase with a commerce already asociated");
         }
         this.idCommerce = product.getIdCommerce();

@@ -4,22 +4,34 @@ import desapp.grupo.e.model.builder.ProductBuilder;
 import desapp.grupo.e.model.exception.BusinessException;
 import desapp.grupo.e.model.product.Product;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 public class SubPurchaseTest {
 
+    private SubPurchase subPurchase;
+    private Long idCommerce1;
+
+    @BeforeEach
+    public void setUp() {
+        this.idCommerce1 = 1L;
+        this.subPurchase = new SubPurchase(this.idCommerce1);
+    }
+
+    @Test
+    public void whenCreateANewSubPurchaseAndGetItsIdCommerceThenReturnTheSameIdCommerceThatWasUsedInCreation() {
+        Assertions.assertEquals(idCommerce1, subPurchase.getIdCommerce());
+    }
+
     @Test
     public void whenCreateANewSubPurchaseAndGetAllProductsShouldReturnAEmptyList() {
-        SubPurchase subPurchase = new SubPurchase();
-
         Assertions.assertTrue(subPurchase.getProducts().isEmpty());
     }
 
     @Test
     public void whenAddAProductToSubPurchaseAndGetAllProductsShouldReturnAListWithTheSameProductAdded() throws BusinessException {
-        SubPurchase subPurchase = new SubPurchase();
         Product product = ProductBuilder.aProduct().anyProduct().build();
 
         subPurchase.addProduct(product);
@@ -29,28 +41,14 @@ public class SubPurchaseTest {
     }
 
     @Test
-    public void whenAddAProductToSubPurchaseWithSpecificCommerceThenTheSubPurchaseShouldBeLinkedToThisCustomer() throws BusinessException {
-        SubPurchase subPurchase = new SubPurchase();
-        Product product = ProductBuilder.aProduct().withIdCommerce(1L).build();
-
-        subPurchase.addProduct(product);
-
-        Assertions.assertEquals(1L, subPurchase.getIdCommerce());
-    }
-
-    @Test
-    public void whenAddAProductWithSpecificCommerceAndAfterAddAnotherProductWithDifferentCommerceShouldThrowAnBusinessException() throws BusinessException {
-        SubPurchase subPurchase = new SubPurchase();
-        Product productCommerce1 = ProductBuilder.aProduct().withIdCommerce(1L).build();
+    public void whenAddAProductWithDifferentCommerceShouldThrowAnBusinessException() {
         Product productCommerce2 = ProductBuilder.aProduct().withIdCommerce(2L).build();
 
-        subPurchase.addProduct(productCommerce1);
         Assertions.assertThrows(BusinessException.class, () ->  subPurchase.addProduct(productCommerce2), "Can't add a product of a different commerce in a subpurchase with a commerce already asociated");
     }
 
     @Test
     public void whenAddAProductInANewSubPurchaseAndAfterRemoveThisFromSubPurchaseThenIfGetAllProductsShouldReturnAEmptyList() throws BusinessException {
-        SubPurchase subPurchase = new SubPurchase();
         Product product = ProductBuilder.aProduct().anyProduct().build();
 
         subPurchase.addProduct(product);
@@ -61,9 +59,8 @@ public class SubPurchaseTest {
 
     @Test
     public void WhenGetTotalAmountThenShouldReturnTheSumOfAllProducts() throws BusinessException {
-        SubPurchase subPurchase = new SubPurchase();
-        Product product1 = ProductBuilder.aProduct().withIdCommerce(1L).withPrice(150.0).build();
-        Product product2 = ProductBuilder.aProduct().withIdCommerce(1L).withPrice(200.0).build();
+        Product product1 = ProductBuilder.aProduct().withIdCommerce(idCommerce1).withPrice(150.0).build();
+        Product product2 = ProductBuilder.aProduct().withIdCommerce(idCommerce1).withPrice(200.0).build();
 
         subPurchase.addProduct(product1);
         subPurchase.addProduct(product2);
