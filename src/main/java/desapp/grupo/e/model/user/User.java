@@ -1,9 +1,13 @@
 package desapp.grupo.e.model.user;
 
 import desapp.grupo.e.model.dto.user.UserDTO;
+import desapp.grupo.e.model.exception.BusinessException;
 import desapp.grupo.e.model.product.CategoryAlert;
+import desapp.grupo.e.model.product.Product;
+import desapp.grupo.e.model.purchase.Purchase;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,10 +31,15 @@ public class User {
     private List<CategoryAlert> categoryAlerts;
     @Transient
     private Commerce commerce;
+    @Transient
+    private Purchase currentPurchase;
+    @Transient
+    private List<Purchase> purchases;
 
     public User() {
         // Para el mapping de hibernate
         this.categoryAlerts = new ArrayList<>();
+        this.purchases = new ArrayList<>();
     }
 
     public User(String name, String surname, String email, String password) {
@@ -39,6 +48,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.categoryAlerts = new ArrayList<>();
+        this.purchases = new ArrayList<>();
     }
 
     public User(UserDTO userDTO) {
@@ -112,5 +122,48 @@ public class User {
 
     public void setCommerce(Commerce commerce) {
         this.commerce = commerce;
+    }
+
+    public List<Purchase> getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(List<Purchase> purchases) {
+        this.purchases = purchases;
+    }
+
+    public Purchase getCurrentPurchase() {
+        return currentPurchase;
+    }
+
+    public void setCurrentPurchase(Purchase currentPurchase) {
+        this.currentPurchase = currentPurchase;
+    }
+
+    public void addProduct(Product product) {
+        this.initCurrentPurchase();
+        this.currentPurchase.addProduct(product);
+    }
+
+    public void removeProduct(Product product) {
+        this.initCurrentPurchase();
+        this.currentPurchase.removeProduct(product);
+    }
+
+    private void initCurrentPurchase() {
+        if(this.currentPurchase == null) {
+            this.currentPurchase = new Purchase();
+            this.currentPurchase.setIdUser(this.id);
+        }
+    }
+
+    public void finalizePurchase(LocalDateTime purchaseDate) throws BusinessException {
+        this.initCurrentPurchase();
+        if(this.currentPurchase.getSubPurchases().isEmpty()) {
+            throw new BusinessException("A user can't finalize a purchase without products");
+        }
+        this.currentPurchase.setDatePurchase(purchaseDate);
+        this.purchases.add(this.currentPurchase);
+        this.currentPurchase = null;
     }
 }
