@@ -13,13 +13,12 @@ modo de entrega.
   
 * Maven
 * Java 11
-* Path `/var/log/desapp` con permisos de usuario para que se pueda loguear la aplicación
 * Mysql   
   
  
 <h4>Creación de usuario en MySql</h4>  
   
-Para poder persistir los datos de la aplicación deberemos crear el siguiente usuario y darle permisos.    
+Para poder persistir los datos de la aplicación deberemos crear el siguiente usuario y darle permisos, dentro de la base de mysql.    
 ```sql
 CREATE USER 'desapp'@'localhost' IDENTIFIED BY 'desapp';
 GRANT ALL PRIVILEGES ON * . * TO 'desapp'@'localhost';
@@ -39,7 +38,8 @@ Para levantar la aplicación se debe ingresar en consola
 ```bash  
 mvn spring-boot:run
 ```  
-Esto levantará la aplicación en el puerto `8080`.
+Esto levantará la aplicación en el puerto `8080`.  
+Y guardará los logs en `{user.home}/log/desapp`
     
 ---  
   
