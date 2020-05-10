@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user_db")
 public class User {
 
     @Id
@@ -27,7 +27,7 @@ public class User {
     @Column(nullable = false)
     protected String password;
     @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_user", referencedColumnName = "id")
+    @JoinColumn(name = "id_user_db", referencedColumnName = "id")
     private List<CategoryAlert> categoryAlerts;
     @Transient
     private Commerce commerce;
