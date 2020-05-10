@@ -1,16 +1,61 @@
 package desapp.grupo.e.model.user;
 
 import desapp.grupo.e.model.builder.CommerceBuilder;
+import desapp.grupo.e.model.builder.purchase.PurchaseTurnBuilder;
+import desapp.grupo.e.model.exception.BusinessException;
+import desapp.grupo.e.model.purchase.PurchaseTurn;
+import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
 
 public class CommerceTest {
 
-    @Test
-    public void createMerchantShouldHasRoleMERCHANT_ByDefult() {
-        Commerce commerce = CommerceBuilder.aCommerce()
-                                .anyCommerce()
-                                .build();
+    private Commerce commerce;
 
-//        Assertions.assertEquals(Role.MERCHANT.name(), commerce.getRole().name());
+    @BeforeEach
+    public void setUp() {
+        commerce = CommerceBuilder.aCommerce()
+                .anyCommerce()
+                .withId(1L)
+                .build();
+    }
+
+    @Test
+    public void aNewCommerceHasNotTurnsCharged() {
+        Assertions.assertTrue(commerce.getPurchaseTurns().isEmpty());
+    }
+
+    @Test
+    public void addAPurchaseTurnThenTheListIsNotEmpty() {
+        PurchaseTurn purchaseTurn = PurchaseTurnBuilder.aPurchaseTurn().anyPurchaseTurn().build();
+
+        commerce.addPurchaseTurn(purchaseTurn);
+
+        Assertions.assertFalse(commerce.getPurchaseTurns().isEmpty());
+    }
+
+    @Test
+    public void aCommerceCanNotAddMoreThanOnePurchaseTurnInSameDayAndHour() {
+        LocalDateTime dateTurn = LocalDateTime.of(2020, 3, 1, 15, 0);
+        PurchaseTurn purchaseTurn1 = PurchaseTurnBuilder.aPurchaseTurn().withDateTurn(dateTurn).build();
+        PurchaseTurn purchaseTurn2 = PurchaseTurnBuilder.aPurchaseTurn().withDateTurn(dateTurn).build();
+        commerce.addPurchaseTurn(purchaseTurn1);
+
+        commerce.addPurchaseTurn(purchaseTurn2);
+
+        Assertions.assertEquals(1, commerce.getPurchaseTurns().size());
+    }
+
+    @Test
+    public void aCommerceCanDeleteAPurchaseTurn() {
+        PurchaseTurn purchaseTurn = PurchaseTurnBuilder.aPurchaseTurn().anyPurchaseTurn().build();
+        commerce.addPurchaseTurn(purchaseTurn);
+
+        commerce.removePurchaseTurn(purchaseTurn);
+
+        Assertions.assertTrue(commerce.getPurchaseTurns().isEmpty());
     }
 }
