@@ -11,9 +11,9 @@ public class ProductTest {
     }
 
     @Test
-    public void createMerchantShouldHasRoleMERCHANT_ByDefult() {
+    public void createProducttShouldHasNameChocolate() {
         Product product = ProductBuilder.aProduct().anyProduct().build();
-        String productNameExpected = "test";
+        String productNameExpected = "chocolate";
 
      Assertions.assertEquals(product.getName(), productNameExpected);
     }
