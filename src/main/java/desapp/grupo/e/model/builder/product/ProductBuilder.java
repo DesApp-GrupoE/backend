@@ -34,13 +34,18 @@ public class ProductBuilder {
         return this;
     }
 
+    public ProductBuilder withIdCommerce(Long id) {
+        this.idCommerce = id;
+        return this;
+    }
+
     public ProductBuilder anyProduct() {
-            this.name = "chocolate";
-            this.brand = "Milka";
+            this.name = "test";
+            this.brand = "test";
             this.price = 10.0;
             this.stock = 50;
-            this.img = "test";
-            this.idCommerce = null;
+            this.img = "urlImage.jpg";
+            this.idCommerce = 1L;
 
         return this;
     }

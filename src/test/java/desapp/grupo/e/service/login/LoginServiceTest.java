@@ -1,6 +1,6 @@
 package desapp.grupo.e.service.login;
 
-import desapp.grupo.e.model.builder.UserBuilder;
+import desapp.grupo.e.model.builder.user.UserBuilder;
 import desapp.grupo.e.model.user.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

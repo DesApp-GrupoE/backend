@@ -1,4 +1,4 @@
-package desapp.grupo.e.model.builder;
+package desapp.grupo.e.model.builder.commerce;
 
 import desapp.grupo.e.model.user.Commerce;
 

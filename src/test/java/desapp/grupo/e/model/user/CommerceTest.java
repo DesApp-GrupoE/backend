@@ -1,10 +1,8 @@
 package desapp.grupo.e.model.user;
 
-import desapp.grupo.e.model.builder.CommerceBuilder;
+import desapp.grupo.e.model.builder.commerce.CommerceBuilder;
 import desapp.grupo.e.model.builder.purchase.PurchaseTurnBuilder;
-import desapp.grupo.e.model.exception.BusinessException;
 import desapp.grupo.e.model.purchase.PurchaseTurn;
-import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -3,7 +3,6 @@ package desapp.grupo.e.service.log;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
-import java.io.File;
 import java.io.InputStream;
 import java.util.Properties;
 

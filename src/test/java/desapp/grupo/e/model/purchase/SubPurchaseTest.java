@@ -1,6 +1,6 @@
 package desapp.grupo.e.model.purchase;
 
-import desapp.grupo.e.model.builder.ProductBuilder;
+import desapp.grupo.e.model.builder.product.ProductBuilder;
 import desapp.grupo.e.model.exception.BusinessException;
 import desapp.grupo.e.model.product.Product;
 import org.junit.jupiter.api.Assertions;

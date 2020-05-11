@@ -1,6 +1,6 @@
 package desapp.grupo.e.persistence.daos;
 
-import desapp.grupo.e.model.builder.UserBuilder;
+import desapp.grupo.e.model.builder.user.UserBuilder;
 import desapp.grupo.e.model.product.CategoryAlert;
 import desapp.grupo.e.model.product.Category;
 import desapp.grupo.e.model.user.User;

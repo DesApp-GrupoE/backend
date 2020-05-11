@@ -1,7 +1,7 @@
 package desapp.grupo.e.model.user;
 
-import desapp.grupo.e.model.builder.ProductBuilder;
-import desapp.grupo.e.model.builder.UserBuilder;
+import desapp.grupo.e.model.builder.product.ProductBuilder;
+import desapp.grupo.e.model.builder.user.UserBuilder;
 import desapp.grupo.e.model.builder.product.CategoryAlertBuilder;
 import desapp.grupo.e.model.exception.BusinessException;
 import desapp.grupo.e.model.product.CategoryAlert;
