@@ -13,17 +13,8 @@ modo de entrega.
   
 * Maven
 * Java 11
-* Mysql   
+* PostgreSQL   
   
- 
-<h4>Creación de usuario en MySql</h4>  
-  
-Para poder persistir los datos de la aplicación deberemos crear el siguiente usuario y darle permisos, dentro de la base de mysql.    
-```sql
-CREATE USER 'desapp'@'localhost' IDENTIFIED BY 'desapp';
-GRANT ALL PRIVILEGES ON * . * TO 'desapp'@'localhost';
-FLUSH PRIVILEGES;
-```   
   
 <h3>Instalación</h3>  
   
@@ -45,7 +36,7 @@ Y guardará los logs en `{user.home}/log/desapp`
   
 <h3>Ejemplos en Postman</h3>  
   
-* Creación de Customer
+* Creación de Usuario
 ```bash
 POST /api/auth/sign-up HTTP/1.1
 Host: localhost:8080
@@ -62,6 +53,13 @@ La aplicación esta preparada para que devuelva un error personalizado en caso d
 que falten campos obligatorios en el modelo  
   
 ---  
+   
+<h3>Consumir Api desde Heroku</h3>  
+  
+Siguiendo el ejemplo anterior de la creación de usuario, lo único que debemos hacer es cambiar el la url de la app.  
+Entonces cambiamos `localhost:8080` por `https://secret-plains-01193.herokuapp.com/`   
+   
+---     
 
 * [Trello](https://trello.com/b/P3cJGcJx/comprando-en-casa) 
 * [Travis CI](https://travis-ci.com/github/DesApp-GrupoE/backend)
