@@ -1,5 +1,7 @@
 package desapp.grupo.e.webservice.beans;
 
+import desapp.grupo.e.persistence.user.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import desapp.grupo.e.service.login.LoginService;
@@ -11,6 +13,9 @@ import javax.persistence.Persistence;
 
 @Configuration
 public class ConfigBean {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Bean
     public EntityManagerFactory entityManagerFactory() {
@@ -30,6 +35,6 @@ public class ConfigBean {
     @Bean
     // Este método inyecta en el código un nuevo LoginService utilizando el nombre del método
     public LoginService loginService() {
-        return new LoginService(customerDao());
+        return new LoginService(userRepository);
     }
 }

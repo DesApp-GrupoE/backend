@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import desapp.grupo.e.service.jackson.JsonUtils;
 import desapp.grupo.e.service.login.LoginService;
-import desapp.grupo.e.persistence.exception.DataErrorException;
 import desapp.grupo.e.persistence.exception.UniqueClassException;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -111,29 +110,6 @@ public class LoginControllerTest {
 
         ApiError apiError = (ApiError) JsonUtils.fromJson(ApiError.class, response.getContentAsString());
         Assertions.assertEquals(apiError.getError(), "Email was already registered");
-    }
-
-    @Test
-    public void whenPostRequestToSignWithCorrectRequestButOccursAnExceptionFromDatabase_thenReturnAResponseWithStatus500AndAnApiError() throws Exception {
-        UserDTO userRequestDTO = new UserDTO();
-        userRequestDTO.setName("Test");
-        userRequestDTO.setSurname("Test");
-        userRequestDTO.setEmail("test@test.test");
-        userRequestDTO.setPassword("Secret");
-
-        when(loginService.signUp(any(User.class))).thenThrow(new DataErrorException("Custom message: Error in database"));
-
-        MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/auth/sign-up")
-                .content(JsonUtils.toJson(userRequestDTO))
-                .characterEncoding("utf-8")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isInternalServerError())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse();
-
-        ApiError apiError = (ApiError) JsonUtils.fromJson(ApiError.class, response.getContentAsString());
-        Assertions.assertEquals(apiError.getError(), "Unexpected error. Please, try again.");
     }
 
     @Test

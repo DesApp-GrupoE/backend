@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import desapp.grupo.e.service.login.LoginService;
-import desapp.grupo.e.persistence.exception.DataErrorException;
 import desapp.grupo.e.persistence.exception.UniqueClassException;
 
 import javax.validation.Valid;
@@ -30,9 +29,6 @@ public class LoginController {
         User newUser;
         try {
             newUser = this.loginService.signUp(new User(userDTO));
-        } catch (DataErrorException e) {
-            ApiError apiError = new ApiError("Unexpected error. Please, try again.");
-            return new ResponseEntity<>(apiError, HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (UniqueClassException e) {
             ApiError apiError = new ApiError(e.getMessage());
             return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
