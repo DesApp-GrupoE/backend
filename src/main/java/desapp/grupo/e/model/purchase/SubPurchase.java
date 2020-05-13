@@ -1,6 +1,7 @@
 package desapp.grupo.e.model.purchase;
 
 import desapp.grupo.e.model.exception.BusinessException;
+import desapp.grupo.e.model.product.Offer;
 import desapp.grupo.e.model.product.Product;
 
 import java.util.ArrayList;
@@ -11,9 +12,15 @@ public class SubPurchase {
     private Long id;
     private Long idCommerce;
     private List<Product> products;
+    private List<Offer> offers;
+
+    public SubPurchase() {
+        // Dejo constructor vacio para mapping de hibernate
+    }
 
     public SubPurchase(long idCommerce) {
         this.products = new ArrayList<>();
+        this.offers = new ArrayList<>();
         this.idCommerce = idCommerce;
     }
 
@@ -54,6 +61,24 @@ public class SubPurchase {
     }
 
     public Double getTotalAmount() {
-        return this.products.stream().mapToDouble(Product::getPrice).sum();
+        double totalAmount = this.products.stream().mapToDouble(Product::getPrice).sum();
+        double totalAmountWithDiscountApplied = this.offers.stream().mapToDouble(Offer::getTotalAmountWithDiscountApplied).sum();
+        return totalAmount + totalAmountWithDiscountApplied;
+    }
+
+    public List<Offer> getOffers() {
+        return offers;
+    }
+
+    public void setOffers(List<Offer> offers) {
+        this.offers = offers;
+    }
+
+    public void addOffer(Offer offer) {
+        this.offers.add(offer);
+    }
+
+    public void removeOffer(Offer offer) {
+        this.offers.remove(offer);
     }
 }

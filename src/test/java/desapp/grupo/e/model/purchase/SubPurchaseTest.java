@@ -1,7 +1,9 @@
 package desapp.grupo.e.model.purchase;
 
+import desapp.grupo.e.model.builder.product.OfferBuilder;
 import desapp.grupo.e.model.builder.product.ProductBuilder;
 import desapp.grupo.e.model.exception.BusinessException;
+import desapp.grupo.e.model.product.Offer;
 import desapp.grupo.e.model.product.Product;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,5 +68,41 @@ public class SubPurchaseTest {
         subPurchase.addProduct(product2);
 
         Assertions.assertEquals(350.0, subPurchase.getTotalAmount());
+    }
+
+    @Test
+    public void aNewSubPurchaseHasNotOffersAdded() {
+        Assertions.assertTrue(subPurchase.getOffers().isEmpty());
+    }
+
+    @Test
+    public void addAnOfferAndGetOffersShouldReturnAListWith1Element() {
+        Offer offer = OfferBuilder.aOffer().anyOffer().build();
+
+        subPurchase.addOffer(offer);
+
+        Assertions.assertEquals(1, subPurchase.getOffers().size());
+    }
+
+    @Test
+    public void ifWeHaveASubpurchaseWithOneOfferAndWeRemoveThatOfferThenWhenGetAllOfferShouldReturnAnEmptyList() {
+        Offer offer = OfferBuilder.aOffer().anyOffer().build();
+        subPurchase.addOffer(offer);
+
+        subPurchase.removeOffer(offer);
+
+        Assertions.assertTrue(subPurchase.getOffers().isEmpty());
+    }
+
+    @Test
+    public void whenSubPurchaseHasAOfferAndWeGetTotalAmountShouldReturnTheSumOfAllProductsWithDiscountApplied() {
+        Double amountExpected = 350.0 - (350.0 * 0.2);
+        Product product1 = ProductBuilder.aProduct().withIdCommerce(idCommerce1).withPrice(150.0).build();
+        Product product2 = ProductBuilder.aProduct().withIdCommerce(idCommerce1).withPrice(200.0).build();
+        Offer offer = OfferBuilder.aOffer().withOff(20.0).withProduct(product1).withProduct(product2).build();
+
+        subPurchase.addOffer(offer);
+
+        Assertions.assertEquals(amountExpected, subPurchase.getTotalAmount());
     }
 }
