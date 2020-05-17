@@ -1,6 +1,7 @@
 package desapp.grupo.e.model.purchase;
 
 import desapp.grupo.e.model.exception.BusinessException;
+import desapp.grupo.e.model.product.Offer;
 import desapp.grupo.e.model.product.Product;
 import desapp.grupo.e.service.log.Log;
 
@@ -53,7 +54,7 @@ public class Purchase {
     }
 
     public void addProduct(Product product) {
-        SubPurchase subPurchaseObtained = getSubPurchaseByIdCommerce(product)
+        SubPurchase subPurchaseObtained = getSubPurchaseByIdCommerce(product.getIdCommerce())
                 .orElseGet(() -> this.createAndReturnNewSubPurchase(product.getIdCommerce()));
         try {
             subPurchaseObtained.addProduct(product);
@@ -71,19 +72,17 @@ public class Purchase {
     }
 
     public void removeProduct(Product product) {
-        Optional<SubPurchase> optSubPurchase = getSubPurchaseByIdCommerce(product);
+        Optional<SubPurchase> optSubPurchase = getSubPurchaseByIdCommerce(product.getIdCommerce());
         if(optSubPurchase.isPresent()) {
             SubPurchase subPurchase = optSubPurchase.get();
             subPurchase.removeProduct(product);
-            if(subPurchase.getProducts().isEmpty()) {
-                this.subPurchases.remove(subPurchase);
-            }
+            removeSubPurchase(subPurchase);
         }
     }
 
-    private Optional<SubPurchase> getSubPurchaseByIdCommerce(Product product) {
+    private Optional<SubPurchase> getSubPurchaseByIdCommerce(Long idCommerce) {
         return this.subPurchases.stream()
-                .filter(subPurchase -> subPurchase.getIdCommerce().equals(product.getIdCommerce()))
+                .filter(subPurchase -> subPurchase.getIdCommerce().equals(idCommerce))
                 .findFirst();
     }
 
@@ -91,5 +90,27 @@ public class Purchase {
         return this.subPurchases.stream()
                 .mapToDouble(SubPurchase::getTotalAmount)
                 .sum();
+    }
+
+    public void addOffer(Offer offer) {
+        SubPurchase subPurchaseObtained = getSubPurchaseByIdCommerce(offer.getIdCommerce())
+                .orElseGet(() -> this.createAndReturnNewSubPurchase(offer.getIdCommerce()));
+
+        subPurchaseObtained.addOffer(offer);
+    }
+
+    public void removeOffer(Offer offer) {
+        Optional<SubPurchase> optSubPurchase = getSubPurchaseByIdCommerce(offer.getIdCommerce());
+        if(optSubPurchase.isPresent()) {
+            SubPurchase subPurchase = optSubPurchase.get();
+            subPurchase.removeOffer(offer);
+            removeSubPurchase(subPurchase);
+        }
+    }
+
+    private void removeSubPurchase(SubPurchase subPurchase) {
+        if(subPurchase.getProducts().isEmpty() && subPurchase.getOffers().isEmpty()) {
+            this.subPurchases.remove(subPurchase);
+        }
     }
 }

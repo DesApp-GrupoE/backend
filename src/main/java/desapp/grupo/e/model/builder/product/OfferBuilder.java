@@ -10,6 +10,7 @@ import java.util.List;
 public class OfferBuilder {
 
     private Long id;
+    private Long idCommerce;
     private String name;
     private Double off;
     private LocalDateTime dateFrom;
@@ -40,7 +41,7 @@ public class OfferBuilder {
     }
 
     public Offer build() {
-        Offer offer = new Offer(this.name, this.off, this.dateFrom, this.dateTo);
+        Offer offer = new Offer(this.idCommerce, this.name, this.off, this.dateFrom, this.dateTo);
         offer.setProducts(products);
         resetBuilder();
         return offer;
@@ -48,6 +49,7 @@ public class OfferBuilder {
 
     private void resetBuilder() {
         this.id = null;
+        this.idCommerce = null;
         this.name = null;
         this.off = null;
         this.dateFrom = null;
@@ -58,6 +60,7 @@ public class OfferBuilder {
 
     public OfferBuilder anyOffer() {
         this.id = 1L;
+        this.idCommerce = 1L;
         this.name = "Super Offer";
         this.off = 10.0;
         this.dateFrom = LocalDateTime.now();
@@ -65,4 +68,10 @@ public class OfferBuilder {
         this.products = new ArrayList<>();
         return this;
     }
+
+    public OfferBuilder withIdCommerce(Long idCommerce) {
+        this.idCommerce = idCommerce;
+        return this;
+    }
+
 }

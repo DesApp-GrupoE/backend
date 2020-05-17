@@ -14,6 +14,8 @@ public class Offer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected Long id;
 
+    private Long idCommerce;
+
     @Column(nullable = false)
     protected String name;
 
@@ -34,12 +36,21 @@ public class Offer {
         this.products = new ArrayList<>();
     }
 
-    public Offer(String name, Double off, LocalDateTime dateFrom, LocalDateTime dateTo) {
+    public Offer(Long idCommerce, String name, Double off, LocalDateTime dateFrom, LocalDateTime dateTo) {
+        this.idCommerce = idCommerce;
         this.name = name;
         this.off = off;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.products = new ArrayList<>();
+    }
+
+    public Long getIdCommerce() {
+        return this.idCommerce;
+    }
+
+    public void setIdCommerce(Long idCommerce) {
+        this.idCommerce = idCommerce;
     }
 
     public double applyOff(Product product) {
