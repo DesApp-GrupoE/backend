@@ -3,6 +3,7 @@ package desapp.grupo.e.model.user;
 import desapp.grupo.e.model.dto.user.UserDTO;
 import desapp.grupo.e.model.exception.BusinessException;
 import desapp.grupo.e.model.product.CategoryAlert;
+import desapp.grupo.e.model.product.Offer;
 import desapp.grupo.e.model.product.Product;
 import desapp.grupo.e.model.purchase.Purchase;
 
@@ -165,5 +166,15 @@ public class User {
         this.currentPurchase.setDatePurchase(purchaseDate);
         this.purchases.add(this.currentPurchase);
         this.currentPurchase = null;
+    }
+
+    public void addOffer(Offer offer) {
+        this.initCurrentPurchase();
+        this.currentPurchase.addOffer(offer);
+    }
+
+    public void removeOffer(Offer offer) {
+        this.initCurrentPurchase();
+        this.currentPurchase.removeOffer(offer);
     }
 }
