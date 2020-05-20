@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
-import desapp.grupo.e.persistence.exception.UniqueClassException;
+import desapp.grupo.e.persistence.exception.EmailRegisteredException;
 
 import java.util.Optional;
 
@@ -27,7 +27,7 @@ public class LoginServiceTest {
     }
 
     @Test
-    public void signUpCreateNewCustomer() throws UniqueClassException {
+    public void signUpCreateNewCustomer() throws EmailRegisteredException {
         Long expectedId = 1L;
 
         User user = new UserBuilder().anyUser().build();
@@ -49,6 +49,6 @@ public class LoginServiceTest {
 
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(new User()));
 
-        Assertions.assertThrows(UniqueClassException.class, () -> loginService.signUp(user));
+        Assertions.assertThrows(EmailRegisteredException.class, () -> loginService.signUp(user));
     }
 }

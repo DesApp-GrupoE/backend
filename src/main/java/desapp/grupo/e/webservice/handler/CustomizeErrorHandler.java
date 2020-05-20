@@ -1,4 +1,4 @@
-package desapp.grupo.e.webservice.config;
+package desapp.grupo.e.webservice.handler;
 
 import desapp.grupo.e.model.dto.ApiError;
 import org.springframework.http.HttpHeaders;

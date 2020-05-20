@@ -4,6 +4,7 @@ import desapp.grupo.e.model.user.User;
 
 public class UserBuilder {
 
+    private Long id;
     private String name;
     private String surname;
     private String email;
@@ -15,10 +16,16 @@ public class UserBuilder {
     }
 
     public UserBuilder anyUser() {
+        this.id = 1L;
         this.name = "User";
         this.surname = "Test";
         this.email = "test@test.test";
         this.password = "secret_password";
+        return this;
+    }
+
+    public UserBuilder withId(Long id) {
+        this.id = id;
         return this;
     }
 
@@ -44,11 +51,13 @@ public class UserBuilder {
 
     public User build() {
         User user = new User(name, surname, email, password);
+        user.setId(this.id);
         resetBuilder();
         return user;
     }
 
     public void resetBuilder() {
+        this.id = null;
         this.name = null;
         this.surname = null;
         this.email = null;
