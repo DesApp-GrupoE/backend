@@ -1,0 +1,48 @@
+package desapp.grupo.e.service.user;
+
+import desapp.grupo.e.model.builder.user.UserBuilder;
+import desapp.grupo.e.model.user.User;
+import desapp.grupo.e.persistence.user.UserRepository;
+import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+public class UserServiceTest {
+
+    private UserRepository userRepository;
+    private UserService userService;
+
+    @BeforeEach
+    public void setUp() {
+        userRepository = mock(UserRepository.class);
+        userService = new UserService(userRepository);
+    }
+
+    @Test
+    public void getUserById() {
+        Long userId = 1L;
+        User userMock = UserBuilder.aUser().anyUser().withId(userId).build();
+        when(userRepository.findById(userId)).thenReturn(Optional.of(userMock));
+
+        User userFromDb = userService.getUserById(userId);
+
+        Assertions.assertNotNull(userFromDb);
+    }
+
+    @Test
+    public void getUserByIdInexistentThrowException() {
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> userService.getUserById(1L));
+    }
+
+
+}
