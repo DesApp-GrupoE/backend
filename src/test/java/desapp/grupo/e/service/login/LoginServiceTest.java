@@ -6,6 +6,7 @@ import desapp.grupo.e.persistence.user.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 import desapp.grupo.e.persistence.exception.EmailRegisteredException;
 
@@ -23,7 +24,7 @@ public class LoginServiceTest {
     @BeforeEach
     public void setUp() {
         userRepository = mock(UserRepository.class);
-        loginService = new LoginService(userRepository);
+        loginService = new LoginService(userRepository, new BCryptPasswordEncoder());
     }
 
     @Test

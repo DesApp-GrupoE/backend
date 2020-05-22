@@ -49,6 +49,12 @@
             </exclusions>
         </dependency>
 
+        <!-- Security dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
         <!-- Logger -->
         <dependency>
             <groupId>log4j</groupId>
