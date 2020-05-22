@@ -13,8 +13,7 @@ public class ConfigBean {
     @Autowired
     private UserRepository userRepository;
 
-    @Bean
-    // Este método inyecta en el código un nuevo LoginService utilizando el nombre del método
+    @Bean("loginServiceBean")
     public LoginService loginService() {
         return new LoginService(userRepository);
     }
