@@ -6,10 +6,11 @@ import desapp.grupo.e.service.log.Log;
 import desapp.grupo.e.webservice.controller.LoginController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice(assignableTypes = LoginController.class)
+@RestControllerAdvice
 public class LoginControllerHandler {
 
     @ExceptionHandler({EmailRegisteredException.class})
@@ -19,5 +20,10 @@ public class LoginControllerHandler {
         return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
     }
 
-
+    @ExceptionHandler({AuthenticationException.class})
+    public ResponseEntity<ApiError> handleAuthenticationException(AuthenticationException e) {
+        Log.debug(e.getMessage());
+        ApiError apiError = new ApiError(e.getMessage());
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+    }
 }
