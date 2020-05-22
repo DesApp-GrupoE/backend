@@ -2,7 +2,6 @@ package desapp.grupo.e.service.login;
 
 import desapp.grupo.e.model.user.User;
 import desapp.grupo.e.persistence.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import desapp.grupo.e.persistence.exception.EmailRegisteredException;
