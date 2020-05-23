@@ -1,6 +1,13 @@
 package desapp.grupo.e.model.product;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Column;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 
 @Entity
 @Table(name = "alert_category")
@@ -9,9 +16,7 @@ public class CategoryAlert {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator="alert_category_id_seq")
     private Long id;
-    @Column(name = "id_user")
-    private Long idUser;
-    @Column(nullable = false)
+    @Column(name = "category", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Category category;
     @Column(nullable = false)
@@ -32,14 +37,6 @@ public class CategoryAlert {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(Long idCustomer) {
-        this.idUser = idCustomer;
     }
 
     public Category getCategory() {

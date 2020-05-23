@@ -27,8 +27,8 @@ public class User {
     protected String email;
     @Column(nullable = false)
     protected String password;
-    @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_user_db", referencedColumnName = "id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_user")
     private List<CategoryAlert> categoryAlerts;
     @Transient
     private Commerce commerce;
@@ -109,7 +109,6 @@ public class User {
     }
 
     public void addCategoryAlert(CategoryAlert categoryAlert) {
-        categoryAlert.setIdUser(this.id);
         this.categoryAlerts.add(categoryAlert);
     }
 

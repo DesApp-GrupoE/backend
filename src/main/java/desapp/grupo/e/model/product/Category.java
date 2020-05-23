@@ -1,5 +1,7 @@
 package desapp.grupo.e.model.product;
 
+import java.util.Arrays;
+
 public enum Category {
 
     CARNES("Carnes"),
@@ -15,6 +17,13 @@ public enum Category {
 
     Category(String description) {
         this.description = description;
+    }
+
+    public static Category findByName(String category) {
+        return Arrays.stream(values())
+                .filter(cat -> cat.name().equals(category))
+                .findFirst()
+                .orElse(null);
     }
 
     public String getDescription() {
