@@ -1,6 +1,7 @@
 package desapp.grupo.e.webservice.beans;
 
 import desapp.grupo.e.persistence.user.UserRepository;
+import desapp.grupo.e.service.category.alert.CategoryAlertService;
 import desapp.grupo.e.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -27,5 +28,10 @@ public class ConfigBean {
     @Bean
     public UserService userService() {
         return new UserService(userRepository);
+    }
+
+    @Bean
+    public CategoryAlertService categoryAlertService() {
+        return new CategoryAlertService(userRepository);
     }
 }
