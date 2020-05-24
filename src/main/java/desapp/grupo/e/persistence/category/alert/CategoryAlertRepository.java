@@ -13,4 +13,7 @@ public interface CategoryAlertRepository extends JpaRepository<CategoryAlert, Lo
         value = "select * from alert_category where id_user = :idUser and id = :id")
     Optional<CategoryAlert> findByIdAndUser(@Param("idUser") Long idUser, @Param("id") Long id);
 
+    @Query(nativeQuery = true,
+        value = "select count(*) > 0 from alert_category where id_user = :idUser and category = :category")
+    boolean existCategoryInUser(@Param("idUser") Long idUser, @Param("category") String category);
 }

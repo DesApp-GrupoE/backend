@@ -3,6 +3,7 @@ package desapp.grupo.e.service.category.alert;
 import desapp.grupo.e.model.product.CategoryAlert;
 import desapp.grupo.e.model.user.User;
 import desapp.grupo.e.persistence.category.alert.CategoryAlertRepository;
+import desapp.grupo.e.persistence.exception.CategoryDuplicatedException;
 import desapp.grupo.e.persistence.user.UserRepository;
 import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,9 @@ public class CategoryAlertService {
 
     @Transactional
     public CategoryAlert save(long idUser, CategoryAlert categoryAlert) {
+        if(categoryAlertRepository.existCategoryInUser(idUser, categoryAlert.getCategory().name())) {
+            throw new CategoryDuplicatedException(String.format("User already has the category '%s'", categoryAlert.getCategory()));
+        }
         User user = findUserById(idUser);
         user.addCategoryAlert(categoryAlert);
         this.userRepository.save(user);

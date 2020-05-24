@@ -7,6 +7,7 @@ import desapp.grupo.e.model.product.Category;
 import desapp.grupo.e.model.product.CategoryAlert;
 import desapp.grupo.e.model.user.User;
 import desapp.grupo.e.persistence.category.alert.CategoryAlertRepository;
+import desapp.grupo.e.persistence.exception.CategoryDuplicatedException;
 import desapp.grupo.e.persistence.user.UserRepository;
 import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.AfterEach;
@@ -32,11 +33,11 @@ public class CategoryAlertServiceTest {
     private User user;
 
     @BeforeEach
-
     public void setUp() {
         this.categoryAlertService = new CategoryAlertService(userRepository, categoryAlertRepository);
         User userToSave = UserBuilder.aUser().anyUser().build();
         this.userRepository.save(userToSave);
+        // Si no lo obtengo de la base no tengo el id
         user = this.userRepository.findByEmail(userToSave.getEmail()).orElseGet(null);
     }
 
@@ -55,6 +56,30 @@ public class CategoryAlertServiceTest {
 
         Assertions.assertNotNull(categoryAlertSaved);
         Assertions.assertNotNull(categoryAlertSaved.getId());
+    }
+
+    @Test
+    public void saveACategoryAlertWithCategoryExistentInSameUserShouldThrowCategoryDuplicatedException() {
+        CategoryAlert categoryAlert = CategoryAlertBuilder.aCategoryAlert()
+                .withCategory(Category.ALMACEN)
+                .withPercentage(10).build();
+
+        categoryAlertService.save(user.getId(), categoryAlert);
+        Assertions.assertThrows(CategoryDuplicatedException.class, () -> categoryAlertService.save(user.getId(), categoryAlert));
+    }
+
+    @Test
+    public void saveSameCategoryAlertButInDifferentUserShouldNotThrowException() {
+        this.userRepository.save(UserBuilder.aUser().anyUser().withId(null).withEmail("test2@test.test").build());
+        User user2 = userRepository.findByEmail("test2@test.test").get();
+        CategoryAlert categoryAlert = CategoryAlertBuilder.aCategoryAlert()
+                .withCategory(Category.ALMACEN)
+                .withPercentage(10).build();
+
+        Assertions.assertDoesNotThrow(() -> {
+            categoryAlertService.save(user.getId(), categoryAlert);
+            categoryAlertService.save(user2.getId(), categoryAlert);
+        });
     }
 
     @Test
