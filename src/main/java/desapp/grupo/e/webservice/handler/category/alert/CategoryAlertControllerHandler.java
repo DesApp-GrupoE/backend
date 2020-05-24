@@ -1,6 +1,7 @@
 package desapp.grupo.e.webservice.handler.category.alert;
 
 import desapp.grupo.e.model.dto.ApiError;
+import desapp.grupo.e.persistence.exception.CategoryDuplicatedException;
 import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
 import desapp.grupo.e.service.log.Log;
 import desapp.grupo.e.webservice.controller.category.alert.CategoryAlertController;
@@ -19,4 +20,10 @@ public class CategoryAlertControllerHandler {
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler({CategoryDuplicatedException.class})
+    public ResponseEntity<ApiError> handleCategoryDuplicatedException(CategoryDuplicatedException e) {
+        Log.info(e.getMessage());
+        ApiError apiError = new ApiError(e.getMessage());
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+    }
 }

@@ -3,6 +3,7 @@ package desapp.grupo.e.webservice.controller.category.alert;
 import desapp.grupo.e.model.builder.product.CategoryAlertBuilder;
 import desapp.grupo.e.model.product.Category;
 import desapp.grupo.e.model.product.CategoryAlert;
+import desapp.grupo.e.persistence.exception.CategoryDuplicatedException;
 import desapp.grupo.e.service.category.alert.CategoryAlertService;
 import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
 import desapp.grupo.e.webservice.handler.CustomizeErrorHandler;
@@ -63,6 +64,22 @@ public class CategoryAlertControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.category", Is.is(Category.ALMACEN.name())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.percentage", Is.is(10)))
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    public void createCategoryAlertWithCategoryDuplicatedInUserShouldReturnAnApiErrorAndStatusConflict() throws Exception {
+        String jsonPost = "{ \"category\" : \""+Category.ALMACEN.name()+"\", \"percentage\" : 10 }";
+
+        given(categoryAlertService.save(any(Long.class), any(CategoryAlert.class)))
+                .willThrow(new CategoryDuplicatedException("User already has the category 'ALMACEN'"));
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_BASE_CATEGORY_ALERT)
+                .content(jsonPost)
+                .characterEncoding("utf-8")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isConflict())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Is.is("User already has the category 'ALMACEN'")));
     }
 
     @Test
