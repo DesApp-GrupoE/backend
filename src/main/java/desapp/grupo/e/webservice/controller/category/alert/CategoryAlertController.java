@@ -18,7 +18,7 @@ public class CategoryAlertController {
     private static final String USER_ID = "user_id";
     private static final String CAT_ALERT_ID = "cat_alert_id";
     private static final String URL_BASE = "/user/{" + USER_ID + "}/category-alert";
-    private static final String URL_DELETE_CAT_ALERT = URL_BASE + "/{" + CAT_ALERT_ID+ "}";
+    private static final String URL_CAT_ALERT_ID = URL_BASE + "/{" + CAT_ALERT_ID+ "}";
 
     private CategoryAlertService categoryAlertService;
 
@@ -41,9 +41,17 @@ public class CategoryAlertController {
         return ResponseEntity.ok(categoryAlerts);
     }
 
-    @DeleteMapping(URL_DELETE_CAT_ALERT)
+    @DeleteMapping(URL_CAT_ALERT_ID)
     public ResponseEntity deleteCategoryAlert(@PathVariable(USER_ID) Long userId, @PathVariable(CAT_ALERT_ID) Long catAlertId) {
         categoryAlertService.removeById(userId, catAlertId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping(URL_CAT_ALERT_ID)
+    public ResponseEntity updateCategoryAlert(@PathVariable(USER_ID) Long userId,
+                                              @PathVariable(CAT_ALERT_ID) Long catAlertId,
+                                              @Valid @RequestBody CategoryAlertDTO catAlertUpdated) {
+        categoryAlertService.update(userId, catAlertId, convertDtoToModel(catAlertUpdated));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

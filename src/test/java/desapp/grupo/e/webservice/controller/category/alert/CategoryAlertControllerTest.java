@@ -159,4 +159,37 @@ public class CategoryAlertControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.error", Is.is("User 0 not found")));
     }
+
+    @Test
+    public void updateCategoryAlert() throws Exception {
+        String json = "{ \"category\" : \"ALMACEN\", \"percentage\": 20 }";
+        Long catAlertId = 1L;
+        String urlUpdate = URL_BASE_CATEGORY_ALERT + "/" + catAlertId;
+
+        mockMvc.perform(MockMvcRequestBuilders.put(urlUpdate)
+                .content(json)
+                .characterEncoding("utf-8")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void updateCategoryAlertWithInexistenUser() throws Exception {
+        String json = "{ \"category\" : \"ALMACEN\", \"percentage\": 20 }";
+        Long catAlertId = 1L;
+        Long userIdInexistent = 0L;
+        String urlUpdate = URL_BASE_CATEGORY_ALERT.replace(USER_ID.toString(), userIdInexistent.toString()) + "/" + catAlertId;
+
+        doThrow(new ResourceNotFoundException("CategoryAlert 1 not found"))
+                .when(categoryAlertService).update(eq(userIdInexistent), eq(catAlertId), any(CategoryAlert.class));
+
+        mockMvc.perform(MockMvcRequestBuilders.put(urlUpdate)
+                .content(json)
+                .characterEncoding("utf-8")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Is.is("CategoryAlert 1 not found")));
+    }
 }
