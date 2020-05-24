@@ -2,7 +2,6 @@ package desapp.grupo.e.persistence.category.alert;
 
 import desapp.grupo.e.model.product.CategoryAlert;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
