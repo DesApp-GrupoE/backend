@@ -6,6 +6,7 @@ import desapp.grupo.e.model.builder.user.UserBuilder;
 import desapp.grupo.e.model.product.Category;
 import desapp.grupo.e.model.product.CategoryAlert;
 import desapp.grupo.e.model.user.User;
+import desapp.grupo.e.persistence.category.alert.CategoryAlertRepository;
 import desapp.grupo.e.persistence.user.UserRepository;
 import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.AfterEach;
@@ -25,12 +26,15 @@ public class CategoryAlertServiceTest {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CategoryAlertRepository categoryAlertRepository;
     private CategoryAlertService categoryAlertService;
     private User user;
 
     @BeforeEach
+
     public void setUp() {
-        this.categoryAlertService = new CategoryAlertService(userRepository);
+        this.categoryAlertService = new CategoryAlertService(userRepository, categoryAlertRepository);
         User userToSave = UserBuilder.aUser().anyUser().build();
         this.userRepository.save(userToSave);
         user = this.userRepository.findByEmail(userToSave.getEmail()).orElseGet(null);
@@ -107,5 +111,27 @@ public class CategoryAlertServiceTest {
     public void removeCategoryFromInexistentUserShouldThrowResourceNotFound() {
         Long anyId = 0L;
         Assertions.assertThrows(ResourceNotFoundException.class, () -> categoryAlertService.removeById(anyId, anyId));
+    }
+
+    @Test
+    public void updateCategory() {
+        CategoryAlert categoryAlert = CategoryAlertBuilder.aCategoryAlert().withCategory(Category.ALMACEN).withPercentage(10).build();
+        CategoryAlert catAlertSaved = categoryAlertService.save(user.getId(), categoryAlert);
+
+        Integer beforePercentage = catAlertSaved.getPercentage();
+        catAlertSaved.setPercentage(20);
+        categoryAlertService.update(user.getId(), catAlertSaved.getId(), catAlertSaved);
+
+        CategoryAlert catAlert = categoryAlertService.getById(user.getId(), catAlertSaved.getId());
+
+        Assertions.assertEquals(10, beforePercentage);
+        Assertions.assertEquals(20, catAlert.getPercentage());
+    }
+
+    @Test
+    public void updateCategoryWithInexistentUserShouldThrowResourceNotFound() {
+        CategoryAlert categoryAlert = CategoryAlertBuilder.aCategoryAlert().anyCategoryAlert().build();
+
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> categoryAlertService.update(0L, 0L, categoryAlert));
     }
 }

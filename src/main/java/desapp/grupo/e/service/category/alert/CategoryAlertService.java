@@ -2,6 +2,7 @@ package desapp.grupo.e.service.category.alert;
 
 import desapp.grupo.e.model.product.CategoryAlert;
 import desapp.grupo.e.model.user.User;
+import desapp.grupo.e.persistence.category.alert.CategoryAlertRepository;
 import desapp.grupo.e.persistence.user.UserRepository;
 import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,9 +13,11 @@ import java.util.List;
 public class CategoryAlertService {
 
     private UserRepository userRepository;
+    private CategoryAlertRepository categoryAlertRepository;
 
-    public CategoryAlertService(UserRepository userRepository) {
+    public CategoryAlertService(UserRepository userRepository, CategoryAlertRepository categoryAlertRepository) {
         this.userRepository = userRepository;
+        this.categoryAlertRepository = categoryAlertRepository;
     }
 
     @Transactional
@@ -37,6 +40,7 @@ public class CategoryAlertService {
         return user.getCategoryAlerts();
     }
 
+    @Transactional
     public void removeById(Long userId, Long id) {
         User user = findUserById(userId);
         user.getCategoryAlerts().stream()
@@ -44,5 +48,19 @@ public class CategoryAlertService {
                 .findFirst()
                 .ifPresent(user::removeCategoryAlert);
         userRepository.save(user);
+    }
+
+    @Transactional
+    public void update(Long userId, Long id, CategoryAlert catAlertUpdated) {
+        CategoryAlert categoryAlert = getById(userId, id);
+        categoryAlert.setPercentage(catAlertUpdated.getPercentage());
+        categoryAlert.setCategory(categoryAlert.getCategory());
+        categoryAlertRepository.save(categoryAlert);
+    }
+
+    @Transactional(readOnly = true)
+    public CategoryAlert getById(Long userId, Long id) {
+        return categoryAlertRepository.findByIdAndUser(userId, id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("CategoryAlert %s not found", id)));
     }
 }

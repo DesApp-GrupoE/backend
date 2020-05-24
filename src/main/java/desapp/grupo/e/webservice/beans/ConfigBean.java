@@ -1,5 +1,6 @@
 package desapp.grupo.e.webservice.beans;
 
+import desapp.grupo.e.persistence.category.alert.CategoryAlertRepository;
 import desapp.grupo.e.persistence.user.UserRepository;
 import desapp.grupo.e.service.category.alert.CategoryAlertService;
 import desapp.grupo.e.service.user.UserService;
@@ -14,6 +15,8 @@ public class ConfigBean {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CategoryAlertRepository categoryAlertRepository;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -32,6 +35,6 @@ public class ConfigBean {
 
     @Bean
     public CategoryAlertService categoryAlertService() {
-        return new CategoryAlertService(userRepository);
+        return new CategoryAlertService(userRepository, categoryAlertRepository);
     }
 }
