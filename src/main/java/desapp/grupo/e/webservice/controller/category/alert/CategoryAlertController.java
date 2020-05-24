@@ -4,6 +4,7 @@ import desapp.grupo.e.model.dto.category.alert.CategoryAlertDTO;
 import desapp.grupo.e.model.product.Category;
 import desapp.grupo.e.model.product.CategoryAlert;
 import desapp.grupo.e.service.category.alert.CategoryAlertService;
+import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +49,11 @@ public class CategoryAlertController {
 
     private CategoryAlert convertDtoToModel(CategoryAlertDTO categoryAlertDTO) {
         CategoryAlert categoryAlert = new CategoryAlert();
-        categoryAlert.setCategory(Category.findByName(categoryAlertDTO.getCategory()));
+        Category category = Category.findByName(categoryAlertDTO.getCategory());
+        if(category == null) {
+            throw new ResourceNotFoundException(String.format("Category '%s' not found", categoryAlertDTO.getCategory()));
+        }
+        categoryAlert.setCategory(category);
         categoryAlert.setPercentage(categoryAlertDTO.getPercentage());
         return categoryAlert;
     }

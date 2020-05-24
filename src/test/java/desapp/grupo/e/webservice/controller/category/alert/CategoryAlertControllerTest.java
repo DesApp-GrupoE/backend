@@ -82,6 +82,20 @@ public class CategoryAlertControllerTest {
     }
 
     @Test
+    public void createCategoryAlertWithInexistentCategoryShouldReturnAnApiErrorWithNoutFoundStatus() throws Exception {
+        String jsonPost = "{ \"category\" : \"INEXISTENT\", \"percentage\" : 10 }";
+
+        mockMvc.perform(MockMvcRequestBuilders.post(URL_BASE_CATEGORY_ALERT)
+                .content(jsonPost)
+                .characterEncoding("utf-8")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error", Is.is("Category 'INEXISTENT' not found")));
+    }
+
+
+    @Test
     public void getAllCategoryAlertsFromUser() throws Exception {
         CategoryAlert catAlert = CategoryAlertBuilder.aCategoryAlert()
                 .withId(1L)
