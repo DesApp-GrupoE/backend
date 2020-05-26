@@ -33,8 +33,6 @@ public class User {
     @Transient
     private Commerce commerce;
     @Transient
-    private Purchase currentPurchase;
-    @Transient
     private List<Purchase> purchases;
 
     public User() {
@@ -132,48 +130,4 @@ public class User {
         this.purchases = purchases;
     }
 
-    public Purchase getCurrentPurchase() {
-        return currentPurchase;
-    }
-
-    public void setCurrentPurchase(Purchase currentPurchase) {
-        this.currentPurchase = currentPurchase;
-    }
-
-    public void addProduct(Product product) {
-        this.initCurrentPurchase();
-        this.currentPurchase.addProduct(product);
-    }
-
-    public void removeProduct(Product product) {
-        this.initCurrentPurchase();
-        this.currentPurchase.removeProduct(product);
-    }
-
-    private void initCurrentPurchase() {
-        if(this.currentPurchase == null) {
-            this.currentPurchase = new Purchase();
-            this.currentPurchase.setIdUser(this.id);
-        }
-    }
-
-    public void finalizePurchase(LocalDateTime purchaseDate) throws BusinessException {
-        this.initCurrentPurchase();
-        if(this.currentPurchase.getSubPurchases().isEmpty()) {
-            throw new BusinessException("A user can't finalize a purchase without products");
-        }
-        this.currentPurchase.setDatePurchase(purchaseDate);
-        this.purchases.add(this.currentPurchase);
-        this.currentPurchase = null;
-    }
-
-    public void addOffer(Offer offer) {
-        this.initCurrentPurchase();
-        this.currentPurchase.addOffer(offer);
-    }
-
-    public void removeOffer(Offer offer) {
-        this.initCurrentPurchase();
-        this.currentPurchase.removeOffer(offer);
-    }
 }
