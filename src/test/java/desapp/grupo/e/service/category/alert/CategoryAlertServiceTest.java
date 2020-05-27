@@ -133,12 +133,6 @@ public class CategoryAlertServiceTest {
     }
 
     @Test
-    public void removeCategoryFromInexistentUserShouldThrowResourceNotFound() {
-        Long anyId = 0L;
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> categoryAlertService.removeById(anyId, anyId));
-    }
-
-    @Test
     public void updateCategory() {
         CategoryAlert categoryAlert = CategoryAlertBuilder.aCategoryAlert().withCategory(Category.ALMACEN).withPercentage(10).build();
         CategoryAlert catAlertSaved = categoryAlertService.save(user.getId(), categoryAlert);

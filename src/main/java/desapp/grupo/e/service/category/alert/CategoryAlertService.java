@@ -6,6 +6,8 @@ import desapp.grupo.e.persistence.category.alert.CategoryAlertRepository;
 import desapp.grupo.e.persistence.exception.CategoryDuplicatedException;
 import desapp.grupo.e.persistence.user.UserRepository;
 import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
+import desapp.grupo.e.service.log.Log;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -46,12 +48,12 @@ public class CategoryAlertService {
 
     @Transactional
     public void removeById(Long userId, Long id) {
-        User user = findUserById(userId);
-        user.getCategoryAlerts().stream()
-                .filter(ca -> ca.getId().equals(id))
-                .findFirst()
-                .ifPresent(user::removeCategoryAlert);
-        userRepository.save(user);
+        try {
+            categoryAlertRepository.removeFk(userId, id);
+            categoryAlertRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            // Si se intenta eliminar un category alert que ya fue eliminado no hacemos nada
+        }
     }
 
     @Transactional
