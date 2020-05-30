@@ -119,4 +119,11 @@ public class ShoppingCart {
         return cartProductOfferMap.get(commerceId);
     }
 
+    public void removeProductById(Long productId) {
+        this.cartProducts.removeIf(cp -> cp.getProductId().equals(productId));
+    }
+
+    public void removeOfferById(Long offerId) {
+        this.cartOfferProducts.removeIf(offer -> offer.getId().equals(offerId));
+    }
 }

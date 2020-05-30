@@ -20,7 +20,7 @@ public class Offer {
     protected String name;
 
     @Column(nullable = false)
-    protected double off;
+    protected Integer off;
 
     @Column(nullable = false)
     protected LocalDateTime dateFrom;
@@ -36,13 +36,21 @@ public class Offer {
         this.products = new ArrayList<>();
     }
 
-    public Offer(Long idCommerce, String name, Double off, LocalDateTime dateFrom, LocalDateTime dateTo) {
+    public Offer(Long idCommerce, String name, Integer off, LocalDateTime dateFrom, LocalDateTime dateTo) {
         this.idCommerce = idCommerce;
         this.name = name;
         this.off = off;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.products = new ArrayList<>();
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Long getIdCommerce() {
@@ -63,6 +71,14 @@ public class Offer {
 
     public List<Product> getProducts() {
         return this.products;
+    }
+
+    public Integer getOff() {
+        return off;
+    }
+
+    public void setOff(Integer off) {
+        this.off = off;
     }
 
     public Double getTotalAmountWithDiscountApplied() {

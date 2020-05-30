@@ -8,6 +8,7 @@ import java.util.List;
 
 public class CartOfferProductBuilder {
 
+    private Long id;
     private Long commerceId;
     private Long offerId;
     private Integer off;
@@ -23,6 +24,7 @@ public class CartOfferProductBuilder {
     }
 
     public CartOfferProductBuilder anyCartOfferProduct() {
+        this.id = 1L;
         this.commerceId = 1L;
         this.off = 10;
         this.offerId = 1L;
@@ -32,6 +34,7 @@ public class CartOfferProductBuilder {
 
     public CartOfferProduct build() {
         CartOfferProduct cartOfferProduct = new CartOfferProduct(this.commerceId, this.offerId, this.off);
+        cartOfferProduct.setId(this.id);
         cartOfferProduct.setCartProducts(this.cartProducts);
         cartOfferProduct.setQuantity(this.quantity);
         return cartOfferProduct;
@@ -54,6 +57,11 @@ public class CartOfferProductBuilder {
 
     public CartOfferProductBuilder withOfferId(Long offerId) {
         this.offerId = offerId;
+        return this;
+    }
+
+    public CartOfferProductBuilder withId(Long offerId) {
+        this.id = offerId;
         return this;
     }
 

@@ -12,7 +12,7 @@ public class OfferBuilder {
     private Long id;
     private Long idCommerce;
     private String name;
-    private Double off;
+    private Integer off;
     private LocalDateTime dateFrom;
     private LocalDateTime dateTo;
     private List<Product> products;
@@ -30,7 +30,7 @@ public class OfferBuilder {
         return this;
     }
 
-    public OfferBuilder withOff(Double off) {
+    public OfferBuilder withOff(Integer off) {
         this.off = off;
         return this;
     }
@@ -40,8 +40,14 @@ public class OfferBuilder {
         return this;
     }
 
+    public OfferBuilder withId(Long offerId) {
+        this.id = offerId;
+        return this;
+    }
+
     public Offer build() {
         Offer offer = new Offer(this.idCommerce, this.name, this.off, this.dateFrom, this.dateTo);
+        offer.setId(this.id);
         offer.setProducts(products);
         resetBuilder();
         return offer;
@@ -62,7 +68,7 @@ public class OfferBuilder {
         this.id = 1L;
         this.idCommerce = 1L;
         this.name = "Super Offer";
-        this.off = 10.0;
+        this.off = 10;
         this.dateFrom = LocalDateTime.now();
         this.dateTo = LocalDateTime.now().plusDays(1);
         this.products = new ArrayList<>();

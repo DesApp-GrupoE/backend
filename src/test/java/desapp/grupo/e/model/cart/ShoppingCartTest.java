@@ -45,6 +45,17 @@ public class ShoppingCartTest {
     }
 
     @Test
+    public void removeProductByIdFromShoppingCart() {
+        Long productId = 1L;
+        CartProduct cartProduct = CartProductBuilder.aProductCartBuilder().anyProduct().withProductId(productId).build();
+        shoppingCart.addProduct(cartProduct);
+
+        shoppingCart.removeProductById(productId);
+
+        Assertions.assertTrue(shoppingCart.getCartProducts().isEmpty());
+    }
+
+    @Test
     public void getTotalAmount() {
         CartProduct cartProduct1 = CartProductBuilder.aProductCartBuilder().anyProduct()
                 .withProductId(1L).withPrice(100.0).withQuantity(1).build();
@@ -104,6 +115,20 @@ public class ShoppingCartTest {
         shoppingCart.addOffer(cartProductOffer);
 
         shoppingCart.removeOffer(cartProductOffer);
+
+        Assertions.assertTrue(shoppingCart.getCartOfferProducts().isEmpty());
+    }
+
+    @Test
+    public void removeOfferById() {
+        Long offerId = 1L;
+        CartOfferProduct cartProductOffer = CartOfferProductBuilder.aCartOfferProductBuilder()
+                .anyCartOfferProduct()
+                .withId(offerId)
+                .build();
+        shoppingCart.addOffer(cartProductOffer);
+
+        shoppingCart.removeOfferById(offerId);
 
         Assertions.assertTrue(shoppingCart.getCartOfferProducts().isEmpty());
     }

@@ -5,6 +5,7 @@ import java.util.List;
 
 public class CartOfferProduct {
 
+    private Long id;
     private Long commerceId;
     private Long offerId;
     private Integer off;
@@ -56,6 +57,14 @@ public class CartOfferProduct {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Double calculateTotalAmount() {

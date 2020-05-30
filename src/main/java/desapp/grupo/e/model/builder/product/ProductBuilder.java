@@ -9,6 +9,7 @@ public class ProductBuilder {
     private Integer stock;
     private String img;
     private Long idCommerce;
+    private Long id;
 
     public static ProductBuilder aProduct() {
         return new ProductBuilder();
@@ -39,13 +40,19 @@ public class ProductBuilder {
         return this;
     }
 
+    public ProductBuilder withId(Long productId) {
+        this.id = productId;
+        return this;
+    }
+
     public ProductBuilder anyProduct() {
-            this.name = "test";
-            this.brand = "test";
-            this.price = 10.0;
-            this.stock = 50;
-            this.img = "urlImage.jpg";
-            this.idCommerce = 1L;
+        this.id = 1L;
+        this.name = "test";
+        this.brand = "test";
+        this.price = 10.0;
+        this.stock = 50;
+        this.img = "urlImage.jpg";
+        this.idCommerce = 1L;
 
         return this;
     }
@@ -53,6 +60,7 @@ public class ProductBuilder {
     public Product build() {
         Product product = new Product(this.name, this.brand, this.price, 
                                       this.stock, this.img, this.idCommerce);
+        product.setId(this.id);
         resetBuilder();
         return product;
     }
@@ -64,6 +72,7 @@ public class ProductBuilder {
         this.stock = null;
         this.img = null;
         this.idCommerce = null;
+        this.id = null;
     }
 
 }
