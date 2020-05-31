@@ -12,12 +12,10 @@ import java.util.stream.Collectors;
 
 public class ShoppingCart {
 
-    private Long userId;
     private List<CartProduct> cartProducts;
     private List<CartOfferProduct> cartOfferProducts;
 
-    public ShoppingCart(Long userId) {
-        this.userId = userId;
+    public ShoppingCart() {
         this.cartProducts = new ArrayList<>();
         this.cartOfferProducts = new ArrayList<>();
     }

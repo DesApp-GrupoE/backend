@@ -18,7 +18,7 @@ public class ShoppingCartService {
 
     private ProductRepository productRepository;
     private OfferRepository offerRepository;
-    private Map<Long, ShoppingCart> shoppingCartCache;
+    private Map<String, ShoppingCart> shoppingCartCache;
 
     public ShoppingCartService(ProductRepository productRepository, OfferRepository offerRepository) {
         this.shoppingCartCache = new HashMap<>();
@@ -26,17 +26,17 @@ public class ShoppingCartService {
         this.offerRepository = offerRepository;
     }
 
-    public ShoppingCart getShoppingCartByUser(Long userId) {
-        if(!shoppingCartCache.containsKey(userId)) {
-            shoppingCartCache.put(userId, new ShoppingCart(userId));
+    public ShoppingCart getShoppingCartByKey(String keyShoppingCart) {
+        if(!shoppingCartCache.containsKey(keyShoppingCart)) {
+            shoppingCartCache.put(keyShoppingCart, new ShoppingCart());
         }
-        return shoppingCartCache.get(userId);
+        return shoppingCartCache.get(keyShoppingCart);
     }
 
-    public void addProduct(Long userId, Long productId, Integer quantity) {
+    public void addProduct(String keyShoppingCart, Long productId, Integer quantity) {
         Product product = findProduct(productId);
         CartProduct cartProduct = mapToCartProduct(product, quantity);
-        ShoppingCart shoppingCart = getShoppingCartByUser(userId);
+        ShoppingCart shoppingCart = getShoppingCartByKey(keyShoppingCart);
         shoppingCart.addProduct(cartProduct);
     }
 
@@ -56,15 +56,15 @@ public class ShoppingCartService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Product %s not found", productId)));
     }
 
-    public void removeProduct(Long userId, Long productId) {
-        ShoppingCart shoppingCart = getShoppingCartByUser(userId);
+    public void removeProduct(String keyShoppingCart, Long productId) {
+        ShoppingCart shoppingCart = getShoppingCartByKey(keyShoppingCart);
         shoppingCart.removeProductById(productId);
     }
 
-    public void addOffer(Long userId, Long offerId, Integer quantity) {
+    public void addOffer(String keyShoppingCart, Long offerId, Integer quantity) {
         Offer offer = findOffer(offerId);
         CartOfferProduct cartOfferProduct = mapToCartOfferProduct(offer, quantity);
-        ShoppingCart shoppingCart = getShoppingCartByUser(userId);
+        ShoppingCart shoppingCart = getShoppingCartByKey(keyShoppingCart);
         shoppingCart.addOffer(cartOfferProduct);
     }
 
@@ -84,8 +84,8 @@ public class ShoppingCartService {
         return cartOfferProduct;
     }
 
-    public void removeOffer(Long userId, Long offerId) {
-        ShoppingCart shoppingCart = getShoppingCartByUser(userId);
+    public void removeOffer(String keyShoppingCart, Long offerId) {
+        ShoppingCart shoppingCart = getShoppingCartByKey(keyShoppingCart);
         shoppingCart.removeOfferById(offerId);
     }
 }

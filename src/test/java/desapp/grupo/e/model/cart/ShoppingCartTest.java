@@ -11,12 +11,11 @@ import java.util.List;
 
 public class ShoppingCartTest {
 
-    private static final Long userId = 1L;
     private ShoppingCart shoppingCart;
 
     @BeforeEach
     public void setUp() {
-        this.shoppingCart = new ShoppingCart(userId);
+        this.shoppingCart = new ShoppingCart();
     }
 
     @Test

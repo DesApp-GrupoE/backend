@@ -21,14 +21,14 @@ import static org.mockito.Mockito.when;
 
 public class ShoppingCartServiceTest {
 
-    private Long userId;
+    private String sessionId;
     private ProductRepository productRepository;
     private OfferRepository offerRepository;
     private ShoppingCartService shoppingCartService;
 
     @BeforeEach
     public void setUp() {
-        this.userId = 1L;
+        this.sessionId = "123456";
         this.productRepository = mock(ProductRepository.class);
         this.offerRepository = mock(OfferRepository.class);
         this.shoppingCartService = new ShoppingCartService(productRepository, offerRepository);
@@ -36,7 +36,7 @@ public class ShoppingCartServiceTest {
 
     @Test
     public void getShoppingCartFromUserThatDoesNotAddProductShouldReturnAShoopingCartEmpty() {
-        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByUser(userId);
+        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(sessionId);
 
         Assertions.assertTrue(shoppingCart.getCartProducts().isEmpty());
         Assertions.assertTrue(shoppingCart.getCartOfferProducts().isEmpty());
@@ -48,9 +48,9 @@ public class ShoppingCartServiceTest {
         Product product = ProductBuilder.aProduct().anyProduct().withId(productId).build();
         when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
 
-        shoppingCartService.addProduct(userId, productId, 1);
+        shoppingCartService.addProduct(sessionId, productId, 1);
 
-        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByUser(userId);
+        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(sessionId);
         Assertions.assertEquals(1, shoppingCart.getCartProducts().size());
     }
 
@@ -59,7 +59,7 @@ public class ShoppingCartServiceTest {
         Long productId = 1L;
         when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> shoppingCartService.addProduct(userId, productId, 1));
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> shoppingCartService.addProduct(sessionId, productId, 1));
     }
 
     @Test
@@ -67,11 +67,11 @@ public class ShoppingCartServiceTest {
         Long productId = 1L;
         Product product = ProductBuilder.aProduct().anyProduct().withId(productId).build();
         when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
-        shoppingCartService.addProduct(userId, productId, 1);
+        shoppingCartService.addProduct(sessionId, productId, 1);
 
-        shoppingCartService.removeProduct(userId, productId);
+        shoppingCartService.removeProduct(sessionId, productId);
 
-        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByUser(userId);
+        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(sessionId);
         Assertions.assertTrue(shoppingCart.getCartProducts().isEmpty());
     }
 
@@ -84,9 +84,9 @@ public class ShoppingCartServiceTest {
                 ).build();
         when(offerRepository.findById(eq(offerId))).thenReturn(Optional.of(offer));
 
-        shoppingCartService.addOffer(userId, offerId, 1);
+        shoppingCartService.addOffer(sessionId, offerId, 1);
 
-        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByUser(userId);
+        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(sessionId);
         Assertions.assertEquals(1, shoppingCart.getCartOfferProducts().size());
     }
 
@@ -95,7 +95,7 @@ public class ShoppingCartServiceTest {
         Long anyLong = 0L;
         when(offerRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> shoppingCartService.addOffer(userId, anyLong, 1));
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> shoppingCartService.addOffer(sessionId, anyLong, 1));
     }
 
     @Test
@@ -106,11 +106,11 @@ public class ShoppingCartServiceTest {
                         ProductBuilder.aProduct().anyProduct().build()
                 ).build();
         when(offerRepository.findById(eq(offerId))).thenReturn(Optional.of(offer));
-        shoppingCartService.addOffer(userId, offerId, 1);
+        shoppingCartService.addOffer(sessionId, offerId, 1);
 
-        shoppingCartService.removeOffer(userId, offerId);
+        shoppingCartService.removeOffer(sessionId, offerId);
 
-        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByUser(userId);
+        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(sessionId);
         Assertions.assertTrue(shoppingCart.getCartOfferProducts().isEmpty());
     }
 }
