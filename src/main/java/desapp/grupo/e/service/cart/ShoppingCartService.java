@@ -8,6 +8,7 @@ import desapp.grupo.e.model.product.Product;
 import desapp.grupo.e.persistence.product.OfferRepository;
 import desapp.grupo.e.persistence.product.ProductRepository;
 import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
+import desapp.grupo.e.service.utils.RandomString;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,16 +20,24 @@ public class ShoppingCartService {
     private ProductRepository productRepository;
     private OfferRepository offerRepository;
     private Map<String, ShoppingCart> shoppingCartCache;
+    private RandomString randomString;
 
     public ShoppingCartService(ProductRepository productRepository, OfferRepository offerRepository) {
         this.shoppingCartCache = new HashMap<>();
         this.productRepository = productRepository;
         this.offerRepository = offerRepository;
+        this.randomString = new RandomString();
+    }
+
+    public String createShoppingCart() {
+        String keyShoppingCart = this.randomString.nextString(15);
+        shoppingCartCache.put(keyShoppingCart, new ShoppingCart());
+        return keyShoppingCart;
     }
 
     public ShoppingCart getShoppingCartByKey(String keyShoppingCart) {
         if(!shoppingCartCache.containsKey(keyShoppingCart)) {
-            shoppingCartCache.put(keyShoppingCart, new ShoppingCart());
+            throw new ResourceNotFoundException(String.format("Shopping Cart %s not found", keyShoppingCart));
         }
         return shoppingCartCache.get(keyShoppingCart);
     }

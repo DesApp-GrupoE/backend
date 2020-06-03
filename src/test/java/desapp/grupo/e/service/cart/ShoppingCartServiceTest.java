@@ -21,22 +21,29 @@ import static org.mockito.Mockito.when;
 
 public class ShoppingCartServiceTest {
 
-    private String sessionId;
+    private String keyCart;
     private ProductRepository productRepository;
     private OfferRepository offerRepository;
     private ShoppingCartService shoppingCartService;
 
     @BeforeEach
     public void setUp() {
-        this.sessionId = "123456";
         this.productRepository = mock(ProductRepository.class);
         this.offerRepository = mock(OfferRepository.class);
         this.shoppingCartService = new ShoppingCartService(productRepository, offerRepository);
+        this.keyCart = this.shoppingCartService.createShoppingCart();
+    }
+
+    @Test
+    public void createShoppingCartShouldReturnAKey() {
+        String key = this.shoppingCartService.createShoppingCart();
+
+        Assertions.assertEquals(15, key.length());
     }
 
     @Test
     public void getShoppingCartFromUserThatDoesNotAddProductShouldReturnAShoopingCartEmpty() {
-        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(sessionId);
+        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(keyCart);
 
         Assertions.assertTrue(shoppingCart.getCartProducts().isEmpty());
         Assertions.assertTrue(shoppingCart.getCartOfferProducts().isEmpty());
@@ -48,9 +55,9 @@ public class ShoppingCartServiceTest {
         Product product = ProductBuilder.aProduct().anyProduct().withId(productId).build();
         when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
 
-        shoppingCartService.addProduct(sessionId, productId, 1);
+        shoppingCartService.addProduct(keyCart, productId, 1);
 
-        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(sessionId);
+        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(keyCart);
         Assertions.assertEquals(1, shoppingCart.getCartProducts().size());
     }
 
@@ -59,7 +66,7 @@ public class ShoppingCartServiceTest {
         Long productId = 1L;
         when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> shoppingCartService.addProduct(sessionId, productId, 1));
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> shoppingCartService.addProduct(keyCart, productId, 1));
     }
 
     @Test
@@ -67,11 +74,11 @@ public class ShoppingCartServiceTest {
         Long productId = 1L;
         Product product = ProductBuilder.aProduct().anyProduct().withId(productId).build();
         when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
-        shoppingCartService.addProduct(sessionId, productId, 1);
+        shoppingCartService.addProduct(keyCart, productId, 1);
 
-        shoppingCartService.removeProduct(sessionId, productId);
+        shoppingCartService.removeProduct(keyCart, productId);
 
-        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(sessionId);
+        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(keyCart);
         Assertions.assertTrue(shoppingCart.getCartProducts().isEmpty());
     }
 
@@ -84,9 +91,9 @@ public class ShoppingCartServiceTest {
                 ).build();
         when(offerRepository.findById(eq(offerId))).thenReturn(Optional.of(offer));
 
-        shoppingCartService.addOffer(sessionId, offerId, 1);
+        shoppingCartService.addOffer(keyCart, offerId, 1);
 
-        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(sessionId);
+        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(keyCart);
         Assertions.assertEquals(1, shoppingCart.getCartOfferProducts().size());
     }
 
@@ -95,7 +102,7 @@ public class ShoppingCartServiceTest {
         Long anyLong = 0L;
         when(offerRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> shoppingCartService.addOffer(sessionId, anyLong, 1));
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> shoppingCartService.addOffer(keyCart, anyLong, 1));
     }
 
     @Test
@@ -106,11 +113,11 @@ public class ShoppingCartServiceTest {
                         ProductBuilder.aProduct().anyProduct().build()
                 ).build();
         when(offerRepository.findById(eq(offerId))).thenReturn(Optional.of(offer));
-        shoppingCartService.addOffer(sessionId, offerId, 1);
+        shoppingCartService.addOffer(keyCart, offerId, 1);
 
-        shoppingCartService.removeOffer(sessionId, offerId);
+        shoppingCartService.removeOffer(keyCart, offerId);
 
-        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(sessionId);
+        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(keyCart);
         Assertions.assertTrue(shoppingCart.getCartOfferProducts().isEmpty());
     }
 }

@@ -10,19 +10,23 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class ShoppingCartController {
 
     private static final String BASE_URL = "/cart";
-    private static final String URL_PRODUCT = BASE_URL + "/product";
+    private static final String CART_ID = "cartId";
+    private static final String URL_CART = BASE_URL + "/{" + CART_ID + "}";
+
+    private static final String URL_PRODUCT = URL_CART + "/product";
     private static final String PRODUCT_ID = "productId";
     private static final String URL_PRODUCT_ID = URL_PRODUCT + "/{"+ PRODUCT_ID + "}";
 
-    private static final String URL_OFFER = BASE_URL + "/offer";
+    private static final String URL_OFFER = URL_CART + "/offer";
     private static final String OFFER_ID = "offerId";
     private static final String URL_OFFER_ID = URL_OFFER + "/{"+ OFFER_ID + "}";
 
@@ -32,37 +36,44 @@ public class ShoppingCartController {
         this.shoppingCartService = shoppingCartService;
     }
 
-    @GetMapping(BASE_URL)
-    public ResponseEntity getShoppingCart() {
-        String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
-        return ResponseEntity.ok(shoppingCartService.getShoppingCartByKey(sessionId));
+    @PostMapping(BASE_URL)
+    public ResponseEntity createShoppingCart() {
+        String key = shoppingCartService.createShoppingCart();
+        Map<String, String> keyCart =  new HashMap<>();
+        keyCart.put("key", key);
+        return ResponseEntity.ok(keyCart);
+    }
+
+    @GetMapping(URL_CART)
+    public ResponseEntity getShoppingCart(@PathVariable(CART_ID) String cartId) {
+        return ResponseEntity.ok(shoppingCartService.getShoppingCartByKey(cartId));
     }
 
     @PostMapping(URL_PRODUCT)
-    public ResponseEntity addProduct(@Valid @RequestBody CartRequestDto cartRequest) {
-        String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
-        shoppingCartService.addProduct(sessionId, cartRequest.getId(), cartRequest.getQuantity());
+    public ResponseEntity addProduct(@PathVariable(CART_ID) String cartId,
+                                        @Valid @RequestBody CartRequestDto cartRequest) {
+        shoppingCartService.addProduct(cartId, cartRequest.getId(), cartRequest.getQuantity());
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping(URL_PRODUCT_ID)
-    public ResponseEntity removeProduct(@PathVariable(PRODUCT_ID) Long productId) {
-        String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
-        shoppingCartService.removeProduct(sessionId, productId);
+    public ResponseEntity removeProduct(@PathVariable(CART_ID) String cartId,
+                                            @PathVariable(PRODUCT_ID) Long productId) {
+        shoppingCartService.removeProduct(cartId, productId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping(URL_OFFER)
-    public ResponseEntity addOffer(@Valid @RequestBody CartRequestDto cartRequest) {
-        String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
-        shoppingCartService.addOffer(sessionId, cartRequest.getId(), cartRequest.getQuantity());
+    public ResponseEntity addOffer(@PathVariable(CART_ID) String cartId,
+                                    @Valid @RequestBody CartRequestDto cartRequest) {
+        shoppingCartService.addOffer(cartId, cartRequest.getId(), cartRequest.getQuantity());
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping(URL_OFFER_ID)
-    public ResponseEntity removeOffer(@PathVariable(OFFER_ID) Long offerId) {
-        String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
-        shoppingCartService.removeOffer(sessionId, offerId);
+    public ResponseEntity removeOffer(@PathVariable(CART_ID) String cartId,
+                                        @PathVariable(OFFER_ID) Long offerId) {
+        shoppingCartService.removeOffer(cartId, offerId);
         return new ResponseEntity(HttpStatus.OK);
     }
 }
