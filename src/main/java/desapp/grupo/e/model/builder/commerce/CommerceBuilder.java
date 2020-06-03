@@ -28,7 +28,7 @@ public class CommerceBuilder {
     }
 
     public Commerce build() {
-        Commerce commerce = new Commerce(this.name, this.surname, this.email, this.password);
+        Commerce commerce = new Commerce();
         commerce.setId(this.id);
         resetBuilder();
         return commerce;

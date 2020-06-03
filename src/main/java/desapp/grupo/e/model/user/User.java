@@ -30,7 +30,8 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")
     private List<CategoryAlert> categoryAlerts;
-    @Transient
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,
+              fetch = FetchType.LAZY)
     private Commerce commerce;
     @Transient
     private List<Purchase> purchases;
