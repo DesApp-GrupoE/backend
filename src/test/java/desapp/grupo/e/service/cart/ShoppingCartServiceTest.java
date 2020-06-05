@@ -46,7 +46,6 @@ public class ShoppingCartServiceTest {
         ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(keyCart);
 
         Assertions.assertTrue(shoppingCart.getCartProducts().isEmpty());
-        Assertions.assertTrue(shoppingCart.getCartOfferProducts().isEmpty());
     }
 
     @Test
@@ -94,7 +93,7 @@ public class ShoppingCartServiceTest {
         shoppingCartService.addOffer(keyCart, offerId, 1);
 
         ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(keyCart);
-        Assertions.assertEquals(1, shoppingCart.getCartOfferProducts().size());
+        Assertions.assertEquals(1, shoppingCart.getCartProducts().size());
     }
 
     @Test
@@ -118,6 +117,6 @@ public class ShoppingCartServiceTest {
         shoppingCartService.removeOffer(keyCart, offerId);
 
         ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(keyCart);
-        Assertions.assertTrue(shoppingCart.getCartOfferProducts().isEmpty());
+        Assertions.assertTrue(shoppingCart.getCartProducts().isEmpty());
     }
 }

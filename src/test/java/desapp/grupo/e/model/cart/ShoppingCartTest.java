@@ -1,7 +1,6 @@
 package desapp.grupo.e.model.cart;
 
 import desapp.grupo.e.model.builder.cart.CartProductBuilder;
-import desapp.grupo.e.model.builder.cart.CartOfferProductBuilder;
 import desapp.grupo.e.model.purchase.Purchase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,9 +18,8 @@ public class ShoppingCartTest {
     }
 
     @Test
-    public void aNewShoppingCartShouldHasEmptyListOfCartProductAndCartOfferProduct() {
+    public void aNewShoppingCartShouldHasEmptyListOfCartProducts() {
         Assertions.assertTrue(shoppingCart.getCartProducts().isEmpty());
-        Assertions.assertTrue(shoppingCart.getCartOfferProducts().isEmpty());
     }
 
     @Test
@@ -96,74 +94,114 @@ public class ShoppingCartTest {
     }
 
     @Test
-    public void addOffer() {
-        CartOfferProduct cartProductOffer = CartOfferProductBuilder.aCartOfferProductBuilder()
-                .anyCartOfferProduct()
-                .build();
+    public void addACartProductFromOfferAndCartHasAProductWithSameProductIdThenShouldHasTwoProducts() {
+        Long commerceId1 = 1L;
+        Long productId1= 1L;
+        Long offerId1 = 1L;
+        CartProduct cartProduct = CartProductBuilder.aProductCartBuilder().anyProduct()
+                .withCommerceId(commerceId1).withProductId(productId1)
+                .withQuantity(1).build();
+        CartProduct cartProductWithOffer = CartProductBuilder.aProductCartBuilder().anyProduct()
+                .withCommerceId(commerceId1).withProductId(productId1).withOfferId(offerId1)
+                .withQuantity(1).build();
+        shoppingCart.addProduct(cartProduct);
 
-        shoppingCart.addOffer(cartProductOffer);
+        shoppingCart.addProduct(cartProductWithOffer);
 
-        Assertions.assertEquals(1, shoppingCart.getCartOfferProducts().size());
+        Assertions.assertEquals(2, shoppingCart.getCartProducts().size());
     }
 
     @Test
-    public void removeOffer() {
-        CartOfferProduct cartProductOffer = CartOfferProductBuilder.aCartOfferProductBuilder()
-                .anyCartOfferProduct()
-                .build();
-        shoppingCart.addOffer(cartProductOffer);
+    public void removeOfferAndIfExistAProductWithSameProductIdButIsNotAOfferShouldDeleteOnlyTheOffer() {
+        Long commerceId1 = 1L;
+        Long productId1= 1L;
+        Long offerId1 = 1L;
+        CartProduct cartProduct = CartProductBuilder.aProductCartBuilder().anyProduct()
+                .withCommerceId(commerceId1).withProductId(productId1)
+                .withQuantity(1).build();
+        CartProduct cartProductWithOffer = CartProductBuilder.aProductCartBuilder().anyProduct()
+                .withCommerceId(commerceId1).withProductId(productId1).withOfferId(offerId1)
+                .withQuantity(1).build();
+        shoppingCart.addProduct(cartProduct);
+        shoppingCart.addProduct(cartProductWithOffer);
 
-        shoppingCart.removeOffer(cartProductOffer);
+        shoppingCart.removeOfferById(offerId1);
 
-        Assertions.assertTrue(shoppingCart.getCartOfferProducts().isEmpty());
+        Assertions.assertEquals(1, shoppingCart.getCartProducts().size());
+        Assertions.assertNull(shoppingCart.getCartProducts().get(0).getOfferId());
     }
 
     @Test
-    public void removeOfferById() {
-        Long offerId = 1L;
-        CartOfferProduct cartProductOffer = CartOfferProductBuilder.aCartOfferProductBuilder()
-                .anyCartOfferProduct()
-                .withId(offerId)
-                .build();
-        shoppingCart.addOffer(cartProductOffer);
+    public void removeProductAndIfExistsAnOfferWithSameProductIdShouldDeleteOnlyTheProduct() {
+        Long commerceId1 = 1L;
+        Long productId1= 1L;
+        Long offerId1 = 1L;
+        CartProduct cartProduct = CartProductBuilder.aProductCartBuilder().anyProduct()
+                .withCommerceId(commerceId1).withProductId(productId1)
+                .withQuantity(1).build();
+        CartProduct cartProductWithOffer = CartProductBuilder.aProductCartBuilder().anyProduct()
+                .withCommerceId(commerceId1).withProductId(productId1).withOfferId(offerId1)
+                .withQuantity(1).build();
+        shoppingCart.addProduct(cartProduct);
+        shoppingCart.addProduct(cartProductWithOffer);
 
-        shoppingCart.removeOfferById(offerId);
+        shoppingCart.removeProductById(productId1);
 
-        Assertions.assertTrue(shoppingCart.getCartOfferProducts().isEmpty());
+        Assertions.assertEquals(1, shoppingCart.getCartProducts().size());
+        Assertions.assertEquals(offerId1, shoppingCart.getCartProducts().get(0).getOfferId());
+    }
+
+
+    @Test
+    public void ifCartHave2ProductsFromSameOfferThenWhenOneIsEliminatedThenBothAreDeleted() {
+        Long commerceId1 = 1L;
+        Long productId1 = 1L;
+        Long productId2 = 2L;
+        Long offerId1 = 1L;
+        CartProduct cartOfferProduct1 = CartProductBuilder.aProductCartBuilder().anyProduct()
+                .withCommerceId(commerceId1).withProductId(productId1).withOfferId(offerId1)
+                .withQuantity(1).build();
+        CartProduct cartOfferProduct2 = CartProductBuilder.aProductCartBuilder().anyProduct()
+                .withCommerceId(commerceId1).withProductId(productId2).withOfferId(offerId1)
+                .withQuantity(1).build();
+        shoppingCart.addProduct(cartOfferProduct1);
+        shoppingCart.addProduct(cartOfferProduct2);
+
+        shoppingCart.removeOfferById(offerId1);
+
+        Assertions.assertTrue(shoppingCart.getCartProducts().isEmpty());
     }
 
     @Test
     public void addOfferExistentInShoppingCartShouldSumQuantities() {
-        Long commerceId = 1L;
-        Long offerId = 1L;
-        CartOfferProduct cartProductOffer1 = CartOfferProductBuilder.aCartOfferProductBuilder()
-                .withCommerceId(commerceId).withOfferId(offerId)
-                .withQuantity(1)
-                .build();
-        CartOfferProduct cartProductOffer2 = CartOfferProductBuilder.aCartOfferProductBuilder()
-                .withCommerceId(commerceId).withOfferId(offerId)
-                .withQuantity(2)
-                .build();
-        shoppingCart.addOffer(cartProductOffer1);
-        shoppingCart.addOffer(cartProductOffer2);
+        Long commerceId1 = 1L;
+        Long productId1 = 1L;
+        Long offerId1 = 1L;
+        CartProduct cartOfferProduct1 = CartProductBuilder.aProductCartBuilder().anyProduct()
+                .withCommerceId(commerceId1).withProductId(productId1).withOfferId(offerId1)
+                .withQuantity(1).build();
+        CartProduct cartOfferProduct2 = CartProductBuilder.aProductCartBuilder().anyProduct()
+                .withCommerceId(commerceId1).withProductId(productId1).withOfferId(offerId1)
+                .withQuantity(1).build();
 
-        Assertions.assertEquals(1, shoppingCart.getCartOfferProducts().size());
-        Assertions.assertEquals(3, shoppingCart.getCartOfferProducts().get(0).getQuantity());
+        shoppingCart.addProduct(cartOfferProduct1);
+        shoppingCart.addProduct(cartOfferProduct2);
+
+        Assertions.assertEquals(2, shoppingCart.getCartProducts().get(0).getQuantity());
     }
 
     @Test
     public void ifAddOfferWhenAskByTotalAmountShouldReturnAmountWithDiscount() {
         Long commerceId1 = 1L;
-        CartOfferProduct cartProductOffer = CartOfferProductBuilder.aCartOfferProductBuilder()
-                .anyCartOfferProduct()
+        Long productId1 = 1L;
+        Long offerId1 = 1L;
+        CartProduct cartProduct = CartProductBuilder.aProductCartBuilder().anyProduct()
+                .withCommerceId(commerceId1).withOfferId(offerId1).withProductId(productId1)
+                .withPrice(100.0).withQuantity(1)
                 .withOff(20)
-                .withCartProduct(
-                    CartProductBuilder.aProductCartBuilder().anyProduct()
-                        .withCommerceId(commerceId1).withPrice(100.0).withQuantity(1).build()
-                )
                 .build();
 
-        shoppingCart.addOffer(cartProductOffer);
+        shoppingCart.addProduct(cartProduct);
 
         Assertions.assertEquals(80.0, shoppingCart.getTotalAmount());
     }
@@ -176,19 +214,9 @@ public class ShoppingCartTest {
                 .anyProduct().withCommerceId(commerceId1).build();
         CartProduct cartProduct2 = CartProductBuilder.aProductCartBuilder()
                 .anyProduct().withCommerceId(commerceId2).build();
-        CartOfferProduct cartProductOffer = CartOfferProductBuilder.aCartOfferProductBuilder()
-                .anyCartOfferProduct()
-                .withCommerceId(commerceId2)
-                .withOff(20)
-                .withCartProduct(
-                        CartProductBuilder.aProductCartBuilder().anyProduct()
-                                .withCommerceId(commerceId2).withPrice(100.0).withQuantity(1).build()
-                )
-                .build();
 
         shoppingCart.addProduct(cartProduct1);
         shoppingCart.addProduct(cartProduct2);
-        shoppingCart.addOffer(cartProductOffer);
 
         List<Purchase> purchases = shoppingCart.generatePurchase();
 
@@ -196,7 +224,6 @@ public class ShoppingCartTest {
         Assertions.assertEquals(commerceId1, purchases.get(0).getCommerceId());
         Assertions.assertEquals(commerceId2, purchases.get(1).getCommerceId());
         Assertions.assertFalse(purchases.get(1).getCartProducts().isEmpty());
-        Assertions.assertFalse(purchases.get(1).getCartOfferProducts().isEmpty());
     }
 
 }

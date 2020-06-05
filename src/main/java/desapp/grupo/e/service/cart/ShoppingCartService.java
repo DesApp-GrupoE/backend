@@ -1,6 +1,5 @@
 package desapp.grupo.e.service.cart;
 
-import desapp.grupo.e.model.cart.CartOfferProduct;
 import desapp.grupo.e.model.cart.CartProduct;
 import desapp.grupo.e.model.cart.ShoppingCart;
 import desapp.grupo.e.model.product.Offer;
@@ -44,12 +43,12 @@ public class ShoppingCartService {
 
     public void addProduct(String keyShoppingCart, Long productId, Integer quantity) {
         Product product = findProduct(productId);
-        CartProduct cartProduct = mapToCartProduct(product, quantity);
+        CartProduct cartProduct = mapToCartProduct(product, quantity, null, null);
         ShoppingCart shoppingCart = getShoppingCartByKey(keyShoppingCart);
         shoppingCart.addProduct(cartProduct);
     }
 
-    private CartProduct mapToCartProduct(Product product, Integer quantity) {
+    private CartProduct mapToCartProduct(Product product, Integer quantity, Long offerId, Integer off) {
         CartProduct cartProduct = new CartProduct();
         cartProduct.setProductId(product.getId());
         cartProduct.setPrice(product.getPrice());
@@ -57,6 +56,8 @@ public class ShoppingCartService {
         cartProduct.setName(product.getName());
         cartProduct.setBrand(product.getBrand());
         cartProduct.setImg(product.getImg());
+        cartProduct.setOfferId(offerId);
+        cartProduct.setOff(off);
         return cartProduct;
     }
 
@@ -72,9 +73,9 @@ public class ShoppingCartService {
 
     public void addOffer(String keyShoppingCart, Long offerId, Integer quantity) {
         Offer offer = findOffer(offerId);
-        CartOfferProduct cartOfferProduct = mapToCartOfferProduct(offer, quantity);
+        List<CartProduct> cartProducts = mapToCartOfferProduct(offer, quantity);
         ShoppingCart shoppingCart = getShoppingCartByKey(keyShoppingCart);
-        shoppingCart.addOffer(cartOfferProduct);
+        cartProducts.forEach(shoppingCart::addProduct);
     }
 
     private Offer findOffer(Long offerId) {
@@ -82,15 +83,10 @@ public class ShoppingCartService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Offer %s not found", offerId)));
     }
 
-    private CartOfferProduct mapToCartOfferProduct(Offer offer, Integer quantity) {
-        List<CartProduct> cartProducts = offer.getProducts().stream()
-                .map(product -> mapToCartProduct(product, 1))
+    private List<CartProduct> mapToCartOfferProduct(Offer offer, Integer quantity) {
+        return offer.getProducts().stream()
+                .map(product -> mapToCartProduct(product, quantity, offer.getId(), offer.getOff()))
                 .collect(Collectors.toList());
-        CartOfferProduct cartOfferProduct = new CartOfferProduct(offer.getIdCommerce(), offer.getId(), offer.getOff());
-        cartOfferProduct.setId(offer.getId());
-        cartOfferProduct.setQuantity(quantity);
-        cartOfferProduct.setCartProducts(cartProducts);
-        return cartOfferProduct;
     }
 
     public void removeOffer(String keyShoppingCart, Long offerId) {

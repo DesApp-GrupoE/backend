@@ -7,11 +7,13 @@ public class CartProductBuilder {
     private Long id;
     private Long productId;
     private Long commerceId;
+    private Long offerId;
     private String name;
     private String brand;
     private String img;
     private Double price;
     private Integer quantity;
+    private Integer off;
 
     public static CartProductBuilder aProductCartBuilder() {
         return new CartProductBuilder();
@@ -29,6 +31,11 @@ public class CartProductBuilder {
 
     public CartProductBuilder withCommerceId(Long commerceId) {
         this.commerceId = commerceId;
+        return this;
+    }
+
+    public CartProductBuilder withOfferId(Long offerId) {
+        this.offerId = offerId;
         return this;
     }
 
@@ -52,6 +59,11 @@ public class CartProductBuilder {
         return this;
     }
 
+    public CartProductBuilder withOff(Integer off) {
+        this.off = off;
+        return this;
+    }
+
     public CartProductBuilder anyProduct() {
         this.id = 1L;
         this.productId = 1L;
@@ -61,6 +73,7 @@ public class CartProductBuilder {
         this.price = 10.0;
         this.quantity = 1;
         this.img = "urlImage.jpg";
+        this.offerId = null;
         return this;
     }
 
@@ -69,11 +82,13 @@ public class CartProductBuilder {
         cartProduct.setId(this.id);
         cartProduct.setProductId(this.productId);
         cartProduct.setCommerceId(this.commerceId);
+        cartProduct.setOfferId(this.offerId);
         cartProduct.setBrand(this.brand);
         cartProduct.setImg(this.img);
         cartProduct.setName(this.name);
         cartProduct.setPrice(this.price);
         cartProduct.setQuantity(this.quantity);
+        cartProduct.setOff(off);
         resetBuilder();
         return cartProduct;
     }

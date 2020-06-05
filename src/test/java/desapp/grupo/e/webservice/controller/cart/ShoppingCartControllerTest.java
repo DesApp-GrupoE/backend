@@ -63,8 +63,7 @@ public class ShoppingCartControllerTest {
                 .header("Authorization", "Token1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.cartProducts", hasSize(0)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.cartOfferProducts", hasSize(0)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.cartProducts", hasSize(0)));
     }
 
     @Test
