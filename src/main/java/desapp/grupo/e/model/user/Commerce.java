@@ -38,11 +38,10 @@ public class Commerce {
     private List<Product> products;
 
     public Commerce() {
-
+        this.purchaseTurns = new ArrayList<>();
     }
 
     public Commerce(String name, String address, Long addressNumber, String location, Long phone) {
-
         name = this.name;
         address = this.address;
         addressNumber = this.addressNumber;
