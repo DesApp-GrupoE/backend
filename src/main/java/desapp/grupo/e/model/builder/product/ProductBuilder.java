@@ -45,6 +45,11 @@ public class ProductBuilder {
         return this;
     }
 
+    public ProductBuilder withImg(String img) {
+        this.img = img;
+        return this;
+    }
+
     public ProductBuilder anyProduct() {
         this.id = 1L;
         this.name = "test";

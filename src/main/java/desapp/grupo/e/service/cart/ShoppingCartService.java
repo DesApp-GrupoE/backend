@@ -51,6 +51,7 @@ public class ShoppingCartService {
     private CartProduct mapToCartProduct(Product product, Integer quantity, Long offerId, Integer off) {
         CartProduct cartProduct = new CartProduct();
         cartProduct.setProductId(product.getId());
+        cartProduct.setCommerceId(product.getIdCommerce());
         cartProduct.setPrice(product.getPrice());
         cartProduct.setQuantity(quantity);
         cartProduct.setName(product.getName());

@@ -22,7 +22,7 @@ public class Product {
     protected Integer stock;
     @Column(nullable = false)
     protected String img;
-    @Transient
+    @Column(nullable = false)
     private Long idCommerce;
 
     public Product() {
