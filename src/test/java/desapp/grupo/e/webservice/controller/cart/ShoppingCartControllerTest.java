@@ -163,4 +163,16 @@ public class ShoppingCartControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
+
+    @Test
+    public void updateQuantityToOffer() throws Exception {
+        when(shoppingCartService.getShoppingCartByKey(anyString())).thenReturn(new ShoppingCart());
+        String json = "{ \"id\": 1, \"quantity\": 1 }";
+        mockMvc.perform(MockMvcRequestBuilders.put(BASE_URL + KEY_CART + OFFER)
+                .content(json)
+                .characterEncoding("utf-8")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 }

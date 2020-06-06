@@ -46,7 +46,7 @@ public class ShoppingCart {
 
     private boolean areSameProductAndCommerce(CartProduct cartProduct1, CartProduct cartProduct2) {
         return cartProduct1.getCommerceId().equals(cartProduct2.getCommerceId()) &&
-                cartProduct1.getProductId().equals(cartProduct2.getProductId());
+                isSameProductId(cartProduct2.getProductId(), cartProduct1);
     }
 
     private boolean areSameOffer(CartProduct cartProduct1, CartProduct cartProduct2) {
@@ -56,7 +56,7 @@ public class ShoppingCart {
                 (cartProduct1.getOfferId() == null && cartProduct2.getOfferId() != null)) {
             return false;
         } else {
-            return cartProduct1.getOfferId().equals(cartProduct2.getOfferId());
+            return isSameOfferId(cartProduct2.getOfferId(), cartProduct1);
         }
 
     }
@@ -86,17 +86,32 @@ public class ShoppingCart {
     }
 
     public void removeProductById(Long productId) {
-        this.cartProducts.removeIf(cp -> cp.getProductId().equals(productId) && cp.getOfferId() == null);
+        this.cartProducts.removeIf(cp -> isSameProductId(productId, cp) && cp.getOfferId() == null);
     }
 
     public void removeOfferById(Long offerId) {
-        this.cartProducts.removeIf(cartProduct -> cartProduct.getOfferId() != null && cartProduct.getOfferId().equals(offerId));
+        this.cartProducts.removeIf(cartProduct -> cartProduct.getOfferId() != null && isSameOfferId(offerId, cartProduct));
     }
 
     public void updateProductQuantity(Long productId, Integer quantity) {
         this.cartProducts.stream()
-                .filter(cp -> cp.getProductId().equals(productId))
+                .filter(cp -> isSameProductId(productId, cp))
                 .findFirst()
                 .ifPresent(cp -> cp.setQuantity(quantity));
+    }
+
+    public void updateOfferQuantity(Long offerId, Integer quantity) {
+        this.cartProducts.stream()
+                .filter(cp -> isSameOfferId(offerId, cp))
+                .findFirst()
+                .ifPresent(cp -> cp.setQuantity(quantity));
+    }
+
+    private boolean isSameProductId(Long productId, CartProduct cp) {
+        return cp.getProductId().equals(productId);
+    }
+
+    private boolean isSameOfferId(Long offerId, CartProduct cp) {
+        return cp.getOfferId().equals(offerId);
     }
 }

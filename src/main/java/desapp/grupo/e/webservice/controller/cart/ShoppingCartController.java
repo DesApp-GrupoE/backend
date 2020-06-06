@@ -72,6 +72,13 @@ public class ShoppingCartController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PutMapping(URL_OFFER)
+    public ResponseEntity updateQuantityOffer(@PathVariable(CART_ID) String cartId,
+                                        @Valid @RequestBody CartRequestDto cartRequest) {
+        shoppingCartService.updateOfferQuantity(cartId, cartRequest.getId(), cartRequest.getQuantity());
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @DeleteMapping(URL_OFFER_ID)
     public ResponseEntity removeOffer(@PathVariable(CART_ID) String cartId,
                                         @PathVariable(OFFER_ID) Long offerId) {

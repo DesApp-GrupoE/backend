@@ -99,4 +99,9 @@ public class ShoppingCartService {
         ShoppingCart shoppingCart = getShoppingCartByKey(keyCart);
         shoppingCart.updateProductQuantity(productId, quantity);
     }
+
+    public void updateOfferQuantity(String keyCart, Long productId, Integer quantity) {
+        ShoppingCart shoppingCart = getShoppingCartByKey(keyCart);
+        shoppingCart.updateOfferQuantity(productId, quantity);
+    }
 }

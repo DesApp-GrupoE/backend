@@ -132,4 +132,21 @@ public class ShoppingCartServiceTest {
         ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(keyCart);
         Assertions.assertEquals(5, shoppingCart.getCartProducts().get(0).getQuantity());
     }
+
+    @Test
+    public void updateOfferQuantity() {
+        Long offerId = 1L;
+        Offer offer = OfferBuilder.aOffer().withId(offerId)
+                .withProduct(
+                        ProductBuilder.aProduct().anyProduct().build()
+                ).build();
+        when(offerRepository.findById(eq(offerId))).thenReturn(Optional.of(offer));
+        shoppingCartService.addOffer(keyCart, offerId, 1);
+
+
+        shoppingCartService.updateOfferQuantity(keyCart, offerId, 5);
+
+        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(keyCart);
+        Assertions.assertEquals(5, shoppingCart.getCartProducts().get(0).getQuantity());
+    }
 }
