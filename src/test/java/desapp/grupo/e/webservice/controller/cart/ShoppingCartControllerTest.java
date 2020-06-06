@@ -3,7 +3,6 @@ package desapp.grupo.e.webservice.controller.cart;
 import desapp.grupo.e.model.cart.ShoppingCart;
 import desapp.grupo.e.service.cart.ShoppingCartService;
 import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
-import desapp.grupo.e.service.utils.RandomString;
 import desapp.grupo.e.webservice.handler.CustomizeErrorHandler;
 import desapp.grupo.e.webservice.handler.cart.ShoppingCartHandler;
 import org.hamcrest.core.Is;
@@ -145,6 +144,20 @@ public class ShoppingCartControllerTest {
         String urlDelete = BASE_URL + KEY_CART + OFFER + "/" + anyOfferId;
 
         mockMvc.perform(MockMvcRequestBuilders.delete(urlDelete)
+                .characterEncoding("utf-8")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void setQuantityToProduct() throws Exception {
+        when(shoppingCartService.getShoppingCartByKey(anyString())).thenReturn(new ShoppingCart());
+        String urlPut = BASE_URL + KEY_CART + PRODUCT;
+        String json = "{ \"id\": 1, \"quantity\": 1 }";
+
+        mockMvc.perform(MockMvcRequestBuilders.put(urlPut)
+                .content(json)
                 .characterEncoding("utf-8")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON))

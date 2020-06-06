@@ -226,4 +226,17 @@ public class ShoppingCartTest {
         Assertions.assertFalse(purchases.get(1).getCartProducts().isEmpty());
     }
 
+    @Test
+    public void updateProductQuantity() {
+        Long commerceId1 = 1L;
+        Long productId1 = 1L;
+        CartProduct cartProduct1 = CartProductBuilder.aProductCartBuilder().anyProduct()
+                .withCommerceId(commerceId1).withProductId(productId1)
+                .withQuantity(1).build();
+        shoppingCart.addProduct(cartProduct1);
+
+        shoppingCart.updateProductQuantity(productId1, 10);
+
+        Assertions.assertEquals(10, shoppingCart.getCartProducts().get(0).getQuantity());
+    }
 }

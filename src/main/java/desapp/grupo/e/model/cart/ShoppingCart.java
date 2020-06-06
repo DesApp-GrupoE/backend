@@ -92,4 +92,11 @@ public class ShoppingCart {
     public void removeOfferById(Long offerId) {
         this.cartProducts.removeIf(cartProduct -> cartProduct.getOfferId() != null && cartProduct.getOfferId().equals(offerId));
     }
+
+    public void updateProductQuantity(Long productId, Integer quantity) {
+        this.cartProducts.stream()
+                .filter(cp -> cp.getProductId().equals(productId))
+                .findFirst()
+                .ifPresent(cp -> cp.setQuantity(quantity));
+    }
 }

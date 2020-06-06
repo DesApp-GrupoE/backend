@@ -119,4 +119,17 @@ public class ShoppingCartServiceTest {
         ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(keyCart);
         Assertions.assertTrue(shoppingCart.getCartProducts().isEmpty());
     }
+
+    @Test
+    public void updateQuantityProduct() {
+        Long productId = 1L;
+        Product product = ProductBuilder.aProduct().anyProduct().withId(productId).build();
+        when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
+        shoppingCartService.addProduct(keyCart, productId, 1);
+
+        shoppingCartService.updateProductQuantity(keyCart, productId, 5);
+
+        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(keyCart);
+        Assertions.assertEquals(5, shoppingCart.getCartProducts().get(0).getQuantity());
+    }
 }

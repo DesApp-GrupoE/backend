@@ -4,12 +4,7 @@ import desapp.grupo.e.model.dto.cart.CartRequestDto;
 import desapp.grupo.e.service.cart.ShoppingCartService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -53,6 +48,13 @@ public class ShoppingCartController {
     public ResponseEntity addProduct(@PathVariable(CART_ID) String cartId,
                                         @Valid @RequestBody CartRequestDto cartRequest) {
         shoppingCartService.addProduct(cartId, cartRequest.getId(), cartRequest.getQuantity());
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PutMapping(URL_PRODUCT)
+    public ResponseEntity updateProductQuantity(@PathVariable(CART_ID) String cartId,
+                                                @Valid @RequestBody CartRequestDto cartRequest) {
+        shoppingCartService.updateProductQuantity(cartId, cartRequest.getId(), cartRequest.getQuantity());
         return new ResponseEntity(HttpStatus.OK);
     }
 
