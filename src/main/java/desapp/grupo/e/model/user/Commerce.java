@@ -45,11 +45,11 @@ public class Commerce {
     }
 
     public Commerce(String name, String address, Long addressNumber, String location, Long phone) {
-        name = this.name;
-        address = this.address;
-        addressNumber = this.addressNumber;
-        location = this.location;
-        phone = this.phone;
+        this.name = name;
+        this.address = address;
+        this.addressNumber = addressNumber;
+        this.location = location;
+        this.phone = phone;
         purchaseTurns = new ArrayList<>();
     }
 

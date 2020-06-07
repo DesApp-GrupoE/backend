@@ -41,7 +41,7 @@ public class ProductTest {
     @Test
     public void createProductShouldHasIDCustomer() {
         Long productIDCommerceExpected = 1L;
-        Product product = ProductBuilder.aProduct().withIdCommerce(productIDCommerceExpected).build();
+        Product product = ProductBuilder.aProduct().withCommerceId(productIDCommerceExpected).build();
 
         Assertions.assertEquals(product.getIdCommerce(), productIDCommerceExpected);
     }
