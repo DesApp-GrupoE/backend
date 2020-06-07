@@ -3,6 +3,7 @@ package desapp.grupo.e.model.dto.product;
 import desapp.grupo.e.model.product.Product;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class ProductDTO {
 
@@ -13,19 +14,15 @@ public class ProductDTO {
 
     @NotBlank(message = "Brand is mandatory")
     private String brand;
-
-    @NotBlank(message = "Price is mandatory")
+    
+    @NotNull(message = "price is mandatory")
     private Double price;
 
-    @NotBlank(message = "Email is mandatory")
-    private String email;
-
-    @NotBlank(message = "Stock is mandatory")
+    @NotNull(message = "stock is mandatory")
     private int stock;
 
     @NotBlank(message = "IMG is mandatory")
     private String img;
-
 
 
     public ProductDTO() {

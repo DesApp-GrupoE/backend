@@ -66,7 +66,6 @@ public class OfferBuilder {
 
     public OfferBuilder anyOffer() {
         this.id = 1L;
-        this.idCommerce = 1L;
         this.name = "Super Offer";
         this.off = 10;
         this.dateFrom = LocalDateTime.now();
@@ -74,10 +73,11 @@ public class OfferBuilder {
         this.products = new ArrayList<>();
         return this;
     }
-
+    /*
     public OfferBuilder withIdCommerce(Long idCommerce) {
         this.idCommerce = idCommerce;
         return this;
     }
+    */
 
 }

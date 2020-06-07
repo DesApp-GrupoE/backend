@@ -3,7 +3,6 @@ import desapp.grupo.e.model.user.Commerce;
 import desapp.grupo.e.model.purchase.PurchaseTurn;
 
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CommerceDTO {

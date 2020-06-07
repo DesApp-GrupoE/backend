@@ -1,14 +1,9 @@
 package desapp.grupo.e.model.user;
 
 import desapp.grupo.e.model.dto.user.UserDTO;
-import desapp.grupo.e.model.exception.BusinessException;
 import desapp.grupo.e.model.product.CategoryAlert;
-import desapp.grupo.e.model.product.Offer;
-import desapp.grupo.e.model.product.Product;
 import desapp.grupo.e.model.purchase.Purchase;
-
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

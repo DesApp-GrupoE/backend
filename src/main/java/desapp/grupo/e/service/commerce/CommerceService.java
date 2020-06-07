@@ -5,11 +5,8 @@ import desapp.grupo.e.persistence.user.UserRepository;
 import desapp.grupo.e.persistence.commerce.CommerceRepository;
 import desapp.grupo.e.persistence.exception.CommerceDuplicatedException;
 import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
-import desapp.grupo.e.service.log.Log;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 
 public class CommerceService {

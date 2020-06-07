@@ -48,7 +48,7 @@ public class ConfigBean {
 
     @Bean
     public ProductService productService() {
-        return new ProductService(productRepository);
+        return new ProductService(commerceRepository, productRepository);
     }
 
     @Bean

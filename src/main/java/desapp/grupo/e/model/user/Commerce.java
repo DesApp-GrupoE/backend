@@ -30,11 +30,14 @@ public class Commerce {
     private String location;
     @Column(nullable = false)
     private Long phone;
+    
+
     @Transient
     private List<PurchaseTurn> purchaseTurns;
     @Transient
     private List<Offer> offers;
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "commerce_id")
     private List<Product> products;
 
     public Commerce() {
@@ -92,7 +95,7 @@ public class Commerce {
         return addressNumber;
     }
 
-    public void setAdressNumber(Long addressNumber) {
+    public void setAddressNumber(Long addressNumber) {
         this.addressNumber = addressNumber;
     }
 

@@ -8,8 +8,8 @@ public class ProductBuilder {
     private Double price;
     private Integer stock;
     private String img;
-    private Long idCommerce;
     private Long id;
+    private Long commerceId;
 
     public static ProductBuilder aProduct() {
         return new ProductBuilder();
@@ -35,11 +35,6 @@ public class ProductBuilder {
         return this;
     }
 
-    public ProductBuilder withIdCommerce(Long id) {
-        this.idCommerce = id;
-        return this;
-    }
-
     public ProductBuilder withId(Long productId) {
         this.id = productId;
         return this;
@@ -50,6 +45,11 @@ public class ProductBuilder {
         return this;
     }
 
+    public ProductBuilder withCommerceId(Long commerceId) {
+        this.commerceId = commerceId;
+        return this;
+    }
+
     public ProductBuilder anyProduct() {
         this.id = 1L;
         this.name = "test";
@@ -57,14 +57,13 @@ public class ProductBuilder {
         this.price = 10.0;
         this.stock = 50;
         this.img = "urlImage.jpg";
-        this.idCommerce = 1L;
-
+        this.commerceId = 1L;
         return this;
     }
 
     public Product build() {
         Product product = new Product(this.name, this.brand, this.price, 
-                                      this.stock, this.img, this.idCommerce);
+                                      this.stock, this.img, this.commerceId);
         product.setId(this.id);
         resetBuilder();
         return product;
@@ -76,8 +75,8 @@ public class ProductBuilder {
         this.price = null;
         this.stock = null;
         this.img = null;
-        this.idCommerce = null;
         this.id = null;
+        this.commerceId = null;
     }
 
 }

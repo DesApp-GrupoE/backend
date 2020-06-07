@@ -4,6 +4,7 @@ import desapp.grupo.e.model.dto.product.ProductDTO;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name = "product")
 public class Product {
@@ -22,20 +23,20 @@ public class Product {
     protected Integer stock;
     @Column(nullable = false)
     protected String img;
-    @Column(nullable = false)
-    private Long idCommerce;
+    @Column(name="commerce_id")
+    private Long commerceId;
 
     public Product() {
         // Para el mapping de Hibernate
     }
 
-    public Product(String name, String brand, Double price, Integer stock, String img, Long idCommerce) {
+    public Product(String name, String brand, Double price, Integer stock, String img, Long commerceId) {
         this.name = name;
         this.brand = brand;
         this.price = price;
         this.stock = stock;
         this.img = img;
-        this.idCommerce = idCommerce;
+        this.commerceId = commerceId;
     }
  
     public Product(ProductDTO productDTO) {
@@ -95,11 +96,11 @@ public class Product {
     }
 
 
-    public void setIdCommerce(Long idCommerce) {
-        this.idCommerce = idCommerce;
+    public void setIdCommerce(Long commerceId) {
+        this.commerceId = commerceId;
     }
 
     public Long getIdCommerce() {
-        return idCommerce;
+        return commerceId;
     }
 }
