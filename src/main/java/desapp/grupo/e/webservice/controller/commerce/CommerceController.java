@@ -34,7 +34,7 @@ public class CommerceController {
         Commerce commerce = new Commerce();
         commerce.setName(commerceDTO.getName());
         commerce.setAddress(commerceDTO.getAddress());
-        commerce.setAdressNumber(commerceDTO.getAddressNumber());
+        commerce.setAddressNumber(commerceDTO.getAddressNumber());
         commerce.setLocation(commerceDTO.getLocation());
         commerce.setPhone(commerceDTO.getPhone());
         commerce.setPurchaseTurns(commerceDTO.getPurchaseTurns());
