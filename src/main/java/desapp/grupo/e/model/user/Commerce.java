@@ -42,6 +42,7 @@ public class Commerce {
 
     public Commerce() {
         this.purchaseTurns = new ArrayList<>();
+        this.products = new ArrayList<>();
     }
 
     public Commerce(String name, String address, Long addressNumber, String location, Long phone) {
@@ -50,7 +51,8 @@ public class Commerce {
         this.addressNumber = addressNumber;
         this.location = location;
         this.phone = phone;
-        purchaseTurns = new ArrayList<>();
+        this.purchaseTurns = new ArrayList<>();
+        this.products = new ArrayList<>();
     }
 
     public Long getId() {
