@@ -13,6 +13,7 @@ import java.util.Map;
 @Repository
 public class ProductRepositoryJdbcImpl {
 
+    private static final Double MILLA_TO_KM = 1.609344;
     private NamedParameterJdbcTemplate jdbcTemplate;
 
     public ProductRepositoryJdbcImpl(NamedParameterJdbcTemplate jdbcTemplate) {
@@ -27,6 +28,36 @@ public class ProductRepositoryJdbcImpl {
             return jdbcTemplate.query(sql, params, new ProductMapper());
         }
 
+        String sqlParams = paramsFilterProducts(productSearchDTO, params);
+        sql += " where " + sqlParams;
+        return jdbcTemplate.query(sql, params, new ProductMapper());
+    }
+
+    private boolean isNullOrEmpty(String str) {
+        return str == null || str.equals("");
+    }
+
+    public List<Product> findProductsInRadioKm(ProductSearchDTO productSearchDTO, Double latitude, Double longitude, Integer kilometers) {
+        String sql = "select * from product";
+        Map<String, Object> params = new HashMap<>();
+        String paramsProduct = "";
+        if(productSearchDTO != null && !productSearchDTO.isEmptyObject()) {
+            paramsProduct = paramsFilterProducts(productSearchDTO, params) + " and ";
+        }
+
+        sql += " where " + paramsProduct;
+        sql += " commerce_id in (select c.id from commerce c where " +
+                "( " +
+                "   point(c.longitude, c.latitude)<@>point(:longitude, :latitude)" +
+                ") * :toKm < :km)" ;
+        params.put("longitude", longitude);
+        params.put("latitude", latitude);
+        params.put("toKm", MILLA_TO_KM);
+        params.put("km", kilometers);
+        return jdbcTemplate.query(sql, params, new ProductMapper());
+    }
+
+    private String paramsFilterProducts(ProductSearchDTO productSearchDTO, Map<String, Object> params) {
         String sqlParams = "";
         if(!isNullOrEmpty(productSearchDTO.getName())) {
             sqlParams += " name like :name ";
@@ -39,11 +70,6 @@ public class ProductRepositoryJdbcImpl {
             sqlParams += " brand = :brand ";
             params.put("brand", productSearchDTO.getBrand());
         }
-        sql += " where " + sqlParams;
-        return jdbcTemplate.query(sql, params, new ProductMapper());
-    }
-
-    private boolean isNullOrEmpty(String str) {
-        return str == null || str.equals("");
+        return sqlParams;
     }
 }

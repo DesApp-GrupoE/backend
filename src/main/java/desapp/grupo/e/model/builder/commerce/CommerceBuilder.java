@@ -10,6 +10,8 @@ public class CommerceBuilder {
     private Long addressNumber;
     private String location;
     private Long phone;
+    private Double latitude;
+    private Double longitude;
 
     public static CommerceBuilder aCommerce() {
         return new CommerceBuilder();
@@ -45,12 +47,24 @@ public class CommerceBuilder {
         return this;
     }
 
+    public CommerceBuilder withLongitude(Double longitude) {
+        this.longitude = longitude;
+        return this;
+    }
+
+    public CommerceBuilder withLatitude(Double latitude) {
+        this.latitude = latitude;
+        return this;
+    }
+
     public CommerceBuilder anyCommerce() {
         this.name = "Test";
         this.address = "Brandsen";
         this.addressNumber = 300L;
         this.location = "Quilmes";
         this.phone = 1155443322L;
+        this.latitude = 0.0;
+        this.longitude = 0.0;
         return this;
     }
 
@@ -62,6 +76,8 @@ public class CommerceBuilder {
         commerce.setAddressNumber(this.addressNumber);
         commerce.setLocation(this.location);
         commerce.setPhone(this.phone);
+        commerce.setLatitude(this.latitude);
+        commerce.setLongitude(this.longitude);
         resetBuilder();
         return commerce;
     }

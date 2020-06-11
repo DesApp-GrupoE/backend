@@ -30,7 +30,10 @@ public class Commerce {
     private String location;
     @Column(nullable = false)
     private Long phone;
-    
+    @Column
+    private Double latitude;
+    @Column
+    private Double longitude;
 
     @Transient
     private List<PurchaseTurn> purchaseTurns;
@@ -135,5 +138,29 @@ public class Commerce {
 
     public void removePurchaseTurn(PurchaseTurn purchaseTurn) {
         this.purchaseTurns.remove(purchaseTurn);
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }

@@ -40,6 +40,8 @@ public class DatabaseDummyDataInitializer {
                 .withAddress("Brandsen")
                 .withAddressNumber(300L)
                 .withLocation("Quilmes")
+                .withLatitude(-34.725805)
+                .withLongitude(-58.252009)
                 .withPhone(1155443322L)
                 .build();
 

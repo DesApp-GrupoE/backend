@@ -17,7 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.util.Arrays;
 import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ApplicationJpaRepositoryTest.class)
 public class ProductRepositoryJdbcTest {
@@ -30,8 +37,13 @@ public class ProductRepositoryJdbcTest {
 
     @BeforeEach
     public void setUp() {
+        Double baseLatitud = -34.725805;
+        Double baseLongitude = -58.252009;
+
         User user = UserBuilder.aUser().anyUser().build();
-        Commerce commerce = CommerceBuilder.aCommerce().anyCommerce().build();
+        Commerce commerce = CommerceBuilder.aCommerce().anyCommerce()
+                .withLatitude(baseLatitud).withLongitude(baseLongitude)
+                .build();
 
         Product product1 = ProductBuilder.aProduct()
                 .withName("Fideos 500gr").withBrand("Luchetti")
@@ -105,4 +117,84 @@ public class ProductRepositoryJdbcTest {
 
         Assertions.assertEquals(1, products.size());
     }
+
+    @Test
+    public void getProductsByLatitudeLongitudeAndProductSearch() {
+        final Double LAT_LESS_THAN_1KM = -34.725269;
+        final Double LNG_LESS_THAN_1KM = -58.250948;
+        final Integer KMs = 1;
+        Product product1 = ProductBuilder.aProduct()
+                .withName("Fideos 500gr").withBrand("Luchetti")
+                .withStock(100).withPrice(50.0)
+                .withImg("url")
+                .build();
+        ProductSearchDTO productSearchDTO = new ProductSearchDTO();
+        productSearchDTO.setName("Light");
+        productSearchDTO.setBrand("Coca Cola");
+
+        NamedParameterJdbcTemplate jdbcTemplate = mock(NamedParameterJdbcTemplate.class);
+        productRepositoryJdbcImpl = new ProductRepositoryJdbcImpl(jdbcTemplate);
+        when(jdbcTemplate.query(anyString(), anyMap(), any(ProductMapper.class)))
+                .thenReturn(Arrays.asList(product1));
+
+        List<Product> products = productRepositoryJdbcImpl.findProductsInRadioKm(
+                productSearchDTO, LAT_LESS_THAN_1KM, LNG_LESS_THAN_1KM, KMs);
+
+        Assertions.assertEquals(1, products.size());
+    }
+
+    @Test
+    public void getProductsByLatitudeLongitudeWithoutProductSearch() {
+        final Double LAT_LESS_THAN_1KM = -34.725269;
+        final Double LNG_LESS_THAN_1KM = -58.250948;
+        final Integer KMs = 1;
+        Product product1 = ProductBuilder.aProduct()
+                .withName("Fideos 500gr").withBrand("Luchetti")
+                .withStock(100).withPrice(50.0)
+                .withImg("url")
+                .build();
+
+        NamedParameterJdbcTemplate jdbcTemplate = mock(NamedParameterJdbcTemplate.class);
+        productRepositoryJdbcImpl = new ProductRepositoryJdbcImpl(jdbcTemplate);
+        when(jdbcTemplate.query(anyString(), anyMap(), any(ProductMapper.class)))
+                .thenReturn(Arrays.asList(product1));
+
+        List<Product> products = productRepositoryJdbcImpl.findProductsInRadioKm(
+                null, LAT_LESS_THAN_1KM, LNG_LESS_THAN_1KM, KMs);
+
+        Assertions.assertEquals(1, products.size());
+    }
+
+
+//  Estos tests solo se pueden probar con una base local de postgresql
+//  ya que estoy usando funciones especificas de postgresql que H2 no se banca
+//  Estos testean el uso de Point
+//
+//    @Test
+//    public void getProductsByLatitudeLongitudeInRadioLessThan1Km() {
+//        final Double LAT_LESS_THAN_1KM = -34.725269;
+//        final Double LNG_LESS_THAN_1KM = -58.250948;
+//        final Integer KMs = 1;
+//        ProductSearchDTO productSearchDTO = new ProductSearchDTO();
+//        productSearchDTO.setName("Light");
+//        productSearchDTO.setBrand("Coca Cola");
+//        List<Product> products = productRepositoryJdbcImpl.findProductsInRadioKm(
+//                productSearchDTO, LAT_LESS_THAN_1KM, LNG_LESS_THAN_1KM, KMs);
+//
+//        Assertions.assertEquals(1, products.size());
+//    }
+//
+//    @Test
+//    public void getProductsByLatitudeLongitudeInRadioGreaterThan1Km() {
+//        final Double LAT_GREATER_THAN_1KM = -34.7270397;
+//        final Double LNG_GREATER_THAN_1KM = -58.2679150;
+//        final Integer KMs = 1;
+//        ProductSearchDTO productSearchDTO = new ProductSearchDTO();
+//        productSearchDTO.setName("Light");
+//        productSearchDTO.setBrand("Coca Cola");
+//        List<Product> products = productRepositoryJdbcImpl.findProductsInRadioKm(
+//                productSearchDTO, LAT_GREATER_THAN_1KM, LNG_GREATER_THAN_1KM, KMs);
+//
+//        Assertions.assertEquals(0, products.size());
+//    }
 }
