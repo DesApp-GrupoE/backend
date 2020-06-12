@@ -57,25 +57,11 @@ public class ProductSearcherControllerTest {
         this.productsMock = List.of(product1, product2, product3);
     }
 
-
-    @Test
-    public void searchProductWithoutParams() throws Exception {
-        when(productSearchService.findProducts(any())).thenReturn(this.productsMock);
-
-        mockMvc.perform(MockMvcRequestBuilders.post(URL_BASE)
-                .characterEncoding("utf-8")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.*", isA(ArrayList.class)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.*", hasSize(3)));
-    }
-
     @Test
     public void searchProductsWithAddressAndProductSearchWithNameShouldReturnAListOfProductWithSameName() throws Exception {
         String search = "{" +
                             "\"address\": " +
-                                "{\"address\": \"Calle Falsa\", \"addressNumber\": \"123\", \"location\": \"Quilmes\", \"kilometers\": 10}," +
+                                "{\"county\": \"Quilmes\", \"region\": \"Buenos Aires\", \"kilometers\": 10, \"latitude\": 10.0, \"longitude\": 10.0}," +
                             "\"product\": " +
                                 "{\"name\": \"Coca Cola\"}" +
                         " }";
@@ -98,7 +84,7 @@ public class ProductSearcherControllerTest {
     public void searchProductsWithAddressOnlyShouldReturnAllProducts() throws Exception {
         String search = "{" +
                 "\"address\": " +
-                    "{\"address\": \"Calle Falsa\", \"addressNumber\": \"123\", \"location\": \"Quilmes\", \"kilometers\": 10}" +
+                    "{\"county\": \"Quilmes\", \"region\": \"Buenos Aires\", \"kilometers\": 10, \"latitude\": 10.0, \"longitude\": 10.0 }" +
                 " }";
         when(productSearchService.findProducts(any())).thenReturn(this.productsMock);
 

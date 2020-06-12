@@ -8,37 +8,29 @@ import javax.validation.constraints.NotNull;
 @JsonRootName(value = "address")
 public class AddressDTO {
 
-    @NotBlank(message = "Field 'address' is mandatory")
-    private String address;
-    @NotBlank(message = "Field 'addressNumber' is mandatory")
-    private String addressNumber;
-    @NotBlank(message = "Field 'location' is mandatory")
-    private String location;
+    @NotBlank(message = "Field 'county' is mandatory")
+    private String county;
+    @NotBlank(message = "Field 'region' is mandatory")
+    private String region;
     @NotNull(message = "Field 'kilometers' is mandatory")
     private Integer kilometers;
+    private Double latitude;
+    private Double longitude;
 
-    public String getAddress() {
-        return address;
+    public String getCounty() {
+        return county;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setCounty(String county) {
+        this.county = county;
     }
 
-    public String getAddressNumber() {
-        return addressNumber;
+    public String getRegion() {
+        return region;
     }
 
-    public void setAddressNumber(String addressNumber) {
-        this.addressNumber = addressNumber;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public Integer getKilometers() {
@@ -47,5 +39,26 @@ public class AddressDTO {
 
     public void setKilometers(Integer kilometers) {
         this.kilometers = kilometers;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Boolean hasCoordenates() {
+        return this.latitude != null && this.latitude != 0 &&
+                this.longitude != null && this.longitude != 0;
     }
 }

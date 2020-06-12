@@ -52,8 +52,8 @@ public class LoginControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.email", Is.is("Email is mandatory")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.password", Is.is("Password is mandatory")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error[0]", Is.is("Email is mandatory")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error[1]", Is.is("Password is mandatory")))
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
 
