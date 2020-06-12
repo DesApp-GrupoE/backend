@@ -1,5 +1,8 @@
 package desapp.grupo.e.model.dto.search;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
+
+@JsonRootName(value = "product")
 public class ProductSearchDTO {
 
     private String name;

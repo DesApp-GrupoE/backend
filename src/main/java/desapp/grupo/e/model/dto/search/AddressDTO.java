@@ -1,10 +1,20 @@
 package desapp.grupo.e.model.dto.search;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+@JsonRootName(value = "address")
 public class AddressDTO {
 
+    @NotBlank(message = "Field 'address' is mandatory")
     private String address;
+    @NotBlank(message = "Field 'addressNumber' is mandatory")
     private String addressNumber;
+    @NotBlank(message = "Field 'location' is mandatory")
     private String location;
+    @NotNull(message = "Field 'kilometers' is mandatory")
     private Integer kilometers;
 
     public String getAddress() {
