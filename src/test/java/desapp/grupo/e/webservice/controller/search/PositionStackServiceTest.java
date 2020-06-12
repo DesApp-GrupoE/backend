@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -33,23 +34,21 @@ public class PositionStackServiceTest {
     }
 
     @Test
-    public void findPositionStackWithoutConnectionToApiShouldReturnAPositionStackWithLat0Lng0() {
+    public void findPositionStackWithoutConnectionToApiShouldReturnAOptionalEmpty() {
         when(restTemplate.exchange(anyString(), any(), any(), (ParameterizedTypeReference<List<PositionStack>>) any()))
                 .thenThrow(new RestClientException("Error connection"));
 
-        PositionStack position = this.positionStackService.findPositionByAddress(new AddressDTO());
-        Assertions.assertEquals(0.0, position.getLatitude());
-        Assertions.assertEquals(0.0, position.getLongitude());
+        Optional<PositionStack> opsPosition = this.positionStackService.findPositionByAddress(new AddressDTO());
+        Assertions.assertFalse(opsPosition.isPresent());
     }
 
     @Test
-    public void findPositionStackAndApiReturnEmptyResultShouldReturnAPositionStackWithLat0Lng0() {
+    public void findPositionStackAndApiReturnEmptyResultShouldReturnAOptionalEmpty() {
         when(restTemplate.exchange(anyString(), any(), any(), (ParameterizedTypeReference<List<PositionStack>>) any()))
                 .thenReturn(new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK));
 
-        PositionStack position = this.positionStackService.findPositionByAddress(new AddressDTO());
-        Assertions.assertEquals(0.0, position.getLatitude());
-        Assertions.assertEquals(0.0, position.getLongitude());
+        Optional<PositionStack> opsPosition = this.positionStackService.findPositionByAddress(new AddressDTO());
+        Assertions.assertFalse(opsPosition.isPresent());
     }
 
     @Test
@@ -60,8 +59,9 @@ public class PositionStackServiceTest {
         when(restTemplate.exchange(anyString(), any(), any(), (ParameterizedTypeReference<List<PositionStack>>) any()))
                 .thenReturn(new ResponseEntity<>(Arrays.asList(positionResponse), HttpStatus.OK));
 
-        PositionStack position = this.positionStackService.findPositionByAddress(new AddressDTO());
-        Assertions.assertEquals(10.0, position.getLatitude());
-        Assertions.assertEquals(-10.0, position.getLongitude());
+        Optional<PositionStack> opsPosition = this.positionStackService.findPositionByAddress(new AddressDTO());
+        Assertions.assertTrue(opsPosition.isPresent());
+        Assertions.assertEquals(10.0, opsPosition.get().getLatitude());
+        Assertions.assertEquals(-10.0, opsPosition.get().getLongitude());
     }
 }

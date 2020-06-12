@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 
 public class PositionStackService {
 
@@ -22,7 +23,7 @@ public class PositionStackService {
         this.restTemplate = restTemplate;
     }
 
-    public PositionStack findPositionByAddress(AddressDTO address) {
+    public Optional<PositionStack> findPositionByAddress(AddressDTO address) {
         String fullAddress = String.format("%s %s, %s", address.getAddress(), address.getAddressNumber(), address.getLocation());
         String query = "https://example.com?q=" + URLEncoder.encode(fullAddress, StandardCharsets.UTF_8);
         String url = URL_API + "?access_key=" + "key" + "&query="+query+"&limit=1";
@@ -30,11 +31,11 @@ public class PositionStackService {
             HttpEntity<Object> httpEntity = new HttpEntity<>(null);
             ResponseEntity<List<PositionStack>> response = this.restTemplate.exchange(url, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>(){});
             if(!response.getBody().isEmpty()) {
-                return response.getBody().get(0);
+                return Optional.of(response.getBody().get(0));
             }
         } catch (Exception e) {
             Log.info("Error to connect to Position Stack - " + e.getMessage());
         }
-        return new PositionStack(0.0 , 0.0);
+        return Optional.empty();
     }
 }
