@@ -100,6 +100,15 @@ public class ProductRepositoryJdbcTest {
     }
 
     @Test
+    public void getProductsLikeNameEmptyShouldReturnAllProducts() {
+        ProductSearchDTO productSearchDTO = new ProductSearchDTO();
+        productSearchDTO.setName("");
+        List<Product> products = productRepositoryJdbcImpl.findProducts(productSearchDTO);
+
+        Assertions.assertEquals(3, products.size());
+    }
+
+    @Test
     public void getProductsByBrand() {
         ProductSearchDTO productSearchDTO = new ProductSearchDTO();
         productSearchDTO.setBrand("Coca Cola");
@@ -161,6 +170,30 @@ public class ProductRepositoryJdbcTest {
 
         List<Product> products = productRepositoryJdbcImpl.findProductsInRadioKm(
                 null, LAT_LESS_THAN_1KM, LNG_LESS_THAN_1KM, KMs);
+
+        Assertions.assertEquals(1, products.size());
+    }
+
+    @Test
+    public void getProductsByLatitudeLongitudeWithProductSearchWithNameEmptyShouldReturnAllProducts() {
+        final Double LAT_LESS_THAN_1KM = -34.725269;
+        final Double LNG_LESS_THAN_1KM = -58.250948;
+        final Integer KMs = 1;
+        Product product1 = ProductBuilder.aProduct()
+                .withName("Fideos 500gr").withBrand("Luchetti")
+                .withStock(100).withPrice(50.0)
+                .withImg("url")
+                .build();
+        ProductSearchDTO productSearchDTO = new ProductSearchDTO();
+        productSearchDTO.setName("");
+
+        NamedParameterJdbcTemplate jdbcTemplate = mock(NamedParameterJdbcTemplate.class);
+        productRepositoryJdbcImpl = new ProductRepositoryJdbcImpl(jdbcTemplate);
+        when(jdbcTemplate.query(anyString(), anyMap(), any(ProductMapper.class)))
+                .thenReturn(Arrays.asList(product1));
+
+        List<Product> products = productRepositoryJdbcImpl.findProductsInRadioKm(
+                productSearchDTO, LAT_LESS_THAN_1KM, LNG_LESS_THAN_1KM, KMs);
 
         Assertions.assertEquals(1, products.size());
     }

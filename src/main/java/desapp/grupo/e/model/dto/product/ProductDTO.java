@@ -35,6 +35,7 @@ public class ProductDTO {
         this.brand = product.getBrand();
         this.stock = product.getStock();
         this.img = product.getImg();
+        this.price = product.getPrice();
     }
 
     public Long getId() {

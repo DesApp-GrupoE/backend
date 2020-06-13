@@ -29,7 +29,9 @@ public class ProductRepositoryJdbcImpl {
         }
 
         String sqlParams = paramsFilterProducts(productSearchDTO, params);
-        sql += " where " + sqlParams;
+        if(!isNullOrEmpty(sqlParams)) {
+            sql += " where " + sqlParams;
+        }
         return jdbcTemplate.query(sql, params, new ProductMapper());
     }
 
@@ -42,7 +44,12 @@ public class ProductRepositoryJdbcImpl {
         Map<String, Object> params = new HashMap<>();
         String paramsProduct = "";
         if(productSearchDTO != null && !productSearchDTO.isEmptyObject()) {
-            paramsProduct = paramsFilterProducts(productSearchDTO, params) + " and ";
+            String paramsFilter = paramsFilterProducts(productSearchDTO, params);
+            if(isNullOrEmpty(paramsFilter)) {
+               paramsProduct = paramsFilter;
+            } else {
+                paramsProduct = paramsFilter + " and ";
+            }
         }
 
         sql += " where " + paramsProduct;
@@ -60,7 +67,7 @@ public class ProductRepositoryJdbcImpl {
     private String paramsFilterProducts(ProductSearchDTO productSearchDTO, Map<String, Object> params) {
         String sqlParams = "";
         if(!isNullOrEmpty(productSearchDTO.getName())) {
-            sqlParams += " name like :name ";
+            sqlParams += " upper(name) like upper(:name) ";
             params.put("name", "%" +productSearchDTO.getName() + "%");
         }
         if(!isNullOrEmpty(productSearchDTO.getBrand())) {
