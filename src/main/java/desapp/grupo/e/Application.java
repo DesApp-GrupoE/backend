@@ -1,6 +1,6 @@
 package desapp.grupo.e;
 
-import desapp.grupo.e.helper.DatabaseDummyDataInitializer;
+import desapp.grupo.e.helper.DatabaseInitializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 public class Application {
 
     @Autowired
-    private DatabaseDummyDataInitializer dummyDataInitializer;
+    private DatabaseInitializer databaseInitializer;
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -21,6 +21,9 @@ public class Application {
 
     @Bean
     public CommandLineRunner insertDataInDb() {
-        return (args) -> dummyDataInitializer.initDatabaseWithData();
+        return (args) -> {
+            databaseInitializer.initDatabaseExtensions();
+            databaseInitializer.initDatabaseWithData();
+        };
     }
 }

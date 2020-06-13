@@ -13,16 +13,32 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-public class DatabaseDummyDataInitializer {
+public class DatabaseInitializer {
 
     @Value("${spring.profiles.active}")
     private String typeDeploy;
+    @Value("${spring.jpa.database}")
+    private String database;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Transactional
+    public void initDatabaseExtensions() {
+        if(!"POSTGRESQL".equalsIgnoreCase(database)) {
+            return; // H2 no se banca las extensiones de postgres
+        }
+        String sqlCreateExtensionCube = "create extension if not exists cube";
+        String sqlCreateExtensionEarthDistance = "create extension if not exists earthdistance";
+        jdbcTemplate.execute(sqlCreateExtensionCube);
+        jdbcTemplate.execute(sqlCreateExtensionEarthDistance);
+    }
 
     @Transactional
     public void initDatabaseWithData() {

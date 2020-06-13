@@ -45,6 +45,7 @@ public class LoginControllerTest {
         UserDTO userDTO = new UserDTO();
         userDTO.setName("Test");
         userDTO.setSurname("Test");
+        userDTO.setEmail("test@test.test");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/auth/sign-up")
                 .content(JsonUtils.toJson(userDTO))
@@ -52,8 +53,7 @@ public class LoginControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error[0]", Is.is("Email is mandatory")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.error[1]", Is.is("Password is mandatory")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error[0]", Is.is("Password is mandatory")))
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
 

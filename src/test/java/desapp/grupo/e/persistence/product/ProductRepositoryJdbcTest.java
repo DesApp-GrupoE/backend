@@ -8,7 +8,7 @@ import desapp.grupo.e.model.dto.search.ProductSearchDTO;
 import desapp.grupo.e.model.product.Product;
 import desapp.grupo.e.model.user.Commerce;
 import desapp.grupo.e.model.user.User;
-import desapp.grupo.e.persistence.commerce.CommerceRepository;
+import desapp.grupo.e.persistence.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +32,7 @@ public class ProductRepositoryJdbcTest {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
     @Autowired
-    private CommerceRepository commerceRepository;
+    private UserRepository userRepository;
     private ProductRepositoryJdbcImpl productRepositoryJdbcImpl;
 
     @BeforeEach
@@ -66,14 +66,14 @@ public class ProductRepositoryJdbcTest {
         commerce.getProducts().add(product3);
 
         user.setCommerce(commerce);
-        commerceRepository.save(commerce);
+        userRepository.save(user);
 
         productRepositoryJdbcImpl = new ProductRepositoryJdbcImpl(jdbcTemplate);
     }
 
     @AfterEach
     public void tearDown() {
-        commerceRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
