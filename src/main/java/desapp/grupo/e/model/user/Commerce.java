@@ -16,9 +16,8 @@ public class Commerce {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator="seq_id_commerce")
     private Long id;
-
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id")
     private User user;
     @Column(nullable = false)
     private String name;

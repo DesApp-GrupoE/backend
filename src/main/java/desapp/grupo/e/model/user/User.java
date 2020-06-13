@@ -25,8 +25,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")
     private List<CategoryAlert> categoryAlerts;
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,
-              fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, optional = false)
     private Commerce commerce;
     @Transient
     private List<Purchase> purchases;
@@ -115,6 +114,13 @@ public class User {
     }
 
     public void setCommerce(Commerce commerce) {
+        if(commerce == null) {
+            // Si el mapeo no me trae un commerce, entonces debo nullear nuestro commerce para evitar inconsistencias
+            this.commerce = null;
+        } else {
+            // Si el commerce != null guardo la instancia del user. Asi generamos el mapeo
+            commerce.setUser(this);
+        }
         this.commerce = commerce;
     }
 

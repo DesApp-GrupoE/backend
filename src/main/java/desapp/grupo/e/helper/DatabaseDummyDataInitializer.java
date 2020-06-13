@@ -14,6 +14,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class DatabaseDummyDataInitializer {
@@ -23,6 +24,7 @@ public class DatabaseDummyDataInitializer {
     @Autowired
     private UserRepository userRepository;
 
+    @Transactional
     public void initDatabaseWithData() {
         if(!"dev".equalsIgnoreCase(typeDeploy)) {
             return; // Finalize execution
