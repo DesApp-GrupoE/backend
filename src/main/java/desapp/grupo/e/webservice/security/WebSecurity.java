@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -30,8 +31,15 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         // Todos los demas endpoints deben estar autenticados utilizando Token
         // Deshabilito cors
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/auth/*").permitAll()
+                .antMatchers(HttpMethod.POST,
+                    "/auth/*",
+                    "/cart",
+                    "/cart/**/*",
+                    "/products"
+                ).permitAll()
                 .antMatchers(HttpMethod.GET).permitAll()
+                .antMatchers(HttpMethod.PUT).permitAll()
+                .antMatchers(HttpMethod.DELETE).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
