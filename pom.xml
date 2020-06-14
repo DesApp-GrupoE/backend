@@ -138,6 +138,12 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>desapp/grupo/e/helper/DatabaseInitializer.*</exclude>
+                        <exclude>desapp/grupo/e/helper/dummy/*</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>pre-unit-test</id>
