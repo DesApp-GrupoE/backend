@@ -3,9 +3,11 @@ package desapp.grupo.e.webservice.security;
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import desapp.grupo.e.model.dto.ApiError;
 import desapp.grupo.e.model.dto.auth.LoginRequestDTO;
 import desapp.grupo.e.model.dto.auth.TokenDTO;
 import desapp.grupo.e.service.log.Log;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -56,11 +58,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         }
     }
 
-    // Si el método anterior no tiro excepción y puedo devolver Authentication, se crea el token
+    // Si el método anterior no tiro excepción y pudo devolver Authentication, entonces se crea el token
     @Override
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication auth) throws IOException {
 
-        LocalDateTime expiresIn = LocalDateTime.now().plusDays(1);
+        LocalDateTime expiresIn = LocalDateTime.now().plusHours(1);
         String stringToken = JWT.create()
                 .withSubject(((User) auth.getPrincipal()).getUsername())
                 .withExpiresAt(Date.from(expiresIn.atZone(ZoneId.systemDefault()).toInstant()))
@@ -79,16 +81,18 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         writer.flush();
     }
 
-//    @Override
-//    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-//        SecurityContextHolder.clearContext();
-//        if (this.logger.isDebugEnabled()) {
-//            this.logger.debug("Authentication request failed: " + failed.toString(), failed);
-//            this.logger.debug("Updated SecurityContextHolder to contain null Authentication");
-//            this.logger.debug("Delegating to authentication failure handler " + this.failureHandler);
-//        }
-//
-//        this.rememberMeServices.loginFail(request, response);
-//        this.failureHandler.onAuthenticationFailure(request, response, failed);
-//    }
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        SecurityContextHolder.clearContext();
+        Log.info("Authentication request failed: " + failed.toString());
+        Log.exception(failed);
+        ApiError apiError = new ApiError("Email or Password is incorrect");
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setContentType("application/json");
+
+        PrintWriter writer = response.getWriter();
+        ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        writer.println(objectWriter.writeValueAsString(apiError));
+        writer.flush();
+    }
 }

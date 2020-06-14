@@ -155,6 +155,7 @@
                     <excludes>
                         <exclude>desapp/grupo/e/helper/DatabaseInitializer.*</exclude>
                         <exclude>desapp/grupo/e/helper/dummy/*</exclude>
+                        <exclude>desapp/grupo/e/webservice/security/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
