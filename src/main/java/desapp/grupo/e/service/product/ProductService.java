@@ -21,7 +21,7 @@ public class ProductService {
 
     @Transactional
     public Product save(long commerceId, Product product) {
-        if(productRepository.existProductInDatabase(product.getName())) {
+        if(productRepository.existProductInCommerce(commerceId, product.getName())) {
             throw new ProductDuplicatedException(String.format("Product already has the commerce '%s'", product.getName()));
         }
         Commerce commerce = findProductById(commerceId);
