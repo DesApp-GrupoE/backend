@@ -1,10 +1,13 @@
 package desapp.grupo.e.service.commerce;
+
 import desapp.grupo.e.model.user.User;
 import desapp.grupo.e.model.user.Commerce;
 import desapp.grupo.e.persistence.user.UserRepository;
 import desapp.grupo.e.persistence.commerce.CommerceRepository;
 import desapp.grupo.e.persistence.exception.CommerceDuplicatedException;
 import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
+
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -33,5 +36,15 @@ public class CommerceService {
     private User findUserById(Long userId) {
         return userRepository.findById(userId)
                     .orElseThrow(() -> new ResourceNotFoundException(String.format("User %s not found", userId)));
+    }
+
+    @Transactional
+    public void removeById(Long userId, Long id) {
+        try {
+            //commerceRepository.removeFk(userId, id);
+            commerceRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            //Si se intenta eliminar un commerce que ya fue eliminado no hacemos nada
+        }
     }
 }

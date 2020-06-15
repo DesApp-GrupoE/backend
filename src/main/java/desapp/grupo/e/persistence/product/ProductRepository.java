@@ -7,6 +7,6 @@ import org.springframework.data.repository.query.Param;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     
     @Query(nativeQuery = true,
-        value = "select count(*) > 0 from product where name = :name")
-    boolean existProductInDatabase(@Param("name") String product);
+        value = "select count(*) > 0 from product where commerce_id = :commerce_id and name = :name")
+    boolean existProductInCommerce(@Param("commerce_id") Long commerce_id, @Param("name") String name);
 }
