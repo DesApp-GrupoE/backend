@@ -2,6 +2,7 @@ package desapp.grupo.e.webservice.controller;
 
 import desapp.grupo.e.model.builder.user.UserBuilder;
 import desapp.grupo.e.model.user.User;
+import desapp.grupo.e.service.auth.AuthService;
 import desapp.grupo.e.webservice.handler.CustomizeErrorHandler;
 import desapp.grupo.e.model.dto.ApiError;
 import desapp.grupo.e.model.dto.user.UserDTO;
@@ -29,12 +30,14 @@ import static org.mockito.Mockito.when;
 public class LoginControllerTest {
 
     private LoginService loginService;
+    private AuthService authService;
     private MockMvc mockMvc;
 
     @BeforeEach
     public void setUp() {
         loginService = mock(LoginService.class);
-        LoginController loginController = new LoginController(loginService);
+        authService = mock(AuthService.class);
+        LoginController loginController = new LoginController(loginService, authService);
         mockMvc = MockMvcBuilders.standaloneSetup(loginController)
                     .setControllerAdvice(new CustomizeErrorHandler(), new LoginControllerHandler())
                     .build();
@@ -86,6 +89,16 @@ public class LoginControllerTest {
         Assertions.assertEquals(userDTO.getSurname(), newUser.getSurname());
         Assertions.assertEquals(userDTO.getEmail(), newUser.getEmail());
         Assertions.assertNull(newUser.getPassword()); //Password not return
+    }
+
+    @Test
+    public void logout() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/logout")
+            .header("Authorization", "token")
+            .characterEncoding("utf-8")
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test

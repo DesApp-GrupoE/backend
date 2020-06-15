@@ -6,7 +6,10 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import desapp.grupo.e.model.dto.ApiError;
 import desapp.grupo.e.model.dto.auth.LoginRequestDTO;
 import desapp.grupo.e.model.dto.auth.TokenDTO;
+import desapp.grupo.e.service.auth.AuthService;
+import desapp.grupo.e.service.jackson.JsonUtils;
 import desapp.grupo.e.service.log.Log;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,12 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-
-import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
 /**
  *  Este filtro se encarga del login
@@ -35,11 +33,13 @@ import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
  */
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
+    private AuthService authService;
     private AuthenticationManager authenticationManager;
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, ApplicationContext ctx) {
         super();
         this.authenticationManager = authenticationManager;
+        this.authService = ctx.getBean(AuthService.class);
         setFilterProcessesUrl("/auth/login"); // Indico que se cree este endpoint para el login
     }
 
@@ -61,23 +61,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     // Si el método anterior no tiro excepción y pudo devolver Authentication, entonces se crea el token
     @Override
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication auth) throws IOException {
-
-        LocalDateTime expiresIn = LocalDateTime.now().plusHours(1);
-        String stringToken = JWT.create()
-                .withSubject(((User) auth.getPrincipal()).getUsername())
-                .withExpiresAt(Date.from(expiresIn.atZone(ZoneId.systemDefault()).toInstant()))
-                .sign(HMAC512(SecurityConstants.SECRET.getBytes()));
-
+        TokenDTO tokenDTO = authService.createToken(((User) auth.getPrincipal()).getUsername());
         res.setContentType("application/json");
-
         PrintWriter writer = res.getWriter();
-        TokenDTO tokenDTO = new TokenDTO();
-        tokenDTO.setType(SecurityConstants.TOKEN_PREFIX);
-        tokenDTO.setToken(stringToken);
-        tokenDTO.setExpiresIn(expiresIn.atZone(ZoneId.systemDefault()).toEpochSecond());
-
-        ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        writer.println(objectWriter.writeValueAsString(tokenDTO));
+        writer.println(JsonUtils.toJson(tokenDTO));
         writer.flush();
     }
 
@@ -86,7 +73,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         SecurityContextHolder.clearContext();
         Log.info("Authentication request failed: " + failed.toString());
         Log.exception(failed);
-        ApiError apiError = new ApiError("Email or Password is incorrect");
+        ApiError apiError = new ApiError("Email or Password incorrect");
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json");
 

@@ -4,6 +4,7 @@ import desapp.grupo.e.persistence.category.alert.CategoryAlertRepository;
 import desapp.grupo.e.persistence.user.UserRepository;
 import desapp.grupo.e.persistence.commerce.CommerceRepository;
 import desapp.grupo.e.persistence.product.ProductRepository;
+import desapp.grupo.e.service.auth.AuthService;
 import desapp.grupo.e.service.category.alert.CategoryAlertService;
 import desapp.grupo.e.service.login.UserDetailsServiceImpl;
 import desapp.grupo.e.service.user.UserService;
@@ -35,6 +36,11 @@ public class ConfigBean {
     @Bean("loginServiceBean")
     public LoginService loginService() {
         return new LoginService(userRepository, bCryptPasswordEncoder());
+    }
+
+    @Bean("authServiceBean")
+    public AuthService authService() {
+        return new AuthService();
     }
 
     @Bean

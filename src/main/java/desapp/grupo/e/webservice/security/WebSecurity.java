@@ -32,7 +32,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         // Deshabilito cors
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST,
-                    "/auth/*",
+                    "/auth/sign-up",
+                    "/auth/login",
                     "/cart",
                     "/cart/**/*",
                     "/products"
@@ -42,8 +43,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilter(new JWTAuthenticationFilter(authenticationManager()))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                .addFilter(new JWTAuthenticationFilter(authenticationManager(), getApplicationContext()))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), getApplicationContext()))
                 // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
