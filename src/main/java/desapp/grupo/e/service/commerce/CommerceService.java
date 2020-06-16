@@ -47,4 +47,8 @@ public class CommerceService {
             //Si se intenta eliminar un commerce que ya fue eliminado no hacemos nada
         }
     }
+
+    public Commerce getCommerceByUser(Long userId) {
+        return commerceRepository.findByUser(userId);
+    }
 }

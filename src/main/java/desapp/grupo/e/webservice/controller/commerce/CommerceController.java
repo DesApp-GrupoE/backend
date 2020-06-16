@@ -4,11 +4,7 @@ import desapp.grupo.e.model.dto.commerce.CommerceDTO;
 import desapp.grupo.e.model.user.Commerce;
 import desapp.grupo.e.service.commerce.CommerceService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import javax.validation.Valid;
@@ -18,10 +14,19 @@ public class CommerceController {
     private CommerceService commerceService;
     private static final String USER_ID = "user_id";
     private static final String COMMERCE_ID = "commerce_id";
-    private static final String URL_BASE = "/user/{" + USER_ID + "}/commerce/{" + COMMERCE_ID+ "}";
+    private static final String URL_BASE = "/user/{" + USER_ID + "}/commerce";
 
     public CommerceController(CommerceService commerceService) {
         this.commerceService = commerceService;
+    }
+
+    @GetMapping(URL_BASE)
+    public ResponseEntity<CommerceDTO> getCommerceByUser(@PathVariable(USER_ID) Long userId) {
+        Commerce commerce = commerceService.getCommerceByUser(userId);
+        if(commerce == null) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return ResponseEntity.ok(new CommerceDTO(commerce));
     }
 
     @PostMapping(URL_BASE)
@@ -33,7 +38,7 @@ public class CommerceController {
         return new ResponseEntity<>(commerceDTO, HttpStatus.CREATED);
     }
 
-    @DeleteMapping(URL_BASE)
+    @DeleteMapping(URL_BASE + "/{" + COMMERCE_ID + "}")
     public ResponseEntity deleteCommerce(@PathVariable(USER_ID) Long userId, @PathVariable(COMMERCE_ID) Long commerceId) {
         commerceService.removeById(userId, commerceId);
         return new ResponseEntity<>(HttpStatus.OK);
