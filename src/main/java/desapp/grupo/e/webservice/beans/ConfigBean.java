@@ -45,7 +45,7 @@ public class ConfigBean {
 
     @Bean
     public UserService userService() {
-        return new UserService(userRepository);
+        return new UserService(userRepository, authService());
     }
 
     @Bean

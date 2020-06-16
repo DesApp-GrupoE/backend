@@ -38,7 +38,7 @@ public class AuthService {
         return tokenDTO;
     }
 
-    public String getUsernameByToken(String token) {
+    public String getEmailByToken(String token) {
         if(blackListToken.contains(token)) {
             throw new TokenExpiredException("Token expired");
         }
