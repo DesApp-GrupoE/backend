@@ -6,18 +6,25 @@ import desapp.grupo.e.model.builder.user.UserBuilder;
 import desapp.grupo.e.model.product.Product;
 import desapp.grupo.e.model.user.Commerce;
 import desapp.grupo.e.model.user.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class DummyData {
 
+    private BCryptPasswordEncoder encrypter;
+
+    public DummyData() {
+        this.encrypter = new BCryptPasswordEncoder();
+    }
+
     public User createUser1() {
         User user1 = UserBuilder.aUser()
                 .withName("Pepe")
                 .withSurname("Pepe")
                 .withEmail("pepito@test.com")
-                .withPassword("12345")
+                .withPassword(encrypter.encode("12345678"))
                 .build();
 
         Commerce commerce1 = CommerceBuilder.aCommerce()
@@ -84,7 +91,7 @@ public class DummyData {
                 .withName("Susana")
                 .withSurname("Rodriguez")
                 .withEmail("susana@gmail.com")
-                .withPassword("12345")
+                .withPassword(this.encrypter.encode("12345678"))
                 .build();
 
         Commerce commerce1 = CommerceBuilder.aCommerce()
@@ -157,7 +164,7 @@ public class DummyData {
                 .withName("Pedro")
                 .withSurname("Lopez")
                 .withEmail("pedro_lopez@gmail.com")
-                .withPassword("12345")
+                .withPassword(this.encrypter.encode("12345678"))
                 .build();
 
         Commerce commerce1 = CommerceBuilder.aCommerce()

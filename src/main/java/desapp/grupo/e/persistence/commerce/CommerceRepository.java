@@ -23,4 +23,8 @@ public interface CommerceRepository extends JpaRepository<Commerce, Long> {
     @Query(nativeQuery = true,
             value = "update commerce set id_user = null where id_user = :idUser and id = :id")
     void removeFk(@Param("idUser") Long idUser, @Param("id") Long id);
+
+    @Query(nativeQuery = true,
+            value = "select * from commerce where user_id = :userId")
+    Commerce findByUser(@Param("userId") Long userId);
 }
