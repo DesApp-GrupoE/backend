@@ -1,12 +1,14 @@
----------------------------------------------------------------------------
-TAG 1.0.0 - Entrega 1
----------------------------------------------------------------------------
+TAG 1.1.0 - Entrega 2
 NEW FEATURES
-* Modelo casi completo.
-* Integración de Travis, Codacy y Heroku.
-* Test al 73% (Puede que haya influído el no haber testeado de getters y setters).
 
+Integración JWT, integración API positionstack.
+Desarrollo de Frontend (utilizando endpoints creados)
+Test al 77%.
+Endpoints ABM de usuario, ABM comercio, ABM producto, ABM Alerta de categorías, ABM carrito de compras.
 NOTES
-* Falta implementar bien como se van a registrar las ventas de los comercios
 
 KNOWN ISSUES
+
+Aplicación corriendo local porque heroku trabaja con https y la API positionstack usa http en la versión gratuita.
+No se catchea bien la exception en los endpoints de borrado.
+Falta el limpiado de los tokens de sesión.
