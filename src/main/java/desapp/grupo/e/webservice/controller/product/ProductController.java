@@ -6,6 +6,7 @@ import desapp.grupo.e.service.product.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,9 @@ public class ProductController {
     private ProductService productService;
 
     private static final String COMMERCE_ID = "commerce_id";
+    private static final String PRODUCT_ID = "product_id";
     private static final String URL_BASE = "/commerce/{" + COMMERCE_ID + "}/product";
+    private static final String URL_BASE_DELETED = "/commerce/{" + COMMERCE_ID + "}/product/{" + PRODUCT_ID + "}";
     
     public ProductController(ProductService productService) {
         this.productService = productService;
@@ -47,6 +50,13 @@ public class ProductController {
         productDTO.setId(newProduct.getId());
         return new ResponseEntity<>(productDTO, HttpStatus.CREATED);
     }
+
+    @DeleteMapping(URL_BASE_DELETED)
+    public ResponseEntity deleteCommerce(@PathVariable(COMMERCE_ID) Long commerceId, @PathVariable(PRODUCT_ID) Long productId) {
+        productService.removeById(commerceId, productId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     public Product convertDtoToModel(ProductDTO productDTO) {
         Product product = new Product();

@@ -6,6 +6,7 @@ import desapp.grupo.e.persistence.product.ProductRepository;
 import desapp.grupo.e.persistence.exception.ProductDuplicatedException;
 import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.dao.EmptyResultDataAccessException;
 import java.util.List;
 
 
@@ -40,5 +41,15 @@ public class ProductService {
     private Commerce findProductById(Long commerceId) {
         return commerceRepository.findById(commerceId)
                     .orElseThrow(() -> new ResourceNotFoundException(String.format("Commerce %s not found", commerceId)));
+    }
+
+    @Transactional
+    public void removeById(Long commerceId, Long id) {
+        try {
+            //productRepository.removeFk(commerceId, id);
+            productRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            //Si se intenta eliminar un producto que ya fue eliminado no hacemos nada
+        }
     }
 }
