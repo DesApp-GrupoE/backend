@@ -29,7 +29,7 @@ class AuthServiceTest {
     public void getUsernameByToken() {
         TokenDTO token = this.authService.createToken(email);
 
-        String username = this.authService.getUsernameByToken(token.getType() + " " + token.getToken());
+        String username = this.authService.getEmailByToken(token.getType() + " " + token.getToken());
         Assertions.assertEquals(email, username);
     }
 
@@ -38,7 +38,7 @@ class AuthServiceTest {
         String token = "eyJ0eAXiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhcmllbEB0ZXN0LnRlc3QiLCJleHAiOjE1OTIyNDU1NDN9.QhyfNhd_DH0sh4GremY7NMsRNOg879orkFMNsfx2mn5Wmc8PiQWbtfWJW5DvBYeGcz4JcdK1QDETQ4TWEzn6lw";
         String tokenString = "Bearer " + token;
 
-        Assertions.assertThrows(JWTVerificationException.class, () -> this.authService.getUsernameByToken(tokenString));
+        Assertions.assertThrows(JWTVerificationException.class, () -> this.authService.getEmailByToken(tokenString));
     }
 
     @Test
@@ -57,6 +57,6 @@ class AuthServiceTest {
 
         this.authService.addTokenToBlackList(token.getType() + " " + token.getToken());
 
-        Assertions.assertThrows(TokenExpiredException.class, () -> this.authService.getUsernameByToken(token.getType() + " " + token.getToken()));
+        Assertions.assertThrows(TokenExpiredException.class, () -> this.authService.getEmailByToken(token.getType() + " " + token.getToken()));
     }
 }
