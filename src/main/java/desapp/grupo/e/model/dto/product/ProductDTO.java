@@ -19,7 +19,7 @@ public class ProductDTO {
     private Double price;
 
     @NotNull(message = "stock is mandatory")
-    private int stock;
+    private Integer stock;
 
     @NotBlank(message = "IMG is mandatory")
     private String img;
@@ -70,11 +70,11 @@ public class ProductDTO {
         this.price = price;
     }
 
-    public int getStock() {
+    public Integer getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(Integer stock) {
         this.stock = stock;
     }
 

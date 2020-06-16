@@ -20,7 +20,7 @@ public class ProductController {
 
     private static final String COMMERCE_ID = "commerce_id";
     private static final String PRODUCT_ID = "product_id";
-    private static final String URL_BASE = "/commerce/{" + COMMERCE_ID + "}/product";
+    private static final String URL_BASE = "/commerce/{" + "}/product";
     private static final String URL_BASE_DELETED = "/commerce/{" + COMMERCE_ID + "}/product/{" + PRODUCT_ID + "}";
     
     public ProductController(ProductService productService) {
@@ -28,19 +28,11 @@ public class ProductController {
     }
 
     @GetMapping(URL_BASE + "/{" + COMMERCE_ID + "}")        
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
-        Product product = productService.getProductById(id);
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable(COMMERCE_ID) Long commerceId) {
+        Product product = productService.getProductById(commerceId);
         return ResponseEntity.ok(new ProductDTO(product));
     }
 
-    // Agregar id del producto
-    /*
-    @GetMapping(URL_BASE + "/{" + COMMERCE_ID + "}")        
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
-        Product product = productService.getProductById(id);
-        return ResponseEntity.ok(new ProductDTO(product));
-    }
-    */
     
     @PostMapping(URL_BASE)
     public ResponseEntity<ProductDTO> createProduct(@PathVariable(COMMERCE_ID) Long commerceId,

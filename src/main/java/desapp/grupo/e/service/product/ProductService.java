@@ -43,12 +43,12 @@ public class ProductService {
                     .orElseThrow(() -> new ResourceNotFoundException(String.format("Commerce %s not found", commerceId)));
     }
 
-    @Transactional
     public void removeById(Long commerceId, Long id) {
         try {
             //productRepository.removeFk(commerceId, id);
             productRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
+            
             //Si se intenta eliminar un producto que ya fue eliminado no hacemos nada
         }
     }
