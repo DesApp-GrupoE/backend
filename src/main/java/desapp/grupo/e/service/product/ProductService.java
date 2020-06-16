@@ -52,4 +52,8 @@ public class ProductService {
             //Si se intenta eliminar un producto que ya fue eliminado no hacemos nada
         }
     }
+
+    public List<Product> findAllProductsByCommerce(Long commerceId) {
+        return productRepository.findByCommerceId(commerceId);
+    }
 }

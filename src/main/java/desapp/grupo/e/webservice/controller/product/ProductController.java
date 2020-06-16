@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.HttpStatus;
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class ProductController {
@@ -20,19 +22,28 @@ public class ProductController {
 
     private static final String COMMERCE_ID = "commerce_id";
     private static final String PRODUCT_ID = "product_id";
-    private static final String URL_BASE = "/commerce/{" + "}/product";
+    private static final String URL_BASE = "/commerce/{" + COMMERCE_ID + "}/product";
     private static final String URL_BASE_DELETED = "/commerce/{" + COMMERCE_ID + "}/product/{" + PRODUCT_ID + "}";
     
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
-    @GetMapping(URL_BASE + "/{" + COMMERCE_ID + "}")        
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable(COMMERCE_ID) Long commerceId) {
-        Product product = productService.getProductById(commerceId);
-        return ResponseEntity.ok(new ProductDTO(product));
+    @GetMapping(URL_BASE)
+    public ResponseEntity<List<ProductDTO>> getProductById(@PathVariable(COMMERCE_ID) Long commerceId) {
+        List<Product> products = productService.findAllProductsByCommerce(commerceId);
+        List<ProductDTO> productDTOS = products.stream().map(ProductDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(productDTOS);
     }
 
+    // Agregar id del producto
+    /*
+    @GetMapping(URL_BASE + "/{" + COMMERCE_ID + "}")        
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
+        Product product = productService.getProductById(id);
+        return ResponseEntity.ok(new ProductDTO(product));
+    }
+    */
     
     @PostMapping(URL_BASE)
     public ResponseEntity<ProductDTO> createProduct(@PathVariable(COMMERCE_ID) Long commerceId,
