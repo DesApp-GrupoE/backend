@@ -99,8 +99,8 @@ public class DummyData {
                 .withAddress("Av. Francia")
                 .withAddressNumber(4996L)
                 .withLocation("Quilmes")
-                .withLatitude(-34.763601)
-                .withLongitude(-58.262519)
+                .withLatitude(-34.761164)
+                .withLongitude(-58.267327)
                 .withPhone(110303456L)
                 .build();
 
