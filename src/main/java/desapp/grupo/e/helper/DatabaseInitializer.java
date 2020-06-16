@@ -34,9 +34,9 @@ public class DatabaseInitializer {
 
     @Transactional
     public void initDatabaseWithData() {
-        if(!"dev".equalsIgnoreCase(typeDeploy)) {
-            return; // Finalize execution
-        }
+//        if(!"dev".equalsIgnoreCase(typeDeploy)) {
+//            return; // Finalize execution
+//        }
         DummyData dummyData = new DummyData();
         this.userRepository.save(dummyData.createUser1());
         this.userRepository.save(dummyData.createUser2());
