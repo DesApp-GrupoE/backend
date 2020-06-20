@@ -34,7 +34,7 @@ public class DummyData {
                 .withLocation("Quilmes")
                 .withLatitude(-34.725805)
                 .withLongitude(-58.252009)
-                .withPhone(1155443322L)
+                .withPhone("1155443322")
                 .build();
 
         Product product1 = ProductBuilder.aProduct()
@@ -101,7 +101,7 @@ public class DummyData {
                 .withLocation("Quilmes")
                 .withLatitude(-34.761164)
                 .withLongitude(-58.267327)
-                .withPhone(110303456L)
+                .withPhone("110303456")
                 .build();
 
         Product product1 = ProductBuilder.aProduct()
@@ -174,7 +174,7 @@ public class DummyData {
                 .withLocation("Quilmes")
                 .withLatitude(-34.765784)
                 .withLongitude(-58.263849)
-                .withPhone(110303456L)
+                .withPhone("110303456")
                 .build();
 
         Product product1 = ProductBuilder.aProduct()

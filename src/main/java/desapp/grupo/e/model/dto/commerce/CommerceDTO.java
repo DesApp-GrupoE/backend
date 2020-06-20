@@ -1,21 +1,23 @@
 package desapp.grupo.e.model.dto.commerce;
-import desapp.grupo.e.model.user.Commerce;
-import desapp.grupo.e.model.purchase.PurchaseTurn;
 
-import javax.validation.constraints.NotBlank;
-import java.util.List;
+import desapp.grupo.e.model.user.Commerce;
+
+import javax.validation.constraints.NotNull;
 
 public class CommerceDTO {
 
     private Long id;
-
-    @NotBlank(message = "Name is mandatory")
+    @NotNull(message = "name.notNull")
     private String name;
     private String address;
     private Long addressNumber;
     private String location;
-    private Long phone;
-    private List<PurchaseTurn> purchaseTurns;
+    @NotNull(message = "location.notNull")
+    private Double latitude;
+    @NotNull(message = "longitude.notNull")
+    private Double longitude;
+    @NotNull(message = "phone.notNull")
+    private String phone;
 
     public CommerceDTO() {
         // Constructor vacio para Jackson
@@ -28,7 +30,6 @@ public class CommerceDTO {
         this.addressNumber = commerce.getAddressNumber();
         this.location = commerce.getLocation();
         this.phone = commerce.getPhone();
-        this.purchaseTurns = commerce.getPurchaseTurns();
     }
 
     public Long getId() {
@@ -71,19 +72,27 @@ public class CommerceDTO {
         this.location = location;
     }
 
-    public Long getPhone(){
+    public String getPhone(){
         return phone;
     }
 
-    public void setPhone(Long phone){
+    public void setPhone(String phone){
         this.phone = phone;
     }
 
-    public List<PurchaseTurn> getPurchaseTurns() {
-        return purchaseTurns;
+    public Double getLatitude() {
+        return latitude;
     }
 
-    public void setPurcharseTurns(List<PurchaseTurn> purchaseTurns) {
-        this.purchaseTurns = purchaseTurns;
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }

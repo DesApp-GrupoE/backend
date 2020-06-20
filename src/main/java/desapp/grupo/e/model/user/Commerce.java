@@ -28,7 +28,7 @@ public class Commerce {
     @Column(nullable = false)
     private String location;
     @Column(nullable = false)
-    private Long phone;
+    private String phone;
     @Column
     private Double latitude;
     @Column
@@ -47,7 +47,7 @@ public class Commerce {
         this.products = new ArrayList<>();
     }
 
-    public Commerce(String name, String address, Long addressNumber, String location, Long phone) {
+    public Commerce(String name, String address, Long addressNumber, String location, String phone) {
         this.name = name;
         this.address = address;
         this.addressNumber = addressNumber;
@@ -111,11 +111,11 @@ public class Commerce {
         this.location = location;
     }
 
-    public Long getPhone(){
+    public String getPhone(){
         return phone;
     }
 
-    public void setPhone(Long phone){
+    public void setPhone(String phone){
         this.phone = phone;
     }
 

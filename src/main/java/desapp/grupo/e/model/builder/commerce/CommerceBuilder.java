@@ -9,7 +9,7 @@ public class CommerceBuilder {
     private String address;
     private Long addressNumber;
     private String location;
-    private Long phone;
+    private String phone;
     private Double latitude;
     private Double longitude;
 
@@ -42,7 +42,7 @@ public class CommerceBuilder {
         return this;
     }
 
-    public CommerceBuilder withPhone(Long phone) {
+    public CommerceBuilder withPhone(String phone) {
         this.phone = phone;
         return this;
     }
@@ -62,7 +62,7 @@ public class CommerceBuilder {
         this.address = "Brandsen";
         this.addressNumber = 300L;
         this.location = "Quilmes";
-        this.phone = 1155443322L;
+        this.phone = "1155443322";
         this.latitude = 0.0;
         this.longitude = 0.0;
         return this;

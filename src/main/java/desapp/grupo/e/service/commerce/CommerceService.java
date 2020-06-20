@@ -10,8 +10,6 @@ import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
 public class CommerceService {
 
     private UserRepository userRepository;
@@ -25,7 +23,7 @@ public class CommerceService {
     @Transactional
     public Commerce save(long idUser, Commerce commerce) {
         if(commerceRepository.existCommerceInDatabase(commerce.getName())) {
-            throw new CommerceDuplicatedException(String.format("User already has the commerce '%s'", commerce.getName()));
+            throw new CommerceDuplicatedException(String.format("Commerce with name '%s' exists", commerce.getName()));
         }
         User user = findUserById(idUser);
         user.setCommerce(commerce);
@@ -41,7 +39,6 @@ public class CommerceService {
     @Transactional
     public void removeById(Long userId, Long id) {
         try {
-            //commerceRepository.removeFk(userId, id);
             commerceRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             //Si se intenta eliminar un commerce que ya fue eliminado no hacemos nada
