@@ -29,9 +29,7 @@ public class DummyData {
 
         Commerce commerce1 = CommerceBuilder.aCommerce()
                 .withName("Lo de Minguito")
-                .withAddress("Brandsen")
-                .withAddressNumber(300L)
-                .withLocation("Quilmes")
+                .withAddress("Brandsen 300, Quilmes")
                 .withLatitude(-34.725805)
                 .withLongitude(-58.252009)
                 .withPhone("1155443322")
@@ -96,9 +94,7 @@ public class DummyData {
 
         Commerce commerce1 = CommerceBuilder.aCommerce()
                 .withName("Susi")
-                .withAddress("Av. Francia")
-                .withAddressNumber(4996L)
-                .withLocation("Quilmes")
+                .withAddress("Av. Francia 4996, Quilmes")
                 .withLatitude(-34.761164)
                 .withLongitude(-58.267327)
                 .withPhone("110303456")
@@ -169,9 +165,7 @@ public class DummyData {
 
         Commerce commerce1 = CommerceBuilder.aCommerce()
                 .withName("El barba")
-                .withAddress("Estanislao del campo")
-                .withAddressNumber(4579L)
-                .withLocation("Quilmes")
+                .withAddress("Estanislao del campo 4579, Quilmes")
                 .withLatitude(-34.765784)
                 .withLongitude(-58.263849)
                 .withPhone("110303456")

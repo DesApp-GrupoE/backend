@@ -1,23 +1,32 @@
 package desapp.grupo.e.model.dto.commerce;
 
 import desapp.grupo.e.model.user.Commerce;
+import desapp.grupo.e.model.user.CommerceSector;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CommerceDTO {
 
     private Long id;
     @NotNull(message = "name.notNull")
     private String name;
+    @NotNull(message = "address.notNull")
     private String address;
-    private Long addressNumber;
-    private String location;
-    @NotNull(message = "location.notNull")
+    @NotNull(message = "latitude.notNull")
     private Double latitude;
     @NotNull(message = "longitude.notNull")
     private Double longitude;
     @NotNull(message = "phone.notNull")
     private String phone;
+    @NotEmpty(message = "sectors.notEmpty")
+    private List<CommerceSector> sectors;
+    @NotEmpty(message = "hours.notEmpty")
+    @Valid
+    private List<CommerceHourDTO> hours;
 
     public CommerceDTO() {
         // Constructor vacio para Jackson
@@ -27,9 +36,13 @@ public class CommerceDTO {
         this.id = commerce.getId();
         this.name = commerce.getName();
         this.address = commerce.getAddress();
-        this.addressNumber = commerce.getAddressNumber();
-        this.location = commerce.getLocation();
         this.phone = commerce.getPhone();
+        this.sectors = commerce.getSectors();
+        this.latitude = commerce.getLatitude();
+        this.longitude = commerce.getLongitude();
+        this.hours = commerce.getHours().stream()
+                .map(CommerceHourDTO::new)
+                .collect(Collectors.toList());
     }
 
     public Long getId() {
@@ -56,22 +69,6 @@ public class CommerceDTO {
         this.address = address;
     }
 
-    public Long getAddressNumber() {
-        return addressNumber;
-    }
-
-    public void setAddressNumber(Long addressNumber) {
-        this.addressNumber = addressNumber;
-    }
-
-    public String getLocation(){
-        return location;
-    }
-
-    public void setLocation(String location){
-        this.location = location;
-    }
-
     public String getPhone(){
         return phone;
     }
@@ -94,5 +91,21 @@ public class CommerceDTO {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public List<CommerceSector> getSectors() {
+        return sectors;
+    }
+
+    public void setSectors(List<CommerceSector> sectors) {
+        this.sectors = sectors;
+    }
+
+    public List<CommerceHourDTO> getHours() {
+        return hours;
+    }
+
+    public void setHours(List<CommerceHourDTO> hours) {
+        this.hours = hours;
     }
 }
