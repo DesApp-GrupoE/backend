@@ -4,6 +4,7 @@ import desapp.grupo.e.model.dto.search.SearcherDTO;
 import desapp.grupo.e.model.product.Product;
 import desapp.grupo.e.persistence.product.ProductRepositoryJdbcImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class ProductSearcherService {
         this.productRepositoryJdbcImpl = productRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<Product> findProducts(SearcherDTO searcherDTO) {
         if(searcherDTO.getAddressDTO().hasCoordenates()) {
             return this.productRepositoryJdbcImpl.findProductsInRadioKm(searcherDTO.getProductSearchDTO(),
