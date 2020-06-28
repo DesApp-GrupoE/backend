@@ -33,7 +33,6 @@ public class User {
     private Commerce commerce;
     @Transient
     private List<Purchase> purchases;
-    private Boolean tokenActivated;
 
     public User() {
         // Para el mapping de hibernate

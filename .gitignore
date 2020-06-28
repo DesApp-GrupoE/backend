@@ -10,3 +10,6 @@ target/
 *.project
 *.classpath
 *.settings
+
+### ASPECTJ
+ajcore.*.txt
