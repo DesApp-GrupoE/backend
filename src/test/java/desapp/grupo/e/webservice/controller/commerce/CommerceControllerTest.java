@@ -37,8 +37,11 @@ class CommerceControllerTest {
 
     @Test
     public void createCommerce() throws Exception {
-        String jsonPost = "{\"name\": \"Test\", \"addressNumber\": 1010, " +
-                "\"latitude\": 21.1, \"longitude\": -12.1, \"phone\": \"0303456\"}";
+        String jsonPost = "{\"name\": \"Test\", \"address\": \"Av. Siempre Viva 742, Springfield\", " +
+                "\"latitude\": 21.1, \"longitude\": -12.1, \"phone\": \"0303456\"," +
+                "\"sectors\": [\"OTHER\"], " +
+                "\"hours\": [{ \"day\": \"Monday\", \"openAt\": \"10:00\", \"closeAt\": \"20:00\", \"openToday\": true }]" +
+                "}";
         Commerce commerce = CommerceBuilder.aCommerce().anyCommerce().withId(1L).build();
 
         when(commerceService.save(eq(USER_ID), any(Commerce.class))).thenReturn(commerce);
@@ -54,8 +57,11 @@ class CommerceControllerTest {
 
     @Test
     public void createCommerceWithNameExistentShouldReturnA409() throws Exception {
-        String jsonPost = "{\"name\": \"NameDuplicated\", \"addressNumber\": 1010, " +
-                "\"latitude\": 21.1, \"longitude\": -12.1, \"phone\": \"0303456\"}";
+        String jsonPost = "{\"name\": \"DuplicatedName\", \"address\": \"Av. Siempre Viva 742, Springfield\", " +
+                "\"latitude\": 21.1, \"longitude\": -12.1, \"phone\": \"0303456\"," +
+                "\"sectors\": [\"OTHER\"], " +
+                "\"hours\": [{ \"day\": \"Monday\", \"openAt\": \"10:00\", \"closeAt\": \"20:00\", \"openToday\": true  }]" +
+                "}";
 
         when(commerceService.save(eq(USER_ID), any(Commerce.class)))
                 .thenThrow(CommerceDuplicatedException.class);

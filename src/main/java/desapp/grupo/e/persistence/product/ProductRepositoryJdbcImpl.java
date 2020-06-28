@@ -20,7 +20,6 @@ public class ProductRepositoryJdbcImpl {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Transactional(readOnly = true)
     public List<Product> findProducts(ProductSearchDTO productSearchDTO) {
         String sql = "select * from product";
         Map<String, Object> params = new HashMap<>();

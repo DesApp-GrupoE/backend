@@ -24,16 +24,11 @@ public class Commerce {
     @Column(nullable = false)
     private String address;
     @Column(nullable = false)
-    private Long addressNumber;
-    @Column(nullable = false)
-    private String location;
-    @Column(nullable = false)
     private String phone;
     @Column
     private Double latitude;
     @Column
     private Double longitude;
-
     @Transient
     private List<PurchaseTurn> purchaseTurns;
     @Transient
@@ -41,20 +36,19 @@ public class Commerce {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "commerce_id")
     private List<Product> products;
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "CommerceSector", joinColumns = @JoinColumn(name = "commerce_id"))
+    @Enumerated(EnumType.STRING)
+    private List<CommerceSector> sectors;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "commerce_id")
+    private List<CommerceHour> hours;
 
     public Commerce() {
         this.purchaseTurns = new ArrayList<>();
         this.products = new ArrayList<>();
-    }
-
-    public Commerce(String name, String address, Long addressNumber, String location, String phone) {
-        this.name = name;
-        this.address = address;
-        this.addressNumber = addressNumber;
-        this.location = location;
-        this.phone = phone;
-        this.purchaseTurns = new ArrayList<>();
-        this.products = new ArrayList<>();
+        this.sectors = new ArrayList<>();
+        this.hours = new ArrayList<>();
     }
 
     public Long getId() {
@@ -93,22 +87,6 @@ public class Commerce {
 
     public void setAddress(String address){
         this.address = address;
-    }
-
-    public Long getAddressNumber() {
-        return addressNumber;
-    }
-
-    public void setAddressNumber(Long addressNumber) {
-        this.addressNumber = addressNumber;
-    }
-
-    public String getLocation(){
-        return location;
-    }
-
-    public void setLocation(String location){
-        this.location = location;
     }
 
     public String getPhone(){
@@ -161,5 +139,21 @@ public class Commerce {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public void setSectors(List<CommerceSector> sectors) {
+        this.sectors = sectors;
+    }
+
+    public List<CommerceSector> getSectors() {
+        return sectors;
+    }
+
+    public void setHours(List<CommerceHour> hours) {
+        this.hours = hours;
+    }
+
+    public List<CommerceHour> getHours() {
+        return hours;
     }
 }
