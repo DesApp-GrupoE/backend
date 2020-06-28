@@ -1,16 +1,13 @@
 package desapp.grupo.e.model.dto.auth;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class LoginRequestDTO {
+public class Login2FARequestDTO {
 
-    @NotBlank
     @NotNull
     private String email;
-    @NotBlank
     @NotNull
-    private String password;
+    private String code;
 
     public String getEmail() {
         return email;
@@ -20,12 +17,11 @@ public class LoginRequestDTO {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getCode() {
+        return code;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setCode(String code) {
+        this.code = code;
     }
-
 }

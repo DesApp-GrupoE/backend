@@ -5,10 +5,11 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import desapp.grupo.e.model.dto.auth.TokenDTO;
 import desapp.grupo.e.model.user.User;
+import desapp.grupo.e.service.exceptions.AuthenticationCode2FAException;
 import desapp.grupo.e.webservice.security.SecurityConstants;
-import org.springframework.stereotype.Service;
 import desapp.grupo.e.persistence.user.UserRepository;
 import desapp.grupo.e.service.utils.RandomString;
+import org.jboss.aerogear.security.otp.Totp;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -17,7 +18,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
@@ -34,9 +34,7 @@ public class AuthService {
     }
 
     public TokenDTO createToken(String emailUser) {
-
-        Optional<User> optionalUser = userRepository.findByEmail(emailUser);
-        User user = optionalUser.get();
+        User user = userRepository.getByEmail(emailUser);
 
         LocalDateTime expiresIn = LocalDateTime.now().plusHours(1);
         String stringToken = JWT.create()
@@ -45,15 +43,14 @@ public class AuthService {
                 .sign(HMAC512(SecurityConstants.SECRET.getBytes()));
 
         TokenDTO tokenDTO = new TokenDTO();
-        this.emailToken.put(user.getEmail(), tokenDTO);
         tokenDTO.setType(SecurityConstants.TOKEN_PREFIX);
         tokenDTO.setToken(stringToken);
         tokenDTO.setExpiresIn(expiresIn.atZone(ZoneId.systemDefault()).toEpochSecond());
 
         if (!user.getAuth2fa()) {
             return tokenDTO;
-        }    
-        else {
+        } else {
+            this.emailToken.put(user.getEmail(), tokenDTO);
             TokenDTO tokenWith2FA = new TokenDTO();
             RandomString randomString = new RandomString();
             String secretKey = randomString.nextString(15);
@@ -74,6 +71,24 @@ public class AuthService {
                 .getSubject();
     }
 
+    public TokenDTO validateCode2FA(String email, String code) {
+        User user = userRepository.getByEmail(email);
+        Totp totp = new Totp(user.getSecret());
+        if (!isValidLong(code) || !totp.verify(code)) {
+            throw new AuthenticationCode2FAException(String.format("Code '%s' not valid", code));
+        }
+        return this.emailToken.remove(email);
+    }
+
+    private boolean isValidLong(String code) {
+        try {
+            Long.parseLong(code);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
+
     public void addTokenToBlackList(String token) {
         this.blackListToken.add(token);
     }
@@ -82,7 +97,4 @@ public class AuthService {
         return this.blackListToken.contains(token);
     }
 
-    public TokenDTO getTokenByEmail(String email) {
-        return this.emailToken.get(email);
-    }
 }

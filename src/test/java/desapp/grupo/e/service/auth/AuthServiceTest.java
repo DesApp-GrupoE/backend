@@ -2,19 +2,29 @@ package desapp.grupo.e.service.auth;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import desapp.grupo.e.model.builder.user.UserBuilder;
 import desapp.grupo.e.model.dto.auth.TokenDTO;
+import desapp.grupo.e.model.user.User;
+import desapp.grupo.e.persistence.user.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 class AuthServiceTest {
 
+    private UserRepository userRepository;
     private AuthService authService;
     private static final String email = "test@email.test";
 
     @BeforeEach
     public void setUp() {
-        this.authService = new AuthService();
+        userRepository = mock(UserRepository.class);
+        this.authService = new AuthService(userRepository);
+        when(userRepository.getByEmail(eq(email))).thenReturn(UserBuilder.aUser().anyUser().build());
     }
 
     @Test
