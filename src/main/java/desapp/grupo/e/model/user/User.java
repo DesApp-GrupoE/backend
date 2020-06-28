@@ -22,6 +22,10 @@ public class User {
     protected String email;
     @Column(nullable = false)
     protected String password;
+    @Column
+    private String secret;
+    @Column(nullable = false)
+    private Boolean auth2fa;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user")
     private List<CategoryAlert> categoryAlerts;
@@ -29,6 +33,7 @@ public class User {
     private Commerce commerce;
     @Transient
     private List<Purchase> purchases;
+    private Boolean tokenActivated;
 
     public User() {
         // Para el mapping de hibernate
@@ -91,6 +96,22 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    public Boolean getAuth2fa() {
+        return auth2fa;
+    }
+
+    public void setAuth2fa(Boolean auth2fa) {
+        this.auth2fa = auth2fa;
     }
 
     public List<CategoryAlert> getCategoryAlerts() {

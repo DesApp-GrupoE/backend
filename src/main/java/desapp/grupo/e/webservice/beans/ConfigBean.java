@@ -40,7 +40,7 @@ public class ConfigBean {
 
     @Bean("authServiceBean")
     public AuthService authService() {
-        return new AuthService();
+        return new AuthService(userRepository);
     }
 
     @Bean

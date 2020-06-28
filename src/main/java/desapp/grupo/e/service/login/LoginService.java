@@ -27,6 +27,7 @@ public class LoginService {
             throw new EmailRegisteredException(String.format("Email %s was already registered", user.getEmail()));
         }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setSecret("12345");
         this.userRepository.save(user);
         return user;
     }

@@ -25,6 +25,8 @@ public class DummyData {
                 .withSurname("Pepe")
                 .withEmail("pepito@test.com")
                 .withPassword(encrypter.encode("12345678"))
+                .withSecret("6YFX5TVT76OHHNMS")
+                .withAuth2fa(true)
                 .build();
 
         Commerce commerce1 = CommerceBuilder.aCommerce()
@@ -92,6 +94,7 @@ public class DummyData {
                 .withSurname("Rodriguez")
                 .withEmail("susana@gmail.com")
                 .withPassword(this.encrypter.encode("12345678"))
+                .withAuth2fa(true)
                 .build();
 
         Commerce commerce1 = CommerceBuilder.aCommerce()
@@ -165,6 +168,7 @@ public class DummyData {
                 .withSurname("Lopez")
                 .withEmail("pedro_lopez@gmail.com")
                 .withPassword(this.encrypter.encode("12345678"))
+                .withAuth2fa(true)
                 .build();
 
         Commerce commerce1 = CommerceBuilder.aCommerce()

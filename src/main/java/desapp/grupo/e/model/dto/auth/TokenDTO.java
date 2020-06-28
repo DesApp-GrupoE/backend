@@ -8,6 +8,8 @@ public class TokenDTO {
     private String token;
     @JsonProperty("expires_in")
     private long expiresIn;
+    private Boolean tokenActivated;
+    private String secretKey;
 
     public String getToken() {
         return token;
@@ -31,5 +33,21 @@ public class TokenDTO {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Boolean getTokenActivated() {
+        return this.tokenActivated;
+    }
+
+    public void setTokenActivated(Boolean tokenActivated) {
+        this.tokenActivated = tokenActivated;
+    }
+
+    public String getSecretKey() {
+        return this.secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
     }
 }

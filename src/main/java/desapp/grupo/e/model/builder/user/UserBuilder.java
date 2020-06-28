@@ -1,6 +1,7 @@
 package desapp.grupo.e.model.builder.user;
 
 import desapp.grupo.e.model.user.User;
+import desapp.grupo.e.service.log.Log;
 
 public class UserBuilder {
 
@@ -9,6 +10,8 @@ public class UserBuilder {
     private String surname;
     private String email;
     private String password;
+    private String secret;
+    private Boolean auth2fa;
 
 
     public static UserBuilder aUser() {
@@ -21,6 +24,8 @@ public class UserBuilder {
         this.surname = "Test";
         this.email = "test@test.test";
         this.password = "secret_password";
+        this.secret = "secret";
+        this.auth2fa = true;
         return this;
     }
 
@@ -49,9 +54,22 @@ public class UserBuilder {
         return this;
     }
 
+    public UserBuilder withSecret(String secret) {
+        this.secret = secret;
+        return this;
+    }
+
+    public UserBuilder withAuth2fa(Boolean auth2fa) {
+        this.auth2fa = auth2fa;
+        return this;
+    }
+
     public User build() {
         User user = new User(name, surname, email, password);
         user.setId(this.id);
+        user.setSecret(this.secret);
+        Log.debug(this.auth2fa + "");
+        user.setAuth2fa(this.auth2fa);
         resetBuilder();
         return user;
     }
@@ -62,5 +80,7 @@ public class UserBuilder {
         this.surname = null;
         this.email = null;
         this.password = null;
+        this.secret = null;
+        this.auth2fa = null;
     }
 }
