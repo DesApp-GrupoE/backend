@@ -55,7 +55,7 @@ public class User {
         this.surname = userDTO.getSurname();
         this.email = userDTO.getEmail();
         this.password = userDTO.getPassword();
-        this.auth2fa = false;
+        this.auth2fa = userDTO.getAuth2fa();
         this.categoryAlerts = new ArrayList<>();
     }
 

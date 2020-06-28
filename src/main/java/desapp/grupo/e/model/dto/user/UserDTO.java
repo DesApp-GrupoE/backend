@@ -3,6 +3,7 @@ package desapp.grupo.e.model.dto.user;
 import desapp.grupo.e.model.user.User;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class UserDTO {
 
@@ -15,6 +16,8 @@ public class UserDTO {
     private String email;
     @NotBlank(message = "Password is mandatory")
     private String password;
+    @NotNull(message = "auth2fa is mandatory")
+    private boolean auth2fa;
 
     public UserDTO() {
         // Constructor vacio para Jackson
@@ -25,6 +28,7 @@ public class UserDTO {
         this.name = user.getName();
         this.surname = user.getSurname();
         this.email = user.getEmail();
+        this.auth2fa = user.getAuth2fa();
     }
 
     public Long getId() {
@@ -65,5 +69,13 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean getAuth2fa() {
+        return auth2fa;
+    }
+
+    public void setAuth2fa(boolean auth2fa) {
+        this.auth2fa = auth2fa;
     }
 }
