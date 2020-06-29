@@ -53,7 +53,7 @@ public class AuthService {
             this.emailToken.put(user.getEmail(), tokenDTO);
             TokenDTO tokenWith2FA = new TokenDTO();
             RandomString randomString = new RandomString();
-            String secretKey = randomString.nextString(15);
+            String secretKey = randomString.nextStringOnlyCharacters(15);
             tokenWith2FA.setSecretKey(secretKey);
             user.setSecret(secretKey);
             userRepository.save(user);

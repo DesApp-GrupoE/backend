@@ -15,7 +15,7 @@ public class RandomString {
     public RandomString() {
         this.random = new SecureRandom();
     }
-
+    
     public String nextString(int length) {
         if(length < 1) {
             throw new IllegalArgumentException("Integer debe ser un número positivo");
@@ -23,6 +23,18 @@ public class RandomString {
         StringBuilder sb = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
             sb.append(alphanumeric.charAt(random.nextInt(alphanumeric.length())));
+        }
+        return sb.toString();
+    }
+
+    public String nextStringOnlyCharacters(int length) {
+        if(length < 1) {
+            throw new IllegalArgumentException("Integer debe ser un número positivo");
+        }
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            String character = upper + lower;
+            sb.append(character.charAt(random.nextInt(character.length())));
         }
         return sb.toString();
     }
