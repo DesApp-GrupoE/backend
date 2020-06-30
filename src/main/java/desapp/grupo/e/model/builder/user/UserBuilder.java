@@ -10,7 +10,7 @@ public class UserBuilder {
     private String email;
     private String password;
     private String secret;
-    private Boolean auth2fa;
+    private boolean auth2fa;
 
 
     public static UserBuilder aUser() {
@@ -79,6 +79,6 @@ public class UserBuilder {
         this.email = null;
         this.password = null;
         this.secret = null;
-        this.auth2fa = null;
+        this.auth2fa = false;
     }
 }
