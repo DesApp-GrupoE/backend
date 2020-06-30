@@ -34,7 +34,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST,
                     "/auth/sign-up",
                     "/auth/login",
-                    "/auth/code",
+                    "/auth/code-otp",
                     "/cart",
                     "/cart/**/*",
                     "/products"
