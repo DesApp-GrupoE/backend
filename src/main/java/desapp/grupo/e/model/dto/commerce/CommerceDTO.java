@@ -20,6 +20,8 @@ public class CommerceDTO {
     private Double latitude;
     @NotNull(message = "longitude.notNull")
     private Double longitude;
+    private boolean doDelivery;
+    private Double deliveryUp;
     @NotNull(message = "phone.notNull")
     private String phone;
     @NotEmpty(message = "sectors.notEmpty")
@@ -107,5 +109,21 @@ public class CommerceDTO {
 
     public void setHours(List<CommerceHourDTO> hours) {
         this.hours = hours;
+    }
+
+    public boolean getDoDelivery() {
+        return doDelivery;
+    }
+
+    public void setDoDelivery(boolean doDelivery) {
+        this.doDelivery = doDelivery;
+    }
+
+    public Double getDeliveryUp() {
+        return deliveryUp;
+    }
+
+    public void setDeliveryUp(Double deliveryUp) {
+        this.deliveryUp = deliveryUp;
     }
 }

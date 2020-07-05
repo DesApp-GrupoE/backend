@@ -7,6 +7,7 @@ import desapp.grupo.e.persistence.product.ProductRepository;
 import desapp.grupo.e.service.auth.AuthService;
 import desapp.grupo.e.service.category.alert.CategoryAlertService;
 import desapp.grupo.e.service.login.UserDetailsServiceImpl;
+import desapp.grupo.e.service.mapper.CommerceMapperService;
 import desapp.grupo.e.service.user.UserService;
 import desapp.grupo.e.service.product.ProductService;
 import desapp.grupo.e.service.commerce.CommerceService;
@@ -66,5 +67,10 @@ public class ConfigBean {
     @Bean
     public UserDetailsServiceImpl userDetailsService() {
         return new UserDetailsServiceImpl();
+    }
+
+    @Bean
+    public CommerceMapperService commerceMapperService() {
+        return new CommerceMapperService();
     }
 }

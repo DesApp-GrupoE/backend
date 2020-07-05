@@ -5,6 +5,7 @@ import desapp.grupo.e.model.builder.product.ProductBuilder;
 import desapp.grupo.e.model.builder.user.UserBuilder;
 import desapp.grupo.e.model.product.Product;
 import desapp.grupo.e.model.user.Commerce;
+import desapp.grupo.e.model.user.CommerceSector;
 import desapp.grupo.e.model.user.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -35,6 +36,9 @@ public class DummyData {
                 .withLatitude(-34.725805)
                 .withLongitude(-58.252009)
                 .withPhone("1155443322")
+                .withDoDelivery(true)
+                .withDeliveryUp(5.0)
+                .withSectors(Arrays.asList(CommerceSector.GROCERY_STORE))
                 .build();
 
         Product product1 = ProductBuilder.aProduct()
@@ -101,6 +105,9 @@ public class DummyData {
                 .withLatitude(-34.761164)
                 .withLongitude(-58.267327)
                 .withPhone("110303456")
+                .withDoDelivery(true)
+                .withDeliveryUp(5.0)
+                .withSectors(Arrays.asList(CommerceSector.GROCERY_STORE))
                 .build();
 
         Product product1 = ProductBuilder.aProduct()
@@ -173,6 +180,9 @@ public class DummyData {
                 .withLatitude(-34.765784)
                 .withLongitude(-58.263849)
                 .withPhone("110303456")
+                .withDoDelivery(true)
+                .withDeliveryUp(4.0)
+                .withSectors(Arrays.asList(CommerceSector.GROCERY_STORE))
                 .build();
 
         Product product1 = ProductBuilder.aProduct()

@@ -1,6 +1,10 @@
 package desapp.grupo.e.model.builder.commerce;
 
 import desapp.grupo.e.model.user.Commerce;
+import desapp.grupo.e.model.user.CommerceSector;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class CommerceBuilder {
 
@@ -10,6 +14,9 @@ public class CommerceBuilder {
     private String phone;
     private Double latitude;
     private Double longitude;
+    private boolean doDelivery;
+    private Double deliveryUp;
+    private List<CommerceSector> sectors;
 
     public static CommerceBuilder aCommerce() {
         return new CommerceBuilder();
@@ -45,12 +52,29 @@ public class CommerceBuilder {
         return this;
     }
 
+    public CommerceBuilder withDoDelivery(Boolean doDelivery) {
+        this.doDelivery = doDelivery;
+        return this;
+    }
+
+    public CommerceBuilder withDeliveryUp(Double deliveryUp) {
+        this.deliveryUp = deliveryUp;
+        return this;
+    }
+
+    public CommerceBuilder withSectors(List<CommerceSector> sectors) {
+        this.sectors = sectors;
+        return this;
+    }
+
     public CommerceBuilder anyCommerce() {
         this.name = "Test";
         this.address = "Brandsen 300, Quilmes";
         this.phone = "1155443322";
         this.latitude = 0.0;
         this.longitude = 0.0;
+        this.doDelivery = false;
+        this.sectors = Arrays.asList(CommerceSector.GROCERY_STORE);
         return this;
     }
 
@@ -62,6 +86,9 @@ public class CommerceBuilder {
         commerce.setPhone(this.phone);
         commerce.setLatitude(this.latitude);
         commerce.setLongitude(this.longitude);
+        commerce.setDoDelivery(this.doDelivery);
+        commerce.setDeliveryUp(this.deliveryUp);
+        commerce.setSectors(this.sectors);
         resetBuilder();
         return commerce;
     }

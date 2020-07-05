@@ -29,6 +29,10 @@ public class Commerce {
     private Double latitude;
     @Column
     private Double longitude;
+    @Column(nullable = false)
+    private Boolean doDelivery;
+    @Column
+    private Double deliveryUp;
     @Transient
     private List<PurchaseTurn> purchaseTurns;
     @Transient
@@ -155,5 +159,21 @@ public class Commerce {
 
     public List<CommerceHour> getHours() {
         return hours;
+    }
+
+    public Boolean getDoDelivery() {
+        return doDelivery;
+    }
+
+    public void setDoDelivery(Boolean doDelivery) {
+        this.doDelivery = doDelivery;
+    }
+
+    public Double getDeliveryUp() {
+        return deliveryUp;
+    }
+
+    public void setDeliveryUp(Double deliveryUp) {
+        this.deliveryUp = deliveryUp;
     }
 }
