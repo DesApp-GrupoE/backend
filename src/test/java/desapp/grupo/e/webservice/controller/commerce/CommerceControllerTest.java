@@ -4,6 +4,8 @@ import desapp.grupo.e.model.builder.commerce.CommerceBuilder;
 import desapp.grupo.e.model.user.Commerce;
 import desapp.grupo.e.persistence.exception.CommerceDuplicatedException;
 import desapp.grupo.e.service.commerce.CommerceService;
+import desapp.grupo.e.service.commerce.CommerceServiceTest;
+import desapp.grupo.e.service.mapper.CommerceMapperService;
 import desapp.grupo.e.webservice.handler.CustomizeErrorHandler;
 import desapp.grupo.e.webservice.handler.commerce.CommerceControllerHandler;
 import org.hamcrest.core.Is;
@@ -30,7 +32,7 @@ class CommerceControllerTest {
     @BeforeEach
     public void setUp() {
         commerceService = mock(CommerceService.class);
-        mockMvc = MockMvcBuilders.standaloneSetup(new CommerceController(commerceService))
+        mockMvc = MockMvcBuilders.standaloneSetup(new CommerceController(commerceService, new CommerceMapperService()))
                 .setControllerAdvice(new CustomizeErrorHandler(), new CommerceControllerHandler())
                 .build();
     }
