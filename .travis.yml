@@ -5,7 +5,7 @@ jdk:
 jobs:
   include:
     - stage: Test
-      script: mvn install
+      script: mvn clean install
 
 notifications:
   email: 
