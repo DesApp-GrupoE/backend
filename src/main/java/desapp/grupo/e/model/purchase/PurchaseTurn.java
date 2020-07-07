@@ -1,16 +1,30 @@
 package desapp.grupo.e.model.purchase;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
 public class PurchaseTurn {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="seq_id_purchase_turn")
     private Long id;
+    @Column(nullable = false)
     private Long idCommerce;
+    @Column
     private Long idUser;
+    @Transient
     private Long idSubPurchase;
+    @Column(nullable = false)
     private LocalDateTime dateTurn;
+    @Column(nullable = false)
     private DeliveryType deliveryType;
+    @Column
     private String deliveryAddress;
+
+    public PurchaseTurn() {
+        // contructor empty to mapping Hibernate
+    }
 
     public PurchaseTurn(Long idCommerce, LocalDateTime dateTurn, DeliveryType deliveryType) {
         this.idCommerce = idCommerce;

@@ -1,6 +1,7 @@
 package desapp.grupo.e.webservice.beans;
 
 import desapp.grupo.e.persistence.category.alert.CategoryAlertRepository;
+import desapp.grupo.e.persistence.purchase.PurchaseTurnRepository;
 import desapp.grupo.e.persistence.user.UserRepository;
 import desapp.grupo.e.persistence.commerce.CommerceRepository;
 import desapp.grupo.e.persistence.product.ProductRepository;
@@ -8,6 +9,7 @@ import desapp.grupo.e.service.auth.AuthService;
 import desapp.grupo.e.service.category.alert.CategoryAlertService;
 import desapp.grupo.e.service.login.UserDetailsServiceImpl;
 import desapp.grupo.e.service.mapper.CommerceMapperService;
+import desapp.grupo.e.service.purchase.PurchaseTurnService;
 import desapp.grupo.e.service.user.UserService;
 import desapp.grupo.e.service.product.ProductService;
 import desapp.grupo.e.service.commerce.CommerceService;
@@ -28,6 +30,8 @@ public class ConfigBean {
     private CategoryAlertRepository categoryAlertRepository;
     @Autowired
     private CommerceRepository commerceRepository;
+    @Autowired
+    private PurchaseTurnRepository purchaseTurnRepository;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -72,5 +76,10 @@ public class ConfigBean {
     @Bean
     public CommerceMapperService commerceMapperService() {
         return new CommerceMapperService();
+    }
+
+    @Bean("purchaseTurnServiceBean")
+    public PurchaseTurnService purchaseTurnService() {
+        return new PurchaseTurnService(purchaseTurnRepository);
     }
 }

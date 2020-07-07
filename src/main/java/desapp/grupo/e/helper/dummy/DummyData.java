@@ -171,7 +171,7 @@ public class DummyData {
                 .withSurname("Lopez")
                 .withEmail("pedro_lopez@gmail.com")
                 .withPassword(this.encrypter.encode("12345678"))
-                .withAuth2fa(true)
+                .withAuth2fa(false)
                 .build();
 
         Commerce commerce1 = CommerceBuilder.aCommerce()
