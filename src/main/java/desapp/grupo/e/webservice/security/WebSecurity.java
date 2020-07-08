@@ -40,9 +40,17 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                     "/cart/**/*",
                     "/products"
                 ).permitAll()
-                .antMatchers(HttpMethod.GET).permitAll()
-                .antMatchers(HttpMethod.PUT).permitAll()
-                .antMatchers(HttpMethod.DELETE).permitAll()
+                .antMatchers(HttpMethod.GET,
+                    "/cart/*",
+                    "/products",
+                    "/commerce-sector"
+                ).permitAll()
+                .antMatchers(HttpMethod.PUT,
+                        "/cart/*"
+                ).permitAll()
+                .antMatchers(HttpMethod.DELETE,
+                    "/cart/*"
+                ).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), getApplicationContext()))
