@@ -8,8 +8,8 @@ import desapp.grupo.e.model.user.User;
 import desapp.grupo.e.service.exceptions.AuthenticationCode2FAException;
 import desapp.grupo.e.webservice.security.SecurityConstants;
 import desapp.grupo.e.persistence.user.UserRepository;
-import desapp.grupo.e.service.utils.RandomString;
 import org.jboss.aerogear.security.otp.Totp;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -25,12 +25,14 @@ public class AuthService {
 
     public List<String> blackListToken;
     public UserRepository userRepository;
+    public TotpService toptService;
     public Map<String, TokenDTO> emailToken;
 
-    public AuthService(UserRepository userRepository) {
+    public AuthService(UserRepository userRepository, TotpService totpService) {
         this.userRepository = userRepository;
         this.blackListToken = new ArrayList<>();
         this.emailToken = new HashMap<>();
+        this.toptService = totpService;
     }
 
     public TokenDTO createToken(String emailUser) {
@@ -51,13 +53,7 @@ public class AuthService {
             return tokenDTO;
         } else {
             this.emailToken.put(user.getEmail(), tokenDTO);
-            TokenDTO tokenWith2FA = new TokenDTO();
-            RandomString randomString = new RandomString();
-            String secretKey = randomString.nextStringOnlyCharacters(15);
-            tokenWith2FA.setSecretKey(secretKey);
-            user.setSecret(secretKey);
-            userRepository.save(user);
-            return tokenWith2FA;
+            return new TokenDTO(true);
         }
     }
 
@@ -73,7 +69,7 @@ public class AuthService {
 
     public TokenDTO validateCode2FA(String email, String code) {
         User user = userRepository.getByEmail(email);
-        Totp totp = new Totp(user.getSecret());
+        Totp totp = this.toptService.createTotp(user.getSecret());
         if (!isValidLong(code) || !totp.verify(code)) {
             throw new AuthenticationCode2FAException(String.format("Code '%s' not valid", code));
         }
@@ -97,4 +93,21 @@ public class AuthService {
         return this.blackListToken.contains(token);
     }
 
+    @Transactional
+    public void enabled2fa(String token) {
+        String email = getEmailByToken(token);
+        userRepository.enable2fa(true, email);
+    }
+
+    @Transactional
+    public void disabled2fa(String token) {
+        String email = getEmailByToken(token);
+        userRepository.enable2fa(false, email);
+    }
+
+    @Transactional(readOnly = true)
+    public String getSecret2fa(String token) {
+        String email = getEmailByToken(token);
+        return userRepository.getSecretKey(email);
+    }
 }

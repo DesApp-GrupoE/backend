@@ -6,6 +6,7 @@ import desapp.grupo.e.persistence.user.UserRepository;
 import desapp.grupo.e.persistence.commerce.CommerceRepository;
 import desapp.grupo.e.persistence.product.ProductRepository;
 import desapp.grupo.e.service.auth.AuthService;
+import desapp.grupo.e.service.auth.TotpService;
 import desapp.grupo.e.service.category.alert.CategoryAlertService;
 import desapp.grupo.e.service.login.UserDetailsServiceImpl;
 import desapp.grupo.e.service.mapper.CommerceMapperService;
@@ -43,9 +44,14 @@ public class ConfigBean {
         return new LoginService(userRepository, bCryptPasswordEncoder());
     }
 
+    @Bean("toptServiceBean")
+    public TotpService totpService() {
+        return new TotpService();
+    }
+
     @Bean("authServiceBean")
     public AuthService authService() {
-        return new AuthService(userRepository);
+        return new AuthService(userRepository, totpService());
     }
 
     @Bean

@@ -1,5 +1,6 @@
 package desapp.grupo.e.model.dto.user;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import desapp.grupo.e.model.user.User;
 
 import javax.validation.constraints.NotBlank;
@@ -14,9 +15,9 @@ public class UserDTO {
     private String surname;
     @NotBlank(message = "Email is mandatory")
     private String email;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @NotBlank(message = "Password is mandatory")
     private String password;
-    @NotNull(message = "auth2fa is mandatory")
     private boolean auth2fa;
 
     public UserDTO() {

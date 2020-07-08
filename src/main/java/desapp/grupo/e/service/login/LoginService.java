@@ -2,6 +2,7 @@ package desapp.grupo.e.service.login;
 
 import desapp.grupo.e.model.user.User;
 import desapp.grupo.e.persistence.user.UserRepository;
+import desapp.grupo.e.service.utils.RandomString;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import desapp.grupo.e.persistence.exception.EmailRegisteredException;
@@ -18,6 +19,7 @@ public class LoginService {
     public LoginService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+
     }
 
     @Transactional
@@ -27,7 +29,9 @@ public class LoginService {
             throw new EmailRegisteredException(String.format("Email %s was already registered", user.getEmail()));
         }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setSecret("12345");
+        RandomString randomString = new RandomString();
+        String secretKey = randomString.nextStringOnlyCharacters(15);
+        user.setSecret(secretKey);
         this.userRepository.save(user);
         return user;
     }

@@ -8,8 +8,15 @@ public class TokenDTO {
     private String token;
     @JsonProperty("expires_in")
     private long expiresIn;
-    private Boolean tokenActivated;
-    private String secretKey;
+    private boolean authWith2fa;
+
+    public TokenDTO() {
+        // Para el mapping de Jackson
+    }
+
+    public TokenDTO(Boolean authWith2fa) {
+        this.authWith2fa = authWith2fa;
+    }
 
     public String getToken() {
         return token;
@@ -35,19 +42,12 @@ public class TokenDTO {
         this.type = type;
     }
 
-    public Boolean getTokenActivated() {
-        return this.tokenActivated;
+    public Boolean getAuthWith2fa() {
+        return this.authWith2fa;
     }
 
-    public void setTokenActivated(Boolean tokenActivated) {
-        this.tokenActivated = tokenActivated;
+    public void setAuthWith2fa(Boolean authWith2fa) {
+        this.authWith2fa = authWith2fa;
     }
 
-    public String getSecretKey() {
-        return this.secretKey;
-    }
-
-    public void setSecretKey(String secretKey) {
-        this.secretKey = secretKey;
-    }
 }

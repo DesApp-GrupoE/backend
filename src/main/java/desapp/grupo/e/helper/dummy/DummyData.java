@@ -7,6 +7,7 @@ import desapp.grupo.e.model.product.Product;
 import desapp.grupo.e.model.user.Commerce;
 import desapp.grupo.e.model.user.CommerceSector;
 import desapp.grupo.e.model.user.User;
+import desapp.grupo.e.service.utils.RandomString;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Arrays;
@@ -15,9 +16,11 @@ import java.util.List;
 public class DummyData {
 
     private BCryptPasswordEncoder encrypter;
+    private RandomString randomString;
 
     public DummyData() {
         this.encrypter = new BCryptPasswordEncoder();
+        this.randomString = new RandomString();
     }
 
     public User createUser1() {
@@ -26,8 +29,7 @@ public class DummyData {
                 .withSurname("Pepe")
                 .withEmail("pepito@test.com")
                 .withPassword(encrypter.encode("12345678"))
-                .withSecret("6YFX5TVT76OHHNMS")
-                .withAuth2fa(true)
+                .withSecret(randomString.nextStringOnlyCharacters(15))
                 .build();
 
         Commerce commerce1 = CommerceBuilder.aCommerce()
@@ -96,7 +98,7 @@ public class DummyData {
                 .withSurname("Rodriguez")
                 .withEmail("susana@gmail.com")
                 .withPassword(this.encrypter.encode("12345678"))
-                .withAuth2fa(true)
+                .withSecret(randomString.nextStringOnlyCharacters(15))
                 .build();
 
         Commerce commerce1 = CommerceBuilder.aCommerce()
@@ -171,6 +173,7 @@ public class DummyData {
                 .withSurname("Lopez")
                 .withEmail("pedro_lopez@gmail.com")
                 .withPassword(this.encrypter.encode("12345678"))
+                .withSecret(randomString.nextStringOnlyCharacters(15))
                 .withAuth2fa(false)
                 .build();
 
