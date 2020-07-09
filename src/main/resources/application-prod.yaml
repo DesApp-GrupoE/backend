@@ -1,0 +1,17 @@
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL82Dialect
+    database: POSTGRESQL
+    hibernate:
+      ddl-auto: update
+    generate-ddl: false
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://ec2-34-233-186-251.compute-1.amazonaws.com:5432/d91deaoq5cr5pi?createDatabaseIfNotExist=true
+    username: wzqnvwiqtdyjuo
+    password: 80230958c8481e583d23c3b4abcaffb9e7b4f50a955454dbb668a0274c537073

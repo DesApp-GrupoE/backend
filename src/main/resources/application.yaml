@@ -1,8 +1,12 @@
 # Con esto vamos a indicar cual application-{profile}.properties vamos a utilizar
 # Dejar siempre prod. Solo cambiar para las pruebas locales a dev
 # Valores aceptados: prod | dev
-spring.profiles.active=dev
+spring:
+  profiles:
+    active: dev
 
-server.address=0.0.0.0
-server.port=8080
-server.servlet.context-path=/api
+server:
+  address: 0.0.0.0
+  port: 8080
+  servlet:
+    context-path: /api

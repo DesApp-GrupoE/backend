@@ -28,10 +28,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // Solo permito que sea publico el endpoint POST '/auth/sign-in' y todos los GET's
-        // Todos los demas endpoints deben estar autenticados utilizando Token
-        // Deshabilito cors
-        http.cors().and().csrf().disable().authorizeRequests()
+        // Solo permito que sea publicos los endpoints agregados en los matchers
+        http.cors()
+            .and().csrf().disable()
+            .authorizeRequests()
                 .antMatchers(HttpMethod.POST,
                     "/auth/sign-up",
                     "/auth/login",
@@ -52,11 +52,11 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                     "/cart/*"
                 ).permitAll()
                 .anyRequest().authenticated()
-                .and()
+            .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), getApplicationContext()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager(), getApplicationContext()))
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
-                .and()
+            .and()
                 // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
