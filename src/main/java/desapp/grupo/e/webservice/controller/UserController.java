@@ -1,5 +1,7 @@
 package desapp.grupo.e.webservice.controller;
 
+import desapp.grupo.e.config.oauth2.model.CurrentUser;
+import desapp.grupo.e.config.oauth2.model.UserPrincipal;
 import desapp.grupo.e.model.dto.user.UserDTO;
 import desapp.grupo.e.model.user.User;
 import desapp.grupo.e.service.user.UserService;
@@ -7,24 +9,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
 public class UserController {
 
+    private static final String URL_BASE = "/user";
     private UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(URL_BASE + "/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
         return ResponseEntity.ok(new UserDTO(user));
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<UserDTO> getUserByToken(@RequestHeader("Authorization") String token) {
-        User user = userService.getUserByToken(token);
+    @GetMapping(URL_BASE + "/me")
+    public ResponseEntity<UserDTO> getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+        User user = userService.getUserById(userPrincipal.getId());
         return ResponseEntity.ok(new UserDTO(user));
     }
 }

@@ -74,22 +74,22 @@ public class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.error", Is.is("User not found")));
     }
 
-    @Test
-    public void getUserByToken() throws Exception {
-        User user = UserBuilder.aUser().withId(1L).withName("Test").withSurname("Test")
-                .withEmail("test@test.test").withPassword("Secret")
-                .build();
-        when(userService.getUserByToken(anyString())).thenReturn(user);
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/me")
-                .header("Authorization", "token")
-                .characterEncoding("utf-8")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name", Is.is("Test")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.surname", Is.is("Test")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.email", Is.is("test@test.test")));
-    }
+//    @Test
+//    public void getUserByToken() throws Exception {
+//        User user = UserBuilder.aUser().withId(1L).withName("Test").withSurname("Test")
+//                .withEmail("test@test.test").withPassword("Secret")
+//                .build();
+//        when(userService.getUserByToken(anyString())).thenReturn(user);
+//
+//        mockMvc.perform(MockMvcRequestBuilders.get("/user/me")
+//                .header("Authorization", "token")
+//                .characterEncoding("utf-8")
+//                .accept(MediaType.APPLICATION_JSON)
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(MockMvcResultMatchers.status().isOk())
+//                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.name", Is.is("Test")))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.surname", Is.is("Test")))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.email", Is.is("test@test.test")));
+//    }
 }

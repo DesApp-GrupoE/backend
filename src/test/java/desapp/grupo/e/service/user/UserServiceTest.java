@@ -48,23 +48,23 @@ public class UserServiceTest {
         Assertions.assertThrows(ResourceNotFoundException.class, () -> userService.getUserById(1L));
     }
 
-    @Test
-    public void getUserByToken() {
-        User userMock = UserBuilder.aUser().anyUser().build();
-        when(authService.getEmailByToken(anyString())).thenReturn("test@test.test");
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(userMock));
-
-        User user = userService.getUserByToken("token");
-
-        Assertions.assertNotNull(user);
-    }
-
-    @Test
-    public void getUserByTokenAnEmailInexistentThrowException() {
-        when(authService.getEmailByToken(anyString())).thenReturn("test@test.test");
-        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
-
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> userService.getUserByToken("token"));
-    }
+//    @Test
+//    public void getUserByToken() {
+//        User userMock = UserBuilder.aUser().anyUser().build();
+//        when(authService.getEmailByToken(anyString())).thenReturn("test@test.test");
+//        when(userRepository.findByEmail(anyString())).thenReturn(Optional.of(userMock));
+//
+//        User user = userService.getUserByToken("token");
+//
+//        Assertions.assertNotNull(user);
+//    }
+//
+//    @Test
+//    public void getUserByTokenAnEmailInexistentThrowException() {
+//        when(authService.getEmailByToken(anyString())).thenReturn("test@test.test");
+//        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+//
+//        Assertions.assertThrows(ResourceNotFoundException.class, () -> userService.getUserByToken("token"));
+//    }
 
 }

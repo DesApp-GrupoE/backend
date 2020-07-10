@@ -1,6 +1,10 @@
 package desapp.grupo.e.model.dto.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import desapp.grupo.e.webservice.security.SecurityConstants;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 public class TokenDTO {
 
@@ -12,6 +16,12 @@ public class TokenDTO {
 
     public TokenDTO() {
         // Para el mapping de Jackson
+    }
+
+    public TokenDTO(String type, String token, LocalDateTime expiresIn) {
+        this.setType(type);
+        this.setToken(token);
+        this.setExpiresIn(expiresIn.atZone(ZoneId.systemDefault()).toEpochSecond());
     }
 
     public TokenDTO(Boolean authWith2fa) {

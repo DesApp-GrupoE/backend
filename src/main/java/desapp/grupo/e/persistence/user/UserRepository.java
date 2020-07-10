@@ -16,10 +16,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User getByEmail(String email);
 
-    @Query("select u.secret from User u where u.email = :email")
-    String getSecretKey(String email);
+    @Query("select u.secret from User u where u.id = :userId")
+    String getSecretKey(@Param("userId") Long userId);
 
     @Modifying
-    @Query("update User set auth2fa = :auth2fa where email = :email")
-    void enable2fa(@Param("auth2fa") Boolean auth2faEnabled, @Param("email") String email);
+    @Query("update User set auth2fa = :auth2fa where id = :userId")
+    void enable2fa(@Param("auth2fa") Boolean auth2faEnabled, @Param("userId") Long userId);
 }

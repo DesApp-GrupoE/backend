@@ -1,6 +1,9 @@
 package desapp.grupo.e.webservice.controller;
 
+import desapp.grupo.e.config.oauth2.model.CurrentUser;
+import desapp.grupo.e.config.oauth2.model.UserPrincipal;
 import desapp.grupo.e.model.dto.auth.Login2FARequestDTO;
+import desapp.grupo.e.model.dto.auth.LoginRequestDTO;
 import desapp.grupo.e.model.dto.auth.TokenDTO;
 import desapp.grupo.e.model.dto.user.UserDTO;
 import desapp.grupo.e.model.user.User;
@@ -9,21 +12,24 @@ import org.jboss.aerogear.security.otp.api.Hash;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import desapp.grupo.e.service.login.LoginService;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class LoginController {
+public class AuthController {
 
     private static final String URL_BASE = "/auth";
     private LoginService loginService;
     private AuthService authService;
 
-    public LoginController(LoginService loginService, AuthService authService) {
+    public AuthController(LoginService loginService, AuthService authService) {
         this.loginService = loginService;
         this.authService = authService;
     }
@@ -31,7 +37,15 @@ public class LoginController {
     @PostMapping(URL_BASE + "/sign-up")
     public ResponseEntity<UserDTO> signUp(@Valid @RequestBody UserDTO userDTO) {
         User newUser = this.loginService.signUp(new User(userDTO));
-        return ResponseEntity.ok(new UserDTO(newUser));
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentContextPath().path("/user/me")
+                .buildAndExpand(newUser.getId()).toUri();
+        return ResponseEntity.created(location).body(new UserDTO(newUser));
+    }
+
+    @PostMapping(URL_BASE + "/login")
+    public ResponseEntity<TokenDTO> authenticateUser(@Valid @RequestBody LoginRequestDTO loginRequest) {
+        return ResponseEntity.ok(this.authService.authenticate(loginRequest));
     }
 
     @PostMapping(URL_BASE + "/logout")
@@ -46,22 +60,22 @@ public class LoginController {
     }
 
     @GetMapping(URL_BASE + "/2fa")
-    public ResponseEntity getSecret2fa(@RequestHeader(value="Authorization") String token) {
-        String secret = authService.getSecret2fa(token);
+    public ResponseEntity getSecret2fa(@CurrentUser UserPrincipal userPrincipal) {
+        String secret = authService.getSecret2fa(userPrincipal.getId());
         Map<String, String> map = new HashMap<>();
         map.put("secret", secret);
         return ResponseEntity.ok(map);
     }
 
     @PostMapping(URL_BASE + "/2fa/enabled")
-    public ResponseEntity enable2FA(@RequestHeader(value="Authorization") String token) {
-        authService.enabled2fa(token);
+    public ResponseEntity enable2FA(@CurrentUser UserPrincipal userPrincipal) {
+        authService.enabled2fa(userPrincipal.getId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(URL_BASE + "/2fa/disabled")
-    public ResponseEntity disable2fa(@RequestHeader(value="Authorization") String token) {
-        authService.disabled2fa(token);
+    public ResponseEntity disable2fa(@CurrentUser UserPrincipal userPrincipal) {
+        authService.disabled2fa(userPrincipal.getId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

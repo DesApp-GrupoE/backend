@@ -58,6 +58,19 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!-- OAuth2 Client -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-client</artifactId>
+        </dependency>
+
+        <!-- JWT library -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.5.1</version>
+        </dependency>
+
         <!-- Logger -->
         <dependency>
             <groupId>log4j</groupId>

@@ -1,5 +1,6 @@
 package desapp.grupo.e.model.user;
 
+import com.sun.istack.NotNull;
 import desapp.grupo.e.model.dto.user.UserDTO;
 import desapp.grupo.e.model.product.CategoryAlert;
 import desapp.grupo.e.model.purchase.Purchase;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "user_db")
+@Table(name = "user_db", uniqueConstraints = { @UniqueConstraint(columnNames = "email") })
 public class User {
 
     @Id
@@ -20,8 +21,11 @@ public class User {
     protected String surname;
     @Column(nullable = false)
     protected String email;
-    @Column(nullable = false)
+    @Column
     protected String password;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
     @Column
     private String secret;
     @Column(nullable = false)
@@ -153,4 +157,11 @@ public class User {
         this.purchases = purchases;
     }
 
+    public AuthProvider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(AuthProvider provider) {
+        this.provider = provider;
+    }
 }

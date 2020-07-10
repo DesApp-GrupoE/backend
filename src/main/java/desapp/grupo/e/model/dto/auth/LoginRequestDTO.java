@@ -12,6 +12,15 @@ public class LoginRequestDTO {
     @NotNull
     private String password;
 
+    public LoginRequestDTO() {
+        // Mapping de Jackson
+    }
+
+    public LoginRequestDTO(String email, String password) {
+        this.setEmail(email);
+        this.setPassword(password);
+    }
+
     public String getEmail() {
         return email;
     }

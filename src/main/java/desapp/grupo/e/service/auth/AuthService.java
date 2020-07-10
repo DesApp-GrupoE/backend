@@ -1,19 +1,21 @@
 package desapp.grupo.e.service.auth;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.TokenExpiredException;
+import desapp.grupo.e.config.oauth2.TokenService;
+import desapp.grupo.e.model.dto.auth.LoginRequestDTO;
 import desapp.grupo.e.model.dto.auth.TokenDTO;
 import desapp.grupo.e.model.user.User;
 import desapp.grupo.e.service.exceptions.AuthenticationCode2FAException;
 import desapp.grupo.e.webservice.security.SecurityConstants;
 import desapp.grupo.e.persistence.user.UserRepository;
 import org.jboss.aerogear.security.otp.Totp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,48 +25,44 @@ import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
 public class AuthService {
 
-    public List<String> blackListToken;
-    public UserRepository userRepository;
-    public TotpService toptService;
-    public Map<String, TokenDTO> emailToken;
+    private UserRepository userRepository;
+    private TotpService toptService;
+    private Map<String, TokenDTO> emailToken;
+    private Map<String, Authentication> emailAuthentication;
+    @Autowired
+    private TokenService tokenService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     public AuthService(UserRepository userRepository, TotpService totpService) {
         this.userRepository = userRepository;
-        this.blackListToken = new ArrayList<>();
         this.emailToken = new HashMap<>();
+        this.emailAuthentication = new HashMap<>();
         this.toptService = totpService;
     }
 
-    public TokenDTO createToken(String emailUser) {
-        User user = userRepository.getByEmail(emailUser);
-
-        LocalDateTime expiresIn = LocalDateTime.now().plusHours(1);
-        String stringToken = JWT.create()
-                .withSubject(emailUser)
-                .withExpiresAt(Date.from(expiresIn.atZone(ZoneId.systemDefault()).toInstant()))
-                .sign(HMAC512(SecurityConstants.SECRET.getBytes()));
-
-        TokenDTO tokenDTO = new TokenDTO();
-        tokenDTO.setType(SecurityConstants.TOKEN_PREFIX);
-        tokenDTO.setToken(stringToken);
-        tokenDTO.setExpiresIn(expiresIn.atZone(ZoneId.systemDefault()).toEpochSecond());
-
+    public TokenDTO authenticate(LoginRequestDTO loginRequest) {
+        User user = userRepository.getByEmail(loginRequest.getEmail());
+        Authentication authentication = createAuthentication(loginRequest.getEmail(), loginRequest.getPassword());
+        TokenDTO token = tokenService.createToken(authentication);
         if (!user.getAuth2fa()) {
-            return tokenDTO;
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return token;
         } else {
-            this.emailToken.put(user.getEmail(), tokenDTO);
+            saveToValidate2fa(user, authentication, token);
             return new TokenDTO(true);
         }
     }
 
-    public String getEmailByToken(String token) {
-        if(blackListToken.contains(token)) {
-            throw new TokenExpiredException("Token expired");
-        }
-        return JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()))
-                .build()
-                .verify(token.replace(SecurityConstants.TOKEN_PREFIX + " ", ""))
-                .getSubject();
+    private void saveToValidate2fa(User user, Authentication authentication, TokenDTO token) {
+        this.emailToken.put(user.getEmail(), token);
+        this.emailAuthentication.put(user.getEmail(), authentication);
+    }
+
+    private Authentication createAuthentication(String email, String password) {
+        return authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, password)
+        );
     }
 
     public TokenDTO validateCode2FA(String email, String code) {
@@ -73,6 +71,8 @@ public class AuthService {
         if (!isValidLong(code) || !totp.verify(code)) {
             throw new AuthenticationCode2FAException(String.format("Code '%s' not valid", code));
         }
+        Authentication authentication = this.emailAuthentication.remove(email);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         return this.emailToken.remove(email);
     }
 
@@ -85,29 +85,22 @@ public class AuthService {
         return true;
     }
 
-    public void addTokenToBlackList(String token) {
-        this.blackListToken.add(token);
-    }
-
-    public Boolean isInBlackList(String token) {
-        return this.blackListToken.contains(token);
+    public void addTokenToBlackList(String bearerToken) {
+        this.tokenService.addTokenToBlackList(bearerToken);
     }
 
     @Transactional
-    public void enabled2fa(String token) {
-        String email = getEmailByToken(token);
-        userRepository.enable2fa(true, email);
+    public void enabled2fa(Long userId) {
+        userRepository.enable2fa(true, userId);
     }
 
     @Transactional
-    public void disabled2fa(String token) {
-        String email = getEmailByToken(token);
-        userRepository.enable2fa(false, email);
+    public void disabled2fa(Long userId) {
+        userRepository.enable2fa(false, userId);
     }
 
     @Transactional(readOnly = true)
-    public String getSecret2fa(String token) {
-        String email = getEmailByToken(token);
-        return userRepository.getSecretKey(email);
+    public String getSecret2fa(Long userId) {
+        return userRepository.getSecretKey(userId);
     }
 }

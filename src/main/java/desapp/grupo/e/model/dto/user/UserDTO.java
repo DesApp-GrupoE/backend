@@ -3,6 +3,7 @@ package desapp.grupo.e.model.dto.user;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import desapp.grupo.e.model.user.User;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -13,6 +14,7 @@ public class UserDTO {
     private String name;
     @NotBlank(message = "Surname is mandatory")
     private String surname;
+    @Email
     @NotBlank(message = "Email is mandatory")
     private String email;
     @JsonInclude(JsonInclude.Include.NON_NULL)

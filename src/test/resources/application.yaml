@@ -2,3 +2,14 @@
 spring:
   profiles:
     active: dev-h2
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: test.apps.googleusercontent.com
+            clientSecret: secret_key
+            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profile

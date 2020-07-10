@@ -20,12 +20,12 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("User %s not found", idUser)));
     }
 
-    public User getUserByToken(String token) {
-        // getEmailByToken puede tirar exception, pero no acá. Ya que este método se usa en JWTAuthorizationFilter,
-        // primero debe tirarla ahí y a este método no debe llegar
-        String email = authService.getEmailByToken(token);
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("User with email '%s' not found", email)));
-    }
+//    public User getUserByToken(String token) {
+//        // getEmailByToken puede tirar exception, pero no acá. Ya que este método se usa en JWTAuthorizationFilter,
+//        // primero debe tirarla ahí y a este método no debe llegar
+//        String email = authService.getEmailByToken(token);
+//        return userRepository.findByEmail(email)
+//                .orElseThrow(() -> new ResourceNotFoundException(String.format("User with email '%s' not found", email)));
+//    }
 
 }

@@ -1,12 +1,36 @@
-# Con esto vamos a indicar cual application-{profile}.properties vamos a utilizar
+# Con la propertie 'profile.active' vamos a indicar cual application-{profile}.yaml vamos a utilizar
 # Dejar siempre prod. Solo cambiar para las pruebas locales a dev
 # Valores aceptados: prod | dev
-spring:
-  profiles:
-    active: dev
-
 server:
   address: 0.0.0.0
   port: 8080
   servlet:
     context-path: /api
+
+spring:
+  profiles:
+    active: dev
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 63595844980-44dbtbdutctqi2euu1djm0grtt1d8os3.apps.googleusercontent.com
+            clientSecret: hYfW_G0Bw6oVaO9rzMRWiZjX
+            redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+            scope:
+              - email
+              - profile
+
+app:
+  auth:
+    tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
+    tokenExpirationMsec: 864000000
+  oauth2:
+    # After successfully authenticating with the OAuth2 Provider,
+    # we'll be generating an auth token for the user and sending the token to the
+    # redirectUri mentioned by the frontend client in the /oauth2/authorize request.
+    # We're not using cookies because they won't work well in mobile clients.
+    authorizedRedirectUris:
+      - http://localhost:3000/oauth2/redirect
+      - https://pacific-cove-71520.herokuapp.com/oauth2/redirect
