@@ -7,6 +7,7 @@ import desapp.grupo.e.persistence.exception.ProductDuplicatedException;
 import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.EmptyResultDataAccessException;
+
 import java.util.List;
 
 
@@ -54,6 +55,15 @@ public class ProductService {
     }
 
     public List<Product> findAllProductsByCommerce(Long commerceId) {
-        return productRepository.findByCommerceId(commerceId);
+        return productRepository.findByCommerceIdOrderById(commerceId);
+    }
+
+    @Transactional
+    public List<Product> createProducts(Long commerceId, List<Product> products) {
+        products.forEach(product -> {
+            product.setIdCommerce(commerceId);
+            productRepository.save(product);
+        });
+        return products;
     }
 }

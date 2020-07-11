@@ -2,15 +2,14 @@ package desapp.grupo.e.webservice.controller.product;
 
 import desapp.grupo.e.model.dto.product.ProductDTO;
 import desapp.grupo.e.model.product.Product;
+import desapp.grupo.e.service.mapper.ProductMapper;
 import desapp.grupo.e.service.product.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +18,8 @@ import java.util.stream.Collectors;
 public class ProductController {
 
     private ProductService productService;
+    @Autowired
+    private ProductMapper productMapper;
 
     private static final String COMMERCE_ID = "commerce_id";
     private static final String PRODUCT_ID = "product_id";
@@ -36,19 +37,10 @@ public class ProductController {
         return ResponseEntity.ok(productDTOS);
     }
 
-    // Agregar id del producto
-    /*
-    @GetMapping(URL_BASE + "/{" + COMMERCE_ID + "}")        
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
-        Product product = productService.getProductById(id);
-        return ResponseEntity.ok(new ProductDTO(product));
-    }
-    */
-    
     @PostMapping(URL_BASE)
     public ResponseEntity<ProductDTO> createProduct(@PathVariable(COMMERCE_ID) Long commerceId,
                                                     @Valid @RequestBody ProductDTO productDTO) {
-        Product product = convertDtoToModel(productDTO);
+        Product product = this.productMapper.mapDtoToModel(productDTO);
         Product newProduct = productService.save(commerceId, product);
         productDTO.setId(newProduct.getId());
         return new ResponseEntity<>(productDTO, HttpStatus.CREATED);
@@ -60,14 +52,11 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
-    public Product convertDtoToModel(ProductDTO productDTO) {
-        Product product = new Product();
-        product.setName(productDTO.getName()); 
-        product.setBrand(productDTO.getBrand());
-        product.setPrice(productDTO.getPrice());
-        product.setImg(productDTO.getImg());
-        product.setStock(productDTO.getStock());
-        return product;
+    @PostMapping(URL_BASE + "/csv")
+    public ResponseEntity<List<ProductDTO>> createProductsByCsvFile(@PathVariable(COMMERCE_ID) Long commerceId, @RequestParam("file") MultipartFile file) {
+        List<Product> productsCreated = this.productService.createProducts(commerceId, this.productMapper.mapCsvToModel(file));
+        return new ResponseEntity<>(
+                productsCreated.stream().map(ProductDTO::new).collect(Collectors.toList()),
+                HttpStatus.CREATED);
     }
 }

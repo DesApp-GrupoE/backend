@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name = "product")
+@Table(name = "product", uniqueConstraints = @UniqueConstraint(columnNames = {"id", "commerce_id"}))
 public class Product {
     
     @Id
