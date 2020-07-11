@@ -33,7 +33,8 @@ public class Commerce {
     private Boolean doDelivery;
     @Column
     private Double deliveryUp;
-    @Transient
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_commerce")
     private List<PurchaseTurn> purchaseTurns;
     @Transient
     private List<Offer> offers;

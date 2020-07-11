@@ -1,6 +1,8 @@
 package desapp.grupo.e.helper;
 
 import desapp.grupo.e.helper.dummy.DummyData;
+import desapp.grupo.e.model.purchase.PurchaseTurn;
+import desapp.grupo.e.persistence.purchase.PurchaseTurnRepository;
 import desapp.grupo.e.persistence.user.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Component
 public class DatabaseInitializer {
@@ -18,6 +22,8 @@ public class DatabaseInitializer {
     private String database;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PurchaseTurnRepository purchaseTurnRepository;
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

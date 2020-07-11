@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 public class PurchaseTurnDTO {
 
     private Long id;
-    @LocalDateTimeFormat(format = "dd/MM/yyyy HH:mm")
+    @LocalDateTimeFormat
     private String date;
     @NotNull
     private Long idCommerce;

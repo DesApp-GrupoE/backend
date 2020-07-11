@@ -23,5 +23,5 @@ public @interface LocalDateTimeFormat {
 
     boolean optional() default false;
 
-    String format() default "dd/MM/yyyy";
+    String format() default "dd/MM/yyyy HH:mm";
 }

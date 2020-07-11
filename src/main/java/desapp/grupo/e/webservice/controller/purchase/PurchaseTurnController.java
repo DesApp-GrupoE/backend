@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -17,7 +18,6 @@ import java.util.stream.Collectors;
 public class PurchaseTurnController {
 
     private static final String URL_BASE = "/purchase-turn";
-//    private static final String MASSIVE = URL_BASE + "/massive";
     private PurchaseTurnService purchaseTurnService;
 
     public PurchaseTurnController(PurchaseTurnService purchaseTurnService) {
@@ -33,12 +33,21 @@ public class PurchaseTurnController {
     }
 
     @GetMapping(URL_BASE)
-    public ResponseEntity<List<PurchaseTurnDTO>> getPurchaseTurn(@RequestParam Long commerceId ) {
-        List<PurchaseTurn> purchaseTurns = this.purchaseTurnService.getPurchaseTurns(commerceId);
+    public ResponseEntity<List<PurchaseTurnDTO>> getPurchaseTurn(@RequestParam Long commerceId,
+                                                                 @RequestParam(name = "dateFrom") String dateFromStr,
+                                                                 @RequestParam(name = "dateTo") String dateToStr) {
+        LocalDateTime dateFrom = this.parseDate(dateFromStr);
+        LocalDateTime dateTo = this.parseDate(dateToStr);
+        List<PurchaseTurn> purchaseTurns = this.purchaseTurnService.getPurchaseTurns(commerceId, dateFrom, dateTo);
         return ResponseEntity.ok(purchaseTurns.stream()
                 .map(this::mapModelToDto)
                 .collect(Collectors.toList())
         );
+    }
+
+    private LocalDateTime parseDate(String dateStr) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return LocalDate.parse(dateStr, formatter).atStartOfDay();
     }
 
     private PurchaseTurnDTO mapModelToDto(PurchaseTurn purchaseTurn) {

@@ -5,6 +5,7 @@ import desapp.grupo.e.persistence.purchase.PurchaseTurnRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -22,7 +23,7 @@ public class PurchaseTurnService {
     }
 
     @Transactional
-    public List<PurchaseTurn> getPurchaseTurns(Long commerceId) {
-        return purchaseTurnRepository.findAllByIdCommerce(commerceId);
+    public List<PurchaseTurn> getPurchaseTurns(Long commerceId, LocalDateTime dateFrom, LocalDateTime dateTo) {
+        return purchaseTurnRepository.findAllByIdCommerceAndDateTurnBetween(commerceId, dateFrom, dateTo);
     }
 }

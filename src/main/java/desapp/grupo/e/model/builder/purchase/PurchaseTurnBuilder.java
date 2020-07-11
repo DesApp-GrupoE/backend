@@ -19,8 +19,18 @@ public class PurchaseTurnBuilder {
         return new PurchaseTurnBuilder();
     }
 
+    public PurchaseTurnBuilder withIdCommerce(Long id) {
+        this.idCommerce = id;
+        return this;
+    }
+
     public PurchaseTurnBuilder withDateTurn(LocalDateTime dateTurn) {
         this.dateTurn = dateTurn;
+        return this;
+    }
+
+    public PurchaseTurnBuilder withDeliveryType(DeliveryType deliveryType) {
+        this.deliveryType = deliveryType;
         return this;
     }
 

@@ -2,14 +2,18 @@ package desapp.grupo.e.helper.dummy;
 
 import desapp.grupo.e.model.builder.commerce.CommerceBuilder;
 import desapp.grupo.e.model.builder.product.ProductBuilder;
+import desapp.grupo.e.model.builder.purchase.PurchaseTurnBuilder;
 import desapp.grupo.e.model.builder.user.UserBuilder;
 import desapp.grupo.e.model.product.Product;
+import desapp.grupo.e.model.purchase.DeliveryType;
+import desapp.grupo.e.model.purchase.PurchaseTurn;
 import desapp.grupo.e.model.user.Commerce;
 import desapp.grupo.e.model.user.CommerceSector;
 import desapp.grupo.e.model.user.User;
 import desapp.grupo.e.service.utils.RandomString;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,6 +46,7 @@ public class DummyData {
                 .withDeliveryUp(5.0)
                 .withSectors(Arrays.asList(CommerceSector.GROCERY_STORE))
                 .build();
+        commerce1.setPurchaseTurns(createTurns(1L));
 
         Product product1 = ProductBuilder.aProduct()
                 .withName("Fideos tallarines Lucchetti 500gr").withBrand("Luchetti")
@@ -111,6 +116,7 @@ public class DummyData {
                 .withDeliveryUp(5.0)
                 .withSectors(Arrays.asList(CommerceSector.GROCERY_STORE))
                 .build();
+        commerce1.setPurchaseTurns(createTurns(2L));
 
         Product product1 = ProductBuilder.aProduct()
                 .withName("Fideos tallarines Lucchetti 500gr").withBrand("Luchetti")
@@ -187,6 +193,7 @@ public class DummyData {
                 .withDeliveryUp(4.0)
                 .withSectors(Arrays.asList(CommerceSector.GROCERY_STORE))
                 .build();
+        commerce1.setPurchaseTurns(createTurns(3L));
 
         Product product1 = ProductBuilder.aProduct()
                 .withName("Aceite de girasol Natura 1.5L").withBrand("Natura")
@@ -253,6 +260,50 @@ public class DummyData {
         commerce1.setProducts(products);
         user1.setCommerce(commerce1);
         return user1;
+    }
+
+    private List<PurchaseTurn> createTurns(Long commerceId) {
+        PurchaseTurn turn1 = PurchaseTurnBuilder.aPurchaseTurn()
+                .withDateTurn(LocalDateTime.now().plusDays(1).withHour(12).withMinute(0).withSecond(0).withNano(0))
+                .withDeliveryType(DeliveryType.ON_COMMERCE)
+                .withIdCommerce(commerceId).build();
+        PurchaseTurn turn2 = PurchaseTurnBuilder.aPurchaseTurn()
+                .withDateTurn(LocalDateTime.now().plusDays(1).withHour(12).withMinute(30).withSecond(0).withNano(0))
+                .withDeliveryType(DeliveryType.ON_COMMERCE)
+                .withIdCommerce(commerceId).build();
+        PurchaseTurn turn3 = PurchaseTurnBuilder.aPurchaseTurn()
+                .withDateTurn(LocalDateTime.now().plusDays(3).withHour(15).withMinute(0).withSecond(0).withNano(0))
+                .withDeliveryType(DeliveryType.ON_COMMERCE)
+                .withIdCommerce(commerceId).build();
+        PurchaseTurn turn4 = PurchaseTurnBuilder.aPurchaseTurn()
+                .withDateTurn(LocalDateTime.now().plusDays(3).withHour(15).withMinute(15).withSecond(0).withNano(0))
+                .withDeliveryType(DeliveryType.ON_COMMERCE)
+                .withIdCommerce(commerceId).build();
+        PurchaseTurn turn5 = PurchaseTurnBuilder.aPurchaseTurn()
+                .withDateTurn(LocalDateTime.now().plusDays(1).withHour(10).withMinute(0).withSecond(0).withNano(0))
+                .withDeliveryType(DeliveryType.ON_COMMERCE)
+                .withIdCommerce(commerceId).build();
+        PurchaseTurn turn6 = PurchaseTurnBuilder.aPurchaseTurn()
+                .withDateTurn(LocalDateTime.now().plusDays(3).withHour(10).withMinute(15).withSecond(0).withNano(0))
+                .withDeliveryType(DeliveryType.TO_ADDRESS)
+                .withIdCommerce(commerceId).build();
+        PurchaseTurn turn7 = PurchaseTurnBuilder.aPurchaseTurn()
+                .withDateTurn(LocalDateTime.now().plusDays(3).withHour(10).withMinute(30).withSecond(0).withNano(0))
+                .withDeliveryType(DeliveryType.TO_ADDRESS)
+                .withIdCommerce(commerceId).build();
+        PurchaseTurn turn8 = PurchaseTurnBuilder.aPurchaseTurn()
+                .withDateTurn(LocalDateTime.now().plusDays(1).withHour(12).withMinute(0).withSecond(0).withNano(0))
+                .withDeliveryType(DeliveryType.TO_ADDRESS)
+                .withIdCommerce(commerceId).build();
+        PurchaseTurn turn9 = PurchaseTurnBuilder.aPurchaseTurn()
+                .withDateTurn(LocalDateTime.now().plusDays(1).withHour(12).withMinute(15).withSecond(0).withNano(0))
+                .withDeliveryType(DeliveryType.TO_ADDRESS)
+                .withIdCommerce(commerceId).build();
+        PurchaseTurn turn10 = PurchaseTurnBuilder.aPurchaseTurn()
+                .withDateTurn(LocalDateTime.now().plusDays(3).withHour(10).withMinute(45).withSecond(0).withNano(0))
+                .withDeliveryType(DeliveryType.TO_ADDRESS)
+                .withIdCommerce(commerceId).build();
+        return Arrays.asList(turn1, turn2, turn3, turn4, turn5, turn6, turn7, turn8, turn9, turn10);
     }
 
 }

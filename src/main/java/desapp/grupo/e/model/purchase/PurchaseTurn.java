@@ -4,12 +4,13 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table
 public class PurchaseTurn {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator="seq_id_purchase_turn")
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false, name = "id_commerce")
     private Long idCommerce;
     @Column
     private Long idUser;
