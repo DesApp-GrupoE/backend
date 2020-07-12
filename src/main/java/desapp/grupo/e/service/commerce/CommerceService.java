@@ -1,5 +1,6 @@
 package desapp.grupo.e.service.commerce;
 
+import desapp.grupo.e.model.cart.CartProduct;
 import desapp.grupo.e.model.user.User;
 import desapp.grupo.e.model.user.Commerce;
 import desapp.grupo.e.persistence.user.UserRepository;
@@ -11,6 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CommerceService {
 

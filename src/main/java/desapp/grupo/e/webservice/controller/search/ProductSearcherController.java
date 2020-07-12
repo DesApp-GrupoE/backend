@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -22,11 +23,11 @@ public class ProductSearcherController {
     private static final String URL_BASE = "/products";
 
     private ProductSearcherService productSearcherService;
-    @Autowired
     private CommerceService commerceService;
 
-    public ProductSearcherController(ProductSearcherService productSearcherService) {
+    public ProductSearcherController(ProductSearcherService productSearcherService, CommerceService commerceService) {
         this.productSearcherService = productSearcherService;
+        this.commerceService = commerceService;
     }
 
     @PostMapping(URL_BASE)
@@ -43,11 +44,13 @@ public class ProductSearcherController {
 
     private ProductDTO mapToDto(Product product, List<Commerce> commerceList) {
         ProductDTO productDTO = new ProductDTO(product);
-        Commerce commerce = commerceList.stream()
+        Optional<Commerce> optCommerce = commerceList.stream()
                 .filter(c -> product.getIdCommerce().equals(c.getId()))
-                .findFirst()
-                .get();
-        productDTO.setNameCommerce(commerce.getName());
+                .findFirst();
+        if(optCommerce.isPresent()) {
+            Commerce commerce = optCommerce.get();
+            productDTO.setNameCommerce(commerce.getName());
+        }
         return productDTO;
     }
 

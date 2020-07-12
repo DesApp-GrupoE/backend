@@ -2,6 +2,7 @@ package desapp.grupo.e.webservice.controller.search;
 
 import desapp.grupo.e.model.builder.product.ProductBuilder;
 import desapp.grupo.e.model.product.Product;
+import desapp.grupo.e.service.commerce.CommerceService;
 import desapp.grupo.e.service.search.ProductSearcherService;
 import desapp.grupo.e.webservice.controller.search.ProductSearcherController;
 import desapp.grupo.e.webservice.handler.CustomizeErrorHandler;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.isA;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,13 +31,15 @@ public class ProductSearcherControllerTest {
     private static final String URL_BASE = "/products";
 
     private ProductSearcherService productSearchService;
+    private CommerceService commerceService;
     private List<Product> productsMock;
     private MockMvc mockMvc;
 
     @BeforeEach
     public void setUp() {
         productSearchService = mock(ProductSearcherService.class);
-        mockMvc = MockMvcBuilders.standaloneSetup(new ProductSearcherController(productSearchService))
+        commerceService = mock(CommerceService.class);
+        mockMvc = MockMvcBuilders.standaloneSetup(new ProductSearcherController(productSearchService, commerceService))
                 .setControllerAdvice(new CustomizeErrorHandler())
                 .build();
 
@@ -67,6 +71,7 @@ public class ProductSearcherControllerTest {
                         " }";
         List<Product> products = this.productsMock.stream().filter(p -> p.getName().contains("Coca Cola")).collect(Collectors.toList());
         when(productSearchService.findProducts(any())).thenReturn(products);
+        when(commerceService.getAllCommerceById(anyList())).thenReturn(new ArrayList<>());
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL_BASE)
                 .content(search)
@@ -87,6 +92,7 @@ public class ProductSearcherControllerTest {
                     "{\"county\": \"Quilmes\", \"region\": \"Buenos Aires\", \"kilometers\": 10, \"latitude\": 10.0, \"longitude\": 10.0 }" +
                 " }";
         when(productSearchService.findProducts(any())).thenReturn(this.productsMock);
+        when(commerceService.getAllCommerceById(anyList())).thenReturn(new ArrayList<>());
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL_BASE)
                 .content(search)

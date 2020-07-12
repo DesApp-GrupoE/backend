@@ -1,8 +1,11 @@
 package desapp.grupo.e.webservice.controller.cart;
 
 import desapp.grupo.e.model.cart.ShoppingCart;
+import desapp.grupo.e.model.user.Commerce;
 import desapp.grupo.e.service.cart.ShoppingCartService;
+import desapp.grupo.e.service.commerce.CommerceService;
 import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
+import desapp.grupo.e.service.mapper.CartProductMapper;
 import desapp.grupo.e.webservice.handler.CustomizeErrorHandler;
 import desapp.grupo.e.webservice.handler.cart.ShoppingCartHandler;
 import org.hamcrest.core.Is;
@@ -14,10 +17,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.ArrayList;
+
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -30,12 +33,14 @@ public class ShoppingCartControllerTest {
     private static final String KEY_CART = "/anyKey";
 
     private ShoppingCartService shoppingCartService;
+    private CommerceService commerceService;
     private MockMvc mockMvc;
 
     @BeforeEach
     public void setUp() {
         shoppingCartService = mock(ShoppingCartService.class);
-        mockMvc = MockMvcBuilders.standaloneSetup(new ShoppingCartController(shoppingCartService))
+        commerceService = mock(CommerceService.class);
+        mockMvc = MockMvcBuilders.standaloneSetup(new ShoppingCartController(shoppingCartService, commerceService, new CartProductMapper()))
                 .setControllerAdvice(new CustomizeErrorHandler(), new ShoppingCartHandler())
                 .build();
     }
@@ -55,6 +60,7 @@ public class ShoppingCartControllerTest {
     @Test
     public void getNewShoppingCartBySessionShouldReturnAEmptyShoppingCart() throws Exception {
         when(shoppingCartService.getShoppingCartByKey(anyString())).thenReturn(new ShoppingCart());
+        when(commerceService.getAllCommerceById(anyList())).thenReturn(new ArrayList<>());
 
         mockMvc.perform(MockMvcRequestBuilders.get(BASE_URL + KEY_CART)
                 .characterEncoding("utf-8")
@@ -62,7 +68,7 @@ public class ShoppingCartControllerTest {
                 .header("Authorization", "Token1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.cartProducts", hasSize(0)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(0)));
     }
 
     @Test

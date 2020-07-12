@@ -1,19 +1,22 @@
 package desapp.grupo.e.webservice.controller.cart;
 
-import com.sun.mail.iap.Response;
+import desapp.grupo.e.model.cart.CartProduct;
+import desapp.grupo.e.model.cart.ShoppingCart;
+import desapp.grupo.e.model.dto.cart.CartProductDTO;
 import desapp.grupo.e.model.dto.cart.CartRequestDto;
 import desapp.grupo.e.model.dto.purchase.PurchaseDTO;
 import desapp.grupo.e.model.purchase.Purchase;
 import desapp.grupo.e.model.user.Commerce;
 import desapp.grupo.e.service.cart.ShoppingCartService;
 import desapp.grupo.e.service.commerce.CommerceService;
+import desapp.grupo.e.service.mapper.CartProductMapper;
+import desapp.grupo.e.service.mapper.PurchaseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,11 +38,16 @@ public class ShoppingCartController {
     private static final String URL_OFFER_ID = URL_OFFER + "/{"+ OFFER_ID + "}";
 
     private ShoppingCartService shoppingCartService;
-    @Autowired
     private CommerceService commerceService;
+    private CartProductMapper cartProductMapper;
+    @Autowired
+    private PurchaseMapper purchaseMapper;
 
-    public ShoppingCartController(ShoppingCartService shoppingCartService) {
+    public ShoppingCartController(ShoppingCartService shoppingCartService,
+                                  CommerceService commerceService, CartProductMapper cartProductMapper) {
         this.shoppingCartService = shoppingCartService;
+        this.commerceService = commerceService;
+        this.cartProductMapper = cartProductMapper;
     }
 
     @PostMapping(BASE_URL)
@@ -51,8 +59,10 @@ public class ShoppingCartController {
     }
 
     @GetMapping(URL_CART)
-    public ResponseEntity getShoppingCart(@PathVariable(CART_ID) String cartId) {
-        return ResponseEntity.ok(shoppingCartService.getShoppingCartByKey(cartId));
+    public ResponseEntity<List<CartProductDTO>> getShoppingCart(@PathVariable(CART_ID) String cartId) {
+        ShoppingCart shoppingCart = shoppingCartService.getShoppingCartByKey(cartId);
+        List<Commerce> commerces = commerceService.getAllCommerceById(this.getCommerceIdsByCartProduct(shoppingCart.getCartProducts()));
+        return ResponseEntity.ok(this.cartProductMapper.mapListModelToDTO(shoppingCart.getCartProducts(), commerces));
     }
 
     @PostMapping(URL_PRODUCT)
@@ -101,27 +111,18 @@ public class ShoppingCartController {
     public ResponseEntity<List<PurchaseDTO>> generatePurchases(@PathVariable(CART_ID) String cartId) {
         List<Purchase> purchases = this.shoppingCartService.generatePurchases(cartId);
         List<Commerce> commerces = commerceService.getAllCommerceById(getIdsCommerce(purchases));
-        List<PurchaseDTO> purchaseDTOS = purchases.stream().map(p -> this.mapToDto(p, commerces)).collect(Collectors.toList());
-        return ResponseEntity.ok(purchaseDTOS);
+        return ResponseEntity.ok(this.purchaseMapper.mapListModelToDto(purchases, commerces));
     }
 
     private List<Long> getIdsCommerce(List<Purchase> purchases) {
-        return purchases.stream().map(Purchase::getCommerceId).collect(Collectors.toList());
+        return purchases.stream().map(Purchase::getCommerceId)
+                .distinct()
+                .collect(Collectors.toList());
     }
 
-    private PurchaseDTO mapToDto(Purchase purchase, List<Commerce> commerces) {
-        PurchaseDTO purchaseDTO = new PurchaseDTO();
-        purchaseDTO.setId(purchase.getId());
-        purchaseDTO.setUserId(purchase.getId());
-        purchaseDTO.setCommerceId(purchase.getCommerceId());
-        purchaseDTO.setProducts(purchase.getCartProducts());
-        Commerce commerce = commerces.stream().filter(c -> c.getId().equals(purchase.getCommerceId())).findFirst().get();
-        purchaseDTO.setNameCommerce(commerce.getName());
-        if(purchase.getDate() != null) {
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-            purchaseDTO.setDate(purchase.getDate().format(dateTimeFormatter));
-        }
-        return purchaseDTO;
+    private List<Long> getCommerceIdsByCartProduct(List<CartProduct> cartProducts) {
+        return cartProducts.stream().map(CartProduct::getCommerceId)
+                .distinct()
+                .collect(Collectors.toList());
     }
-
 }

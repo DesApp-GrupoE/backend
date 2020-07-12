@@ -10,6 +10,7 @@ import desapp.grupo.e.service.auth.TotpService;
 import desapp.grupo.e.service.category.alert.CategoryAlertService;
 import desapp.grupo.e.service.login.UserDetailsServiceImpl;
 import desapp.grupo.e.service.mail.MailService;
+import desapp.grupo.e.service.mapper.CartProductMapper;
 import desapp.grupo.e.service.mapper.CommerceMapperService;
 import desapp.grupo.e.service.purchase.PurchaseTurnService;
 import desapp.grupo.e.service.user.UserService;
@@ -84,5 +85,10 @@ public class ConfigBean {
     @Bean("purchaseTurnServiceBean")
     public PurchaseTurnService purchaseTurnService() {
         return new PurchaseTurnService(purchaseTurnRepository);
+    }
+
+    @Bean("cartProductMapperBean")
+    public CartProductMapper cartProductMapper() {
+        return new CartProductMapper();
     }
 }
