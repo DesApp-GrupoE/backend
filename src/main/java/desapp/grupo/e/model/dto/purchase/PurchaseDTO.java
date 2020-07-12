@@ -1,6 +1,7 @@
 package desapp.grupo.e.model.dto.purchase;
 
 import desapp.grupo.e.model.cart.CartProduct;
+import desapp.grupo.e.model.purchase.DeliveryType;
 
 import java.util.List;
 
@@ -12,6 +13,8 @@ public class PurchaseDTO {
     private String nameCommerce;
     private Long userId;
     private String date;
+    private DeliveryType deliveryType;
+    private Long turnId;
     private List<CartProduct> products;
 
     public Long getId() {
@@ -52,6 +55,22 @@ public class PurchaseDTO {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public DeliveryType getDeliveryType() {
+        return deliveryType;
+    }
+
+    public void setDeliveryType(DeliveryType deliveryType) {
+        this.deliveryType = deliveryType;
+    }
+
+    public Long getTurnId() {
+        return turnId;
+    }
+
+    public void setTurnId(Long turnId) {
+        this.turnId = turnId;
     }
 
     public List<CartProduct> getProducts() {

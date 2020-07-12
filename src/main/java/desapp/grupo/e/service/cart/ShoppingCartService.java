@@ -4,6 +4,7 @@ import desapp.grupo.e.model.cart.CartProduct;
 import desapp.grupo.e.model.cart.ShoppingCart;
 import desapp.grupo.e.model.product.Offer;
 import desapp.grupo.e.model.product.Product;
+import desapp.grupo.e.model.purchase.Purchase;
 import desapp.grupo.e.persistence.product.OfferRepository;
 import desapp.grupo.e.persistence.product.ProductRepository;
 import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
@@ -103,5 +104,14 @@ public class ShoppingCartService {
     public void updateOfferQuantity(String keyCart, Long productId, Integer quantity) {
         ShoppingCart shoppingCart = getShoppingCartByKey(keyCart);
         shoppingCart.updateOfferQuantity(productId, quantity);
+    }
+
+    public List<Purchase> generatePurchases(String cartId) {
+        ShoppingCart shoppingCart = getShoppingCartByKey(cartId);
+        return shoppingCart.generatePurchase();
+    }
+
+    public void deleteCart(String cartId) {
+        this.shoppingCartCache.remove(cartId);
     }
 }

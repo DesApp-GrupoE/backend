@@ -2,16 +2,7 @@ package desapp.grupo.e.model.purchase;
 
 import desapp.grupo.e.model.cart.CartProduct;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.GenerationType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Column;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +20,11 @@ public class Purchase {
     private Long userId;
     @Column(nullable = false)
     private LocalDateTime date;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private DeliveryType deliveryType;
+    @Column
+    private Long turnId;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "purchase_id")
     private List<CartProduct> cartProducts;
@@ -72,6 +68,22 @@ public class Purchase {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public DeliveryType getDeliveryType() {
+        return deliveryType;
+    }
+
+    public void setDeliveryType(DeliveryType deliveryType) {
+        this.deliveryType = deliveryType;
+    }
+
+    public Long getTurnId() {
+        return turnId;
+    }
+
+    public void setTurnId(Long turnId) {
+        this.turnId = turnId;
     }
 
     public void setCartProducts(List<CartProduct> productsCarts) {

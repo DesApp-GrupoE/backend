@@ -24,6 +24,6 @@ public class PurchaseTurnService {
 
     @Transactional
     public List<PurchaseTurn> getPurchaseTurns(Long commerceId, LocalDateTime dateFrom, LocalDateTime dateTo) {
-        return purchaseTurnRepository.findAllByIdCommerceAndDateTurnBetween(commerceId, dateFrom, dateTo);
+        return purchaseTurnRepository.findAllByIdCommerceAndDateTurnBetweenOrderByDateTurn(commerceId, dateFrom, dateTo);
     }
 }

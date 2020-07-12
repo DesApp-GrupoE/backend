@@ -29,7 +29,9 @@ public class ProductRepositoryJdbcImpl {
 
         String sqlParams = paramsFilterProducts(productSearchDTO, params);
         if(!isNullOrEmpty(sqlParams)) {
-            sql += " where " + sqlParams;
+            sql += " where " + sqlParams + " and stock > 0";
+        } else {
+            sql += " where stock > 0";
         }
         return jdbcTemplate.query(sql, params, new ProductMapper());
     }
@@ -55,7 +57,7 @@ public class ProductRepositoryJdbcImpl {
         sql += " commerce_id in (select c.id from commerce c where " +
                 "( " +
                 "   point(c.longitude, c.latitude)<@>point(:longitude, :latitude)" +
-                ") * :toKm < :km)" ;
+                ") * :toKm < :km) and stock > 0" ;
         params.put("longitude", longitude);
         params.put("latitude", latitude);
         params.put("toKm", MILLA_TO_KM);
