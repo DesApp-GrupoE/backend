@@ -25,6 +25,7 @@ public class ProductDTO {
     @NotBlank(message = "IMG is mandatory")
     @CsvBindByName(required = true)
     private String img;
+    private String nameCommerce;
 
     public ProductDTO() {
         // Constructor vacio para Jackson
@@ -85,5 +86,13 @@ public class ProductDTO {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public String getNameCommerce() {
+        return nameCommerce;
+    }
+
+    public void setNameCommerce(String nameCommerce) {
+        this.nameCommerce = nameCommerce;
     }
 }
