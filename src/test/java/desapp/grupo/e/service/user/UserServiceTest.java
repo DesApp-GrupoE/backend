@@ -20,14 +20,12 @@ import static org.mockito.Mockito.when;
 public class UserServiceTest {
 
     private UserRepository userRepository;
-    private AuthService authService;
     private UserService userService;
 
     @BeforeEach
     public void setUp() {
         userRepository = mock(UserRepository.class);
-        authService = mock(AuthService.class);
-        userService = new UserService(userRepository, authService);
+        userService = new UserService(userRepository);
     }
 
     @Test

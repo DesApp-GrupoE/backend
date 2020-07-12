@@ -164,4 +164,8 @@ public class User {
     public void setProvider(AuthProvider provider) {
         this.provider = provider;
     }
+
+    public String getFullName() {
+        return this.getName() + " " + this.getSurname();
+    }
 }

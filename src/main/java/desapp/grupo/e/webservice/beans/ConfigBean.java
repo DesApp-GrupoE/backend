@@ -9,6 +9,7 @@ import desapp.grupo.e.service.auth.AuthService;
 import desapp.grupo.e.service.auth.TotpService;
 import desapp.grupo.e.service.category.alert.CategoryAlertService;
 import desapp.grupo.e.service.login.UserDetailsServiceImpl;
+import desapp.grupo.e.service.mail.MailService;
 import desapp.grupo.e.service.mapper.CommerceMapperService;
 import desapp.grupo.e.service.purchase.PurchaseTurnService;
 import desapp.grupo.e.service.user.UserService;
@@ -33,6 +34,8 @@ public class ConfigBean {
     private CommerceRepository commerceRepository;
     @Autowired
     private PurchaseTurnRepository purchaseTurnRepository;
+    @Autowired
+    private MailService mailService;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -41,7 +44,7 @@ public class ConfigBean {
 
     @Bean("loginServiceBean")
     public LoginService loginService() {
-        return new LoginService(userRepository, bCryptPasswordEncoder());
+        return new LoginService(userRepository, bCryptPasswordEncoder(), mailService);
     }
 
     @Bean("toptServiceBean")
@@ -56,7 +59,7 @@ public class ConfigBean {
 
     @Bean
     public UserService userService() {
-        return new UserService(userRepository, authService());
+        return new UserService(userRepository);
     }
 
     @Bean

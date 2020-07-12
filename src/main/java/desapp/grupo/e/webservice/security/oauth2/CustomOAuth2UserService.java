@@ -7,6 +7,7 @@ import desapp.grupo.e.model.user.AuthProvider;
 import desapp.grupo.e.model.user.User;
 import desapp.grupo.e.persistence.user.UserRepository;
 import desapp.grupo.e.service.exceptions.OAuth2AuthenticationProcessingException;
+import desapp.grupo.e.service.mail.MailService;
 import desapp.grupo.e.service.utils.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -26,6 +27,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private MailService mailService;
 
     @Transactional
     @Override
@@ -75,6 +78,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setSurname(oAuth2UserInfo.getSurname());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setSecret(new RandomString().nextStringOnlyCharacters(15));
+        mailService.sendWelcomeEmail(user.getEmail(), user.getFullName());
         return userRepository.save(user);
     }
 

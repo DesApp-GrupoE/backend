@@ -3,6 +3,7 @@ package desapp.grupo.e.service.login;
 import desapp.grupo.e.model.builder.user.UserBuilder;
 import desapp.grupo.e.model.user.User;
 import desapp.grupo.e.persistence.user.UserRepository;
+import desapp.grupo.e.service.mail.MailService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,11 +21,13 @@ public class LoginServiceTest {
 
     private LoginService loginService;
     private UserRepository userRepository;
+    private MailService emailService;
 
     @BeforeEach
     public void setUp() {
         userRepository = mock(UserRepository.class);
-        loginService = new LoginService(userRepository, new BCryptPasswordEncoder());
+        emailService = mock(MailService.class);
+        loginService = new LoginService(userRepository, new BCryptPasswordEncoder(), emailService);
     }
 
     @Test

@@ -2,6 +2,7 @@ package desapp.grupo.e.service.login;
 
 import desapp.grupo.e.model.user.User;
 import desapp.grupo.e.persistence.user.UserRepository;
+import desapp.grupo.e.service.mail.MailService;
 import desapp.grupo.e.service.utils.RandomString;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,11 +16,12 @@ public class LoginService {
 
     private UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private MailService mailService;
 
-    public LoginService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public LoginService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, MailService mailService) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-
+        this.mailService = mailService;
     }
 
     @Transactional
@@ -33,6 +35,7 @@ public class LoginService {
         String secretKey = randomString.nextStringOnlyCharacters(15);
         user.setSecret(secretKey);
         this.userRepository.save(user);
+        this.mailService.sendWelcomeEmail(user.getEmail(), user.getFullName());
         return user;
     }
 }
