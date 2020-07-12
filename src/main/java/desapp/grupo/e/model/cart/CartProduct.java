@@ -1,17 +1,36 @@
 package desapp.grupo.e.model.cart;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Column;
+import javax.persistence.GenerationType;
 
+@Entity
+@Table(name = "purchase_product")
 public class CartProduct {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="purchase_product_id_seq")
     private Long id;
+    @Column
     private Long productId;
+    @Column
     private Long commerceId;
+    @Column
     private Long offerId;
+    @Column
     private String name;
+    @Column
     private String brand;
+    @Column
     private String img;
+    @Column
     private Double price;
+    @Column
     private Integer quantity;
+    @Column
     private Integer off;
 
     public Long getId() {

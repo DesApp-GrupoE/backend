@@ -1,11 +1,14 @@
 package desapp.grupo.e.helper.dummy;
 
+import desapp.grupo.e.model.builder.cart.CartProductBuilder;
 import desapp.grupo.e.model.builder.commerce.CommerceBuilder;
 import desapp.grupo.e.model.builder.product.ProductBuilder;
 import desapp.grupo.e.model.builder.purchase.PurchaseTurnBuilder;
 import desapp.grupo.e.model.builder.user.UserBuilder;
+import desapp.grupo.e.model.cart.CartProduct;
 import desapp.grupo.e.model.product.Product;
 import desapp.grupo.e.model.purchase.DeliveryType;
+import desapp.grupo.e.model.purchase.Purchase;
 import desapp.grupo.e.model.purchase.PurchaseTurn;
 import desapp.grupo.e.model.user.Commerce;
 import desapp.grupo.e.model.user.CommerceSector;
@@ -99,15 +102,15 @@ public class DummyData {
 
     public User createUser2() {
         User user1 = UserBuilder.aUser()
-                .withName("Susana")
+                .withName("Ignacio")
                 .withSurname("Rodriguez")
-                .withEmail("susana@gmail.com")
+                .withEmail("nacho@gmail.com")
                 .withPassword(this.encrypter.encode("12345678"))
                 .withSecret(randomString.nextStringOnlyCharacters(15))
                 .build();
 
         Commerce commerce1 = CommerceBuilder.aCommerce()
-                .withName("Susi")
+                .withName("Chino")
                 .withAddress("Av. Francia 4996, Quilmes")
                 .withLatitude(-34.761164)
                 .withLongitude(-58.267327)
@@ -306,4 +309,53 @@ public class DummyData {
         return Arrays.asList(turn1, turn2, turn3, turn4, turn5, turn6, turn7, turn8, turn9, turn10);
     }
 
+    public Purchase createPurchase1(Long userId, Long commerceId) {
+        CartProduct product = CartProductBuilder.aProductCartBuilder()
+                .withName("Coca Cola 2.25L")
+                .withBrand("Coca Cola")
+                .withPrice(130.0)
+                .withQuantity(2)
+                .withCommerceId(commerceId)
+                .withImg("https://www.licoreraexpress.com/wp-content/uploads/2018/01/Coca-Cola-Bottle-2L-1.jpg")
+                .build();
+
+        CartProduct product2 = CartProductBuilder.aProductCartBuilder()
+                .withName("Aceite de girasol Cocinero 1.5L")
+                .withBrand("Cocinero")
+                .withPrice(130.0)
+                .withQuantity(1)
+                .withCommerceId(commerceId)
+                .withImg("https://geant.vteximg.com.br/arquivos/ids/227890-1000-1000/575662.jpg?v=636833437802530000")
+                .build();
+
+        Purchase purchase = new Purchase(commerceId);
+        purchase.setUserId(userId);
+        purchase.setCartProducts(Arrays.asList(product, product2));
+        purchase.setDate(LocalDateTime.now().withHour(15).withMinute(30));
+        return purchase;
+    }
+
+    public Purchase createPurchase2(Long userId, Long commerceId) {
+        CartProduct product = CartProductBuilder.aProductCartBuilder()
+                .withName("Cerveza rubia Andes Origen 6 x 473cc").withBrand("Andes")
+                .withPrice(375.0)
+                .withImg("https://supermercado.carrefour.com.ar/media/catalog/product/cache/1/small_image/214x/9df78eab33525d08d6e5fb8d27136e95/7/7/7792798001712_01.jpg")
+                .withQuantity(2)
+                .withCommerceId(commerceId)
+                .build();
+
+        CartProduct product2 = CartProductBuilder.aProductCartBuilder()
+                .withName("Gaseosa Schweppes sin azucar pomelo 2.25L").withBrand("Schweppes")
+                .withPrice(88.0)
+                .withImg("https://supermercado.carrefour.com.ar/media/catalog/product/cache/1/small_image/214x/9df78eab33525d08d6e5fb8d27136e95/7/7/7790895010095_01.jpg")                .withPrice(130.0)
+                .withQuantity(1)
+                .withCommerceId(commerceId)
+                .build();
+
+        Purchase purchase = new Purchase(commerceId);
+        purchase.setUserId(userId);
+        purchase.setCartProducts(Arrays.asList(product, product2));
+        purchase.setDate(LocalDateTime.now().withHour(15).withMinute(30));
+        return purchase;
+    }
 }

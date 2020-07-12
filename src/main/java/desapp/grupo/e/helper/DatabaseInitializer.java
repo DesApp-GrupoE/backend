@@ -1,8 +1,8 @@
 package desapp.grupo.e.helper;
 
 import desapp.grupo.e.helper.dummy.DummyData;
-import desapp.grupo.e.model.purchase.PurchaseTurn;
-import desapp.grupo.e.persistence.purchase.PurchaseTurnRepository;
+import desapp.grupo.e.model.purchase.Purchase;
+import desapp.grupo.e.persistence.purchase.PurchaseRepository;
 import desapp.grupo.e.persistence.user.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Component
 public class DatabaseInitializer {
@@ -23,7 +21,7 @@ public class DatabaseInitializer {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private PurchaseTurnRepository purchaseTurnRepository;
+    private PurchaseRepository purchaseRepository;
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -47,6 +45,11 @@ public class DatabaseInitializer {
         this.userRepository.save(dummyData.createUser1());
         this.userRepository.save(dummyData.createUser2());
         this.userRepository.save(dummyData.createUser3());
+
+        Purchase purchase = dummyData.createPurchase1(1L, 2L);
+        Purchase purchase2 = dummyData.createPurchase2(1L, 3L);
+        this.purchaseRepository.save(purchase);
+        this.purchaseRepository.save(purchase2);
     }
 
 }

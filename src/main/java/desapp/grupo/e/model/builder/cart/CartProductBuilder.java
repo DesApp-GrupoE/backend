@@ -64,6 +64,11 @@ public class CartProductBuilder {
         return this;
     }
 
+    public CartProductBuilder withImg(String img) {
+        this.img = img;
+        return this;
+    }
+
     public CartProductBuilder anyProduct() {
         this.id = 1L;
         this.productId = 1L;

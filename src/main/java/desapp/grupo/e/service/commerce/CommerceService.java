@@ -10,6 +10,8 @@ import desapp.grupo.e.service.exceptions.ResourceNotFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public class CommerceService {
 
     private UserRepository userRepository;
@@ -47,5 +49,9 @@ public class CommerceService {
 
     public Commerce getCommerceByUser(Long userId) {
         return commerceRepository.findByUser(userId);
+    }
+
+    public List<Commerce> getAllCommerceById(List<Long> idsCommerce) {
+        return this.commerceRepository.findAllByIdIn(idsCommerce);
     }
 }
