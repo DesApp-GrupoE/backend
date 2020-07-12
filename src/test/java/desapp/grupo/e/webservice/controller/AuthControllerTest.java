@@ -3,7 +3,6 @@ package desapp.grupo.e.webservice.controller;
 import desapp.grupo.e.model.builder.user.UserBuilder;
 import desapp.grupo.e.model.dto.auth.LoginRequestDTO;
 import desapp.grupo.e.model.dto.auth.TokenDTO;
-import desapp.grupo.e.model.product.Category;
 import desapp.grupo.e.model.user.User;
 import desapp.grupo.e.service.auth.AuthService;
 import desapp.grupo.e.webservice.handler.CustomizeErrorHandler;
@@ -18,35 +17,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import desapp.grupo.e.service.jackson.JsonUtils;
-import desapp.grupo.e.service.login.LoginService;
 import desapp.grupo.e.persistence.exception.EmailRegisteredException;
 
 import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
 public class AuthControllerTest {
 
-    private LoginService loginService;
     private AuthService authService;
     private MockMvc mockMvc;
 
     @BeforeEach
     public void setUp() {
-        loginService = mock(LoginService.class);
         authService = mock(AuthService.class);
-        AuthController authController = new AuthController(loginService, authService);
+        AuthController authController = new AuthController(authService);
         mockMvc = MockMvcBuilders.standaloneSetup(authController)
                     .setControllerAdvice(new CustomizeErrorHandler(), new AuthControllerHandler())
                     .build();
@@ -81,7 +74,7 @@ public class AuthControllerTest {
                 .withEmail("test@test.test").withPassword("Secret")
                 .build();
 
-        when(loginService.signUp(any(User.class))).thenReturn(user);
+        when(authService.signUp(any(User.class))).thenReturn(user);
 
         MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/auth/sign-up")
                 .content(JsonUtils.toJson(userDTO))
@@ -149,7 +142,7 @@ public class AuthControllerTest {
         userRequestDTO.setEmail("test@test.test");
         userRequestDTO.setPassword("Secret");
 
-        when(loginService.signUp(any(User.class))).thenThrow(new EmailRegisteredException("Email was already registered"));
+        when(authService.signUp(any(User.class))).thenThrow(new EmailRegisteredException("Email was already registered"));
 
         MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.post("/auth/sign-up")
                 .content(JsonUtils.toJson(userRequestDTO))

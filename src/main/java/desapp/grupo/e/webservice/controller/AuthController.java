@@ -8,13 +8,9 @@ import desapp.grupo.e.model.dto.auth.TokenDTO;
 import desapp.grupo.e.model.dto.user.UserDTO;
 import desapp.grupo.e.model.user.User;
 import desapp.grupo.e.service.auth.AuthService;
-import org.jboss.aerogear.security.otp.api.Hash;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import desapp.grupo.e.service.login.LoginService;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -26,17 +22,15 @@ import java.util.Map;
 public class AuthController {
 
     private static final String URL_BASE = "/auth";
-    private LoginService loginService;
     private AuthService authService;
 
-    public AuthController(LoginService loginService, AuthService authService) {
-        this.loginService = loginService;
+    public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
     @PostMapping(URL_BASE + "/sign-up")
     public ResponseEntity<UserDTO> signUp(@Valid @RequestBody UserDTO userDTO) {
-        User newUser = this.loginService.signUp(new User(userDTO));
+        User newUser = this.authService.signUp(new User(userDTO));
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/user/me")
                 .buildAndExpand(newUser.getId()).toUri();

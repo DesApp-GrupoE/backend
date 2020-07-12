@@ -4,7 +4,10 @@ import desapp.grupo.e.config.oauth2.TokenService;
 import desapp.grupo.e.model.dto.auth.LoginRequestDTO;
 import desapp.grupo.e.model.dto.auth.TokenDTO;
 import desapp.grupo.e.model.user.User;
+import desapp.grupo.e.persistence.exception.EmailRegisteredException;
 import desapp.grupo.e.service.exceptions.AuthenticationCode2FAException;
+import desapp.grupo.e.service.mail.MailService;
+import desapp.grupo.e.service.utils.RandomString;
 import desapp.grupo.e.webservice.security.SecurityConstants;
 import desapp.grupo.e.persistence.user.UserRepository;
 import org.jboss.aerogear.security.otp.Totp;
@@ -13,13 +16,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
@@ -33,12 +34,33 @@ public class AuthService {
     private TokenService tokenService;
     @Autowired
     private AuthenticationManager authenticationManager;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private MailService mailService;
 
-    public AuthService(UserRepository userRepository, TotpService totpService) {
+
+    public AuthService(UserRepository userRepository, TotpService totpService,
+                       BCryptPasswordEncoder bCryptPasswordEncoder, MailService mailService) {
         this.userRepository = userRepository;
         this.emailToken = new HashMap<>();
         this.emailAuthentication = new HashMap<>();
         this.toptService = totpService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.mailService = mailService;
+    }
+
+    @Transactional
+    public User signUp(User user) {
+        Optional<User> optUser = this.userRepository.findByEmail(user.getEmail());
+        if(optUser.isPresent()) {
+            throw new EmailRegisteredException(String.format("Email %s was already registered", user.getEmail()));
+        }
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        RandomString randomString = new RandomString();
+        String secretKey = randomString.nextStringOnlyCharacters(15);
+        user.setSecret(secretKey);
+        this.userRepository.save(user);
+        this.mailService.sendWelcomeEmail(user.getEmail(), user.getFullName());
+        return user;
     }
 
     public TokenDTO authenticate(LoginRequestDTO loginRequest) {

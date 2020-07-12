@@ -1,19 +1,18 @@
 package desapp.grupo.e.service.auth;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import desapp.grupo.e.model.builder.user.UserBuilder;
-import desapp.grupo.e.model.dto.auth.TokenDTO;
 import desapp.grupo.e.model.user.User;
+import desapp.grupo.e.persistence.exception.EmailRegisteredException;
 import desapp.grupo.e.persistence.user.UserRepository;
-import desapp.grupo.e.service.exceptions.AuthenticationCode2FAException;
-import org.jboss.aerogear.security.otp.Totp;
+import desapp.grupo.e.service.mail.MailService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
+import java.util.Optional;
+
 import static org.mockito.Mockito.*;
 
 class AuthServiceTest {
@@ -22,13 +21,43 @@ class AuthServiceTest {
     private AuthService authService;
     private static final String email = "test@email.test";
     private TotpService totpService;
+    private MailService emailService;
 
     @BeforeEach
     public void setUp() {
         totpService = mock(TotpService.class);
         userRepository = mock(UserRepository.class);
-        this.authService = new AuthService(userRepository, totpService);
+        emailService = mock(MailService.class);
+        BCryptPasswordEncoder bCryptPasswordEncoder = mock(BCryptPasswordEncoder.class);
+        this.authService = new AuthService(userRepository, totpService, bCryptPasswordEncoder, emailService);
     }
+
+    @Test
+    public void signUpCreateNewCustomer() throws EmailRegisteredException {
+        Long expectedId = 1L;
+
+        User user = new UserBuilder().anyUser().build();
+        when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.empty());
+
+        doAnswer(invocation -> {
+            ReflectionTestUtils.setField((User) invocation.getArgument(0), "id", expectedId);
+            return null;
+        }).when(userRepository).save(user);
+
+        authService.signUp(user);
+
+        Assertions.assertEquals(user.getId(), expectedId);
+    }
+
+    @Test
+    public void signUpCreateNewCustomerWithEmailExistentThrowUniqueClassException() {
+        User user = new UserBuilder().anyUser().build();
+
+        when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(new User()));
+
+        Assertions.assertThrows(EmailRegisteredException.class, () -> authService.signUp(user));
+    }
+
 /*
     @Test
     public void createTokenAndUserNotUse2faShouldReturnATokenWithAllProperties() {
