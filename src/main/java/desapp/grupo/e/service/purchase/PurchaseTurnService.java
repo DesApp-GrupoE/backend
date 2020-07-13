@@ -44,6 +44,11 @@ public class PurchaseTurnService {
         return purchaseTurnRepository.findAllByIdCommerceAndIdUserIsNullAndDateTurnBetweenOrderByDateTurn(commerceId, dateFrom, dateTo);
     }
 
+    @Transactional
+    public void deleteTurnById(Long idTurn) {
+        this.purchaseTurnRepository.deleteById(idTurn);
+    }
+
     @Transactional(readOnly = true)
     public void sendEmailsBeforeTurnPurchases() {
         List<PurchaseTurn> purchaseTurns = purchaseTurnRepository.findNextTurnsToExpire();

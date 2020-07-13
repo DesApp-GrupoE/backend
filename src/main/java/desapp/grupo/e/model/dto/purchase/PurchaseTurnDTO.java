@@ -14,6 +14,8 @@ public class PurchaseTurnDTO {
     private Long idCommerce;
     @NotNull
     private DeliveryType deliveryType;
+    private Long idUser;
+    private String address;
 
     public Long getId() {
         return id;
@@ -45,5 +47,21 @@ public class PurchaseTurnDTO {
 
     public void setDeliveryType(DeliveryType deliveryType) {
         this.deliveryType = deliveryType;
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

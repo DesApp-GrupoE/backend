@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 public class PurchaseTurnController {
 
     private static final String URL_BASE = "/purchase-turn";
+    private static final String ID_TURN = "idTurn";
+    private static final String URL_DELETE = "/purchase-turn/{"+ID_TURN +"}";
     private PurchaseTurnService purchaseTurnService;
 
     public PurchaseTurnController(PurchaseTurnService purchaseTurnService) {
@@ -58,6 +60,12 @@ public class PurchaseTurnController {
         );
     }
 
+    @DeleteMapping(URL_DELETE)
+    public ResponseEntity<PurchaseTurnDTO> deleteTurn(@PathVariable(ID_TURN) Long idTurn) {
+        this.purchaseTurnService.deleteTurnById(idTurn);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     private LocalDateTime parseDate(String dateStr) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return LocalDate.parse(dateStr, formatter).atStartOfDay();
@@ -68,6 +76,8 @@ public class PurchaseTurnController {
         purchaseTurnDTO.setId(purchaseTurn.getId());
         purchaseTurnDTO.setIdCommerce(purchaseTurn.getIdCommerce());
         purchaseTurnDTO.setDeliveryType(purchaseTurn.getDeliveryType());
+        purchaseTurnDTO.setIdUser(purchaseTurn.getIdUser());
+        purchaseTurnDTO.setAddress(purchaseTurn.getDeliveryAddress());
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         purchaseTurnDTO.setDate(purchaseTurn.getDateTurn().format(dateTimeFormatter));
         return purchaseTurnDTO;
