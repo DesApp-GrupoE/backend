@@ -67,7 +67,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                     "/cart/*",
                     "/products",
                     "/commerce-sector",
-                    "/purchase-turn"
+                    "/purchase-turn",
+                    "/purchase-turn/*"
                 ).permitAll()
                 .antMatchers(HttpMethod.PUT,
                         "/cart/*",

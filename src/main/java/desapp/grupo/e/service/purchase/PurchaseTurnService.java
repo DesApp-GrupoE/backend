@@ -40,6 +40,11 @@ public class PurchaseTurnService {
     }
 
     @Transactional(readOnly = true)
+    public List<PurchaseTurn> getFreePurchaseTurns(Long commerceId, LocalDateTime dateFrom, LocalDateTime dateTo) {
+        return purchaseTurnRepository.findAllByIdCommerceAndIdUserIsNullAndDateTurnBetweenOrderByDateTurn(commerceId, dateFrom, dateTo);
+    }
+
+    @Transactional(readOnly = true)
     public void sendEmailsBeforeTurnPurchases() {
         List<PurchaseTurn> purchaseTurns = purchaseTurnRepository.findNextTurnsToExpire();
         purchaseTurns.forEach(purchaseTurn -> {

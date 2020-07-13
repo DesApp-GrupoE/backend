@@ -45,6 +45,19 @@ public class PurchaseTurnController {
         );
     }
 
+    @GetMapping(URL_BASE + "/free")
+    public ResponseEntity<List<PurchaseTurnDTO>> getFreePurchaseTurn(@RequestParam Long commerceId,
+                                                                 @RequestParam(name = "dateFrom") String dateFromStr,
+                                                                 @RequestParam(name = "dateTo") String dateToStr) {
+        LocalDateTime dateFrom = this.parseDate(dateFromStr);
+        LocalDateTime dateTo = this.parseDate(dateToStr);
+        List<PurchaseTurn> purchaseTurns = this.purchaseTurnService.getFreePurchaseTurns(commerceId, dateFrom, dateTo);
+        return ResponseEntity.ok(purchaseTurns.stream()
+                .map(this::mapModelToDto)
+                .collect(Collectors.toList())
+        );
+    }
+
     private LocalDateTime parseDate(String dateStr) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return LocalDate.parse(dateStr, formatter).atStartOfDay();

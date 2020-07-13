@@ -15,6 +15,8 @@ public interface PurchaseTurnRepository extends JpaRepository<PurchaseTurn, Long
 
     List<PurchaseTurn> findAllByIdCommerceAndDateTurnBetweenOrderByDateTurn(Long idCommerce, LocalDateTime dateFrom, LocalDateTime dateTo);
 
+    List<PurchaseTurn> findAllByIdCommerceAndIdUserIsNullAndDateTurnBetweenOrderByDateTurn(Long idCommerce, LocalDateTime dateFrom, LocalDateTime dateTo);
+
     Optional<PurchaseTurn> findFirstByIdCommerceAndDeliveryType(Long commerceId, DeliveryType deliveryType);
 
     @Modifying
