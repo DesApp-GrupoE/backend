@@ -20,4 +20,8 @@ public interface PurchaseTurnRepository extends JpaRepository<PurchaseTurn, Long
     @Modifying
     @Query("update PurchaseTurn set idUser = :idUser where id = :idTurn")
     void addUserToTurn(@Param("idUser") Long idUser, @Param("idTurn") Long idTurn);
+
+    @Query(nativeQuery = true,
+        value = "select * from purchase_turn where id_user is not null and date_turn < now() + INTERVAL '15 minute'")
+    List<PurchaseTurn> findNextTurnsToExpire();
 }

@@ -48,7 +48,6 @@ public class PurchaseTurnBuilder {
         PurchaseTurn purchaseTurn = new PurchaseTurn(this.idCommerce, this.dateTurn, this.deliveryType);
         purchaseTurn.setId(this.id);
         purchaseTurn.setDeliveryAddress(this.deliveryAddress);
-        purchaseTurn.setIdSubPurchase(this.idSubPurchase);
         resetBuilder();
         return purchaseTurn;
     }

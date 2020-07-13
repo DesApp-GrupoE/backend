@@ -14,8 +14,6 @@ public class PurchaseTurn {
     private Long idCommerce;
     @Column
     private Long idUser;
-    @Transient
-    private Long idSubPurchase;
     @Column(nullable = false)
     private LocalDateTime dateTurn;
     @Column(nullable = false)
@@ -55,14 +53,6 @@ public class PurchaseTurn {
 
     public void setIdUser(Long idUser) {
         this.idUser = idUser;
-    }
-
-    public Long getIdSubPurchase() {
-        return idSubPurchase;
-    }
-
-    public void setIdSubPurchase(Long idSubPurchase) {
-        this.idSubPurchase = idSubPurchase;
     }
 
     public LocalDateTime getDateTurn() {

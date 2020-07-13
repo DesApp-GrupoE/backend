@@ -21,6 +21,15 @@ spring:
             scope:
               - email
               - profile
+  quartz:
+    job-store-type: memory
+    properties:
+      org:
+        quartz:
+          jobStore:
+            class: org.quartz.simpl.RAMJobStore
+          threadPool:
+            threadCount: 5
 
 app:
   auth:
