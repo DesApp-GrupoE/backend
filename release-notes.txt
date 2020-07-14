@@ -1,14 +1,56 @@
-TAG 1.1.0 - Entrega 2
+TAG 1.2.0 - Entrega 3
+--------------------------------------------------------------------------------------------------------------------
 NEW FEATURES
 
-Integración JWT, integración API positionstack.
-Desarrollo de Frontend (utilizando endpoints creados)
-Test al 77%.
-Endpoints ABM de usuario, ABM comercio, ABM producto, ABM Alerta de categorías, ABM carrito de compras.
+BACKEND:
+* Integración de AspectJ para el logging de las llamadas a los endpoints.
+* Realización de test de arquitectura simples.
+* Integración de login por oauth2, por el momento, con cuentas de gmail.
+* Integración de Job Schedule.
+* Token de sesión en lista negra cuando un usuario se desloguea. Así evitamos que alguien más utilice el token.
+* Envío de mails. 
+  - Utilizamos cuenta y protocolos de mailTrap
+  - Envío de mail en registro
+  - Envío de mail informando que el turno de una compra esta por cumplirse a través del uso de Job
+* Integración de autenticación por doble factor de seguridad (2fa)
+* Nuevos endpoints:
+  - Realizar compra
+  - Ver compras
+  - Creación, eliminación de turnos
+  - Creación masiva de productos a traves de archivo csv
+  - Ver ventas
+  - Habilitación / Deshabilitación de 2fa
+  
+FRONTEND:
+* Nueva pantalla de autenticación.
+  - Login / Registro
+  - Si el usuario a loguearse utiliza 2fa se le pide el código del mismo para dejarlo ingresar
+  - Botón para autenticarse con gmail
+* Si el token del usuario expira entonces mostramos alerta y lo llevamos a pantalla de login para que ingrese de nuevo
+* Nuevos abm de turnos de comercio
+* Se agrega la carga masiva de productos por csv
+* Pantalla de fin de compra
+  - Se agrega modal para eligir el tipo de entrega
+  - Se muestra mapa para indicar la distancia entre la dirección ingresada y el comercio
+* Pantalla para ver compras
+* Pantalla para ver ventas del comercio
+* Pantalla de configuraciones para habilitar/deshabilitar 2fa
+* Paginado del listado
+* Cambio de api de Position Stack a Google Maps, de esta manera pudimos deployar correctamente en heroku
+
+--------------------------------------------------------------------------------------------------------------------
 NOTES
+* Agregar paginado en otros listados como compras, ventas, turnos
+* Agregar más feedback en acciones como registro y login, si bien se muestra algún mensaje cuando terminan de ejecutar, puede tardar un par de segundos y no se indica que se esta realizando la acción, te enteras cuando termina.
+* Agregar mapa en el registro de comercio
+* Agregar más testing, se metieron muchas nuevas features pero no tenemos tests que respalden estas nuevas funcionalidades
+* Agregar direcciones. El usuario en cada compra tiene que ingresar su dirección, sería bueno tener las direcciones utilizadas guardadas y elegir entre ellas o crear una nueva
+* Agregar más info sobre compras y ventas
+* Agregar carga masiva de turnos
+* Agregar ediciones
 
+--------------------------------------------------------------------------------------------------------------------
 KNOWN ISSUES
-
-Aplicación corriendo local porque heroku trabaja con https y la API positionstack usa http en la versión gratuita.
-No se catchea bien la exception en los endpoints de borrado.
-Falta el limpiado de los tokens de sesión.
+* Query de obtención de turnos a vencer no funciona del todo bien. No filtra correctamente, esto hace que se envien muchas veces un mismo mail
+* Obtención de distancia entre markers no funciona si no hay cors habilitado. Utilizar javascript API
+* Si no funciona la api de maps se bloquean los envíos 
