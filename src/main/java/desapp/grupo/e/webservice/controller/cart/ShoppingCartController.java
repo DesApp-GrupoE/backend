@@ -4,7 +4,9 @@ import desapp.grupo.e.model.cart.CartProduct;
 import desapp.grupo.e.model.cart.ShoppingCart;
 import desapp.grupo.e.model.dto.cart.CartProductDTO;
 import desapp.grupo.e.model.dto.cart.CartRequestDto;
+import desapp.grupo.e.model.dto.commerce.CommerceDTO;
 import desapp.grupo.e.model.dto.purchase.PurchaseDTO;
+import desapp.grupo.e.model.dto.purchase.PurchaseResumeDTO;
 import desapp.grupo.e.model.purchase.Purchase;
 import desapp.grupo.e.model.user.Commerce;
 import desapp.grupo.e.service.cart.ShoppingCartService;
@@ -108,10 +110,13 @@ public class ShoppingCartController {
     }
 
     @PostMapping(URL_CART + "/generate-purchase")
-    public ResponseEntity<List<PurchaseDTO>> generatePurchases(@PathVariable(CART_ID) String cartId) {
+    public ResponseEntity<PurchaseResumeDTO> generatePurchases(@PathVariable(CART_ID) String cartId) {
         List<Purchase> purchases = this.shoppingCartService.generatePurchases(cartId);
         List<Commerce> commerces = commerceService.getAllCommerceById(getIdsCommerce(purchases));
-        return ResponseEntity.ok(this.purchaseMapper.mapListModelToDto(purchases, commerces));
+        PurchaseResumeDTO purchaseResumeDTO = new PurchaseResumeDTO();
+        purchaseResumeDTO.setCommerces(commerces.stream().map(CommerceDTO::new).collect(Collectors.toList()));
+        purchaseResumeDTO.setPurchases(this.purchaseMapper.mapListModelToDto(purchases, commerces));
+        return ResponseEntity.ok(purchaseResumeDTO);
     }
 
     private List<Long> getIdsCommerce(List<Purchase> purchases) {

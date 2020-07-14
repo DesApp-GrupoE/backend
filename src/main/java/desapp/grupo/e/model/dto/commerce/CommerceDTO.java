@@ -42,6 +42,8 @@ public class CommerceDTO {
         this.sectors = commerce.getSectors();
         this.latitude = commerce.getLatitude();
         this.longitude = commerce.getLongitude();
+        this.doDelivery = commerce.getDoDelivery();
+        this.deliveryUp = commerce.getDeliveryUp();
         this.hours = commerce.getHours().stream()
                 .map(CommerceHourDTO::new)
                 .collect(Collectors.toList());
