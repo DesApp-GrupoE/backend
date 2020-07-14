@@ -1,8 +1,10 @@
 package desapp.grupo.e.service.mapper;
 
+import desapp.grupo.e.model.dto.cart.CartProductDTO;
 import desapp.grupo.e.model.dto.purchase.PurchaseDTO;
 import desapp.grupo.e.model.purchase.Purchase;
 import desapp.grupo.e.model.user.Commerce;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
@@ -12,6 +14,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class PurchaseMapper {
+
+    @Autowired
+    private CartProductMapper cartProductMapper;
 
     public List<PurchaseDTO> mapListModelToDto(List<Purchase> purchases, List<Commerce> commerces) {
         return purchases.stream()
@@ -25,7 +30,10 @@ public class PurchaseMapper {
         purchaseDTO.setId(purchase.getId());
         purchaseDTO.setUserId(purchase.getId());
         purchaseDTO.setCommerceId(purchase.getCommerceId());
-        purchaseDTO.setProducts(purchase.getCartProducts());
+        List<CartProductDTO> productDTOS = purchase.getCartProducts().stream()
+                .map(product -> this.cartProductMapper.mapToProductDTO(product, commerces))
+                .collect(Collectors.toList());
+        purchaseDTO.setProducts(productDTOS);
         Optional<Commerce> optCommerce = commerces.stream()
                 .filter(c -> c.getId().equals(purchase.getCommerceId()))
                 .findFirst();

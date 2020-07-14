@@ -18,7 +18,7 @@ public class CartProductMapper {
                 .collect(Collectors.toList());
     }
 
-    private CartProductDTO mapToProductDTO(CartProduct cartProduct, List<Commerce> commerces) {
+    public CartProductDTO mapToProductDTO(CartProduct cartProduct, List<Commerce> commerces) {
         CartProductDTO cartProductDTO = new CartProductDTO();
         cartProductDTO.setId(cartProduct.getId());
         cartProductDTO.setBrand(cartProduct.getBrand());

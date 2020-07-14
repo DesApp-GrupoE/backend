@@ -5,13 +5,11 @@ import desapp.grupo.e.model.purchase.DeliveryType;
 
 import java.util.List;
 
-
-public class PurchaseDTO {
+public class SaleDTO {
 
     private Long id;
-    private Long commerceId;
-    private String nameCommerce;
     private Long userId;
+    private String userName;
     private String date;
     private DeliveryType deliveryType;
     private Long turnId;
@@ -25,28 +23,20 @@ public class PurchaseDTO {
         this.id = id;
     }
 
-    public Long getCommerceId() {
-        return commerceId;
-    }
-
-    public void setCommerceId(Long commerceId) {
-        this.commerceId = commerceId;
-    }
-
-    public String getNameCommerce() {
-        return nameCommerce;
-    }
-
-    public void setNameCommerce(String nameCommerce) {
-        this.nameCommerce = nameCommerce;
-    }
-
     public Long getUserId() {
         return userId;
     }
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getDate() {
