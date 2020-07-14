@@ -16,7 +16,7 @@ public class PurchaseTurnJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        Log.info("Job send emails next to expire");
+        Log.info("Job: Sending mail of next purchases turns to expire");
         purchaseTurnService.sendEmailsBeforeTurnPurchases();
     }
 }
